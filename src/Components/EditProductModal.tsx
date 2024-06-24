@@ -134,6 +134,7 @@ export const EditProductModal = ({
                       </div>
                       <div className="relative mt-6 flex-1 flex gap-8 flex-col px-4 sm:px-6 w-full">
                         <form
+                          autoComplete="new-password"
                           className="space-y-2 w-full"
                           onSubmit={handleSubmit(handleEditProduct)}
                         >

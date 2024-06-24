@@ -1,4 +1,4 @@
-import { Nav } from "../Components/Nav"
+import { Nav } from "../Components/Nav/Nav"
 
 const Logs = () => {
   return (

@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from "./App.tsx"
 
+import 'react-toastify/dist/ReactToastify.css';
 import './index.css'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
@@ -9,6 +10,7 @@ import Dashboard from './routes/Dashboard.tsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Logs from './routes/Logs.tsx'
 import { Login } from './routes/Login.tsx'
+import { CashRegister } from './routes/CashRegister.tsx'
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/logs",
     element: <Logs />
+  },
+  {
+    path: "/cash-register",
+    element: <CashRegister />
   },
 ])
 

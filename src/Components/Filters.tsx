@@ -52,9 +52,8 @@ export const Filters = () => {
       state.delete('category')
       return state;
     })
-    setSelected('Todas Categorias')
+    selected !== 'Todas categorias' && setSelected('Todas categorias');
   }
-
 
   return (
     <div>

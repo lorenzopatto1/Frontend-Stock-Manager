@@ -13,6 +13,7 @@ function App() {
     }
     //eslint-disable-next-line
   }, [token])
+  
   return (
     <div className="flex flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full flex items-center flex-col sm:max-w-sm">

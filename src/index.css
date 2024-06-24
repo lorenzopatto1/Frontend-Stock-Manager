@@ -21,6 +21,15 @@ input {
   outline: none;
 }
 
+input[type=number]::-webkit-inner-spin-button { 
+  -webkit-appearance: none;
+  
+}
+input[type=number] { 
+ -moz-appearance: textfield;
+ appearance: textfield;
+}
+
 input:-webkit-autofill, 
 input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,

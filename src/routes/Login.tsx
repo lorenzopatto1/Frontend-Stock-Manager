@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { Input } from "../Components/Input";
 import { useForm, SubmitHandler } from "react-hook-form";
-import 'react-toastify/dist/ReactToastify.css';
 
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { Table } from "../Components/Table.tsx";
-import { Nav } from "../Components/Nav.tsx";
+import { Nav } from "../Components/Nav/Nav.tsx";
 import { NewProductModal } from "../Components/NewProductModal.tsx";
 import { useProductsData } from "../hooks/useProductsData.ts";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
