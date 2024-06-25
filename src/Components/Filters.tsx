@@ -22,7 +22,8 @@ export const Filters = () => {
   const { register, handleSubmit, reset } = useForm({ 
     resolver: yupResolver(productsFiltersSchema), 
     defaultValues: {
-      productCategory: selected ?? 'all',
+      productName : searchParams.get("name") ?? '',
+      productCategory: selected ?? 'all'
     }
   })
 

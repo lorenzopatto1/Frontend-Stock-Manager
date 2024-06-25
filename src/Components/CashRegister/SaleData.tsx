@@ -1,43 +1,148 @@
-import { ProductsSold } from "../../interfaces/products-sold";
+import { useEffect, useState } from "react";
 import { Input } from "./Input";
+import { useSearchParams } from "react-router-dom";
+import { useCartProducts } from "../../Context/CartProductsContext";
 
-interface SaleDataProps {
-  productFocus: ProductsSold | undefined;
-  total: number;
+interface ChangeProps {
+  input?: string;
+  value?: string;
 }
 
-export const SaleData = ({ productFocus, total }: SaleDataProps) => {
+export const SaleData = () => {
+  const { productsInCart, productFocus, setProductFocus, total } =
+    useCartProducts();
+  const [, setSearchParams] = useSearchParams();
+  const [quantity, setQuantity] = useState("");
+  const [price, setPrice] = useState("");
+
+  const totalItem = Number(quantity) * Number(price);
+
+  useEffect(() => {
+    setSearchParams((state) => {
+      if (productFocus) {
+        setQuantity(productFocus.quantity.toString());
+        setPrice(productFocus.price.toString());
+
+        state.set("Quantity", productFocus.quantity.toString());
+        state.set("Price", productFocus.price.toString());
+        state.set("TotalItem", productFocus.total.toString());
+      } else {
+        setPrice("0");
+        setQuantity("0");
+
+        state.delete("Quantity");
+        state.delete("Price");
+        state.delete("TotalItem");
+      }
+      return state;
+    });
+    //eslint-disable-next-line
+  }, [productFocus]);
+
+  const handleChangeParams = ({ input, value }: ChangeProps) => {
+    setSearchParams((state) => {
+      if (input === "quantity" && value && value.length >= 1) {
+        state.set("Quantity", value);
+        state.set("TotalItem", totalItem.toString());
+      } else if (value && value.length < 1 && !productFocus) {
+        state.delete("Quantity");
+        state.delete("TotalItem");
+      }
+
+      if (input === "price" && value && value.length >= 1) {
+        state.set("Price", value);
+        state.set("TotalItem", totalItem.toString());
+      } else if (value && value.length < 1 && !productFocus) {
+        state.delete("Price");
+        state.delete("TotalItem");
+      }
+      if (input === "end") {
+        state.set("Finalize", "true");
+      } else {
+        state.delete("Finalize");
+      }
+
+      return state;
+    });
+  };
+
+  const handleFinishSale = () => {
+    setProductFocus(undefined);
+
+    setSearchParams((state) => {
+      state.delete("Quantity");
+      state.delete("Price");
+      state.delete("TotalItem");
+      return state;
+    });
+
+    handleChangeParams({ input: "end" });
+  };
+
   return (
-    <form className="flex justify-between w-full pt-10">
-      <Input defaultValue={productFocus?.quantity} type="number">
+    <form className="flex gap-4 w-full pt-10 h-[120px] items-center">
+      <Input
+        value={quantity}
+        onChange={(e) => {
+          {
+            handleChangeParams({ input: "quantity", value: e.target.value });
+            setQuantity(e.target.value);
+          }
+        }}
+        type="number"
+      >
         Quantidade
       </Input>
 
-      <Input defaultValue={productFocus?.price} type="text">
+      <Input
+        value={price}
+        onChange={(e) => {
+          {
+            handleChangeParams({ input: "price", value: e.target.value });
+            setPrice(e.target.value);
+          }
+        }}
+        type="text"
+      >
         Preço
       </Input>
 
-      <Input defaultValue={productFocus?.total} type="text">
-        Total item
-      </Input>
-
-      <div className="transition-all group w-[12%] focus-within:ring-indigo-500 flex ring-1 rounded-lg ring-zinc-500 p-3 relative flex-col">
+      <div className="flex-1 transition-all group w-[12%] hover:ring-indigo-500 focus-within:ring-indigo-500 flex ring-1 rounded-lg ring-zinc-500 p-3 relative flex-col">
         <div className="font-bold rounded-md absolute group-focus-within:text-indigo-500 -top-4 px-2 bg-gray-900">
-          Total
+          Total Item
         </div>
-        <p className="ring-1 ring-zinc-500 p-4 rounded-md">
-          {total.toLocaleString("pt-br", {
-            style: "currency",
-            currency: "BRL",
-          })}
+        <p className="font-bold ring-1 group-hover:ring-indigo-500 ring-zinc-500 w-full p-4 rounded-md">
+          {productFocus
+            ? totalItem.toLocaleString("pt-br", {
+                style: "currency",
+                currency: "BRL",
+              })
+            : 0}
         </p>
       </div>
 
-      <div className="flex items-center p-3">
-        <button className="focus:outline-none focus:ring-indigo-700 focus:text-indigo-700 p-4 rounded-md ring-1 ring-zinc-500 hover:text-indigo-700 hover:ring-indigo-700 font-bold">
-          Finalizar venda
-        </button>
+      <div className="flex-1 transition-all group w-[12%] hover:ring-indigo-500 focus-within:ring-indigo-500 flex ring-1 rounded-lg ring-zinc-500 p-3 relative flex-col">
+        <div className="font-bold rounded-md absolute group-focus-within:text-indigo-500 -top-4 px-2 bg-gray-900">
+          Total
+        </div>
+        <p className="font-bold ring-1 group-hover:ring-indigo-500 ring-zinc-500 w-full p-4 rounded-md">
+          {productFocus
+            ? total.toLocaleString("pt-br", {
+                style: "currency",
+                currency: "BRL",
+              })
+            : 0}
+        </p>
       </div>
+
+      <button
+        type="button"
+        disabled={productsInCart.length > 0 ? false : true}
+        onClick={handleFinishSale}
+        className="disabled:hover:ring-zinc-500 disabled:hover:text-zinc-200 flex flex-1 items-center justify-center p-3 h-16 focus:outline-none focus:ring-indigo-700 focus:text-indigo-700 rounded-md ring-1 ring-zinc-500 hover:text-indigo-700 hover:ring-indigo-700 font-bold transition-all"
+      >
+        Finalizar venda
+      </button>
     </form>
   );
 };
