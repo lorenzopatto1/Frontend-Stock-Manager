@@ -6,7 +6,7 @@ import { ProductsSold } from "../interfaces/products-sold";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useSearchParams } from "react-router-dom";
 import { useCartProducts } from "../Context/CartProductsContext";
-import Payment from "../Components/Payment";
+import Payment from "../Components/Payment/Payment";
 
 export const CashRegister = () => {
   const [searchParams] = useSearchParams();

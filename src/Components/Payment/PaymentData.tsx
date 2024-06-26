@@ -4,12 +4,14 @@ import { useCartProducts } from "../../Context/CartProductsContext";
 import PaymentOptions from "./PaymentOptions";
 
 interface PaymentDataProps {
-  secondPayment: string[]
+  secondPayment: string[];
 }
 
 export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
   const [amountPayd, setAmountPayd] = useState("");
-  const [secondOption, setSecondOption] = useState("Escolha a forma de pagamento");
+  const [secondOption, setSecondOption] = useState(
+    "Escolha a forma de pagamento"
+  );
   const { total } = useCartProducts();
 
   const cashChange = total - Number(amountPayd.replace(",", "."));
@@ -38,8 +40,14 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
                 </span>
               </p>
               <div>
-              <p className="text-xl text-zinc-300 mt-4 font-normal">Como será pago o restante?</p>
-                <PaymentOptions selected={secondOption} setSelected={setSecondOption} paymentOptions={secondPayment} />
+                <p className="text-xl text-zinc-300 mt-4 font-normal">
+                  Como será pago o restante?
+                </p>
+                <PaymentOptions
+                  selected={secondOption}
+                  setSelected={setSecondOption}
+                  paymentOptions={secondPayment}
+                />
               </div>
             </div>
           ) : (

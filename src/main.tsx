@@ -8,10 +8,10 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Dashboard from './routes/Dashboard.tsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import Logs from './routes/Logs.tsx'
+import { Log } from './routes/Log.tsx'
 import { Login } from './routes/Login.tsx'
 import { CashRegister } from './routes/CashRegister.tsx'
-import Payment from './Components/Payment.tsx';
+import Payment from './Components/Payment/Payment.tsx';
 import { CartProductsProvider } from './Context/CartProductsContext.tsx';
 
 const router = createBrowserRouter([
@@ -28,8 +28,8 @@ const router = createBrowserRouter([
     element: <Dashboard />
   },
   {
-    path: "/logs",
-    element: <Logs />
+    path: "/log",
+    element: <Log />
   },
   {
     path: "/cash-register",

@@ -19,7 +19,7 @@ export const navigation = [
     icon: <DocumentDuplicateIcon className="w-6" />,
     activeIcon: <DocumentDuplicateSolidIcon className="w-6" />,
     name: "Relatórios",
-    href: "/logs",
+    href: "/log",
     current: false,
   },
 ];

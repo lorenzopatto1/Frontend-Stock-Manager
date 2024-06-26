@@ -1,7 +1,7 @@
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { useCartProducts } from "../Context/CartProductsContext";
+import { useCartProducts } from "../../Context/CartProductsContext";
 import { useEffect, useState } from "react";
-import PaymentOptions from "./Payment/PaymentOptions";
+import PaymentOptions from "./PaymentOptions";
 import {
   Dialog,
   DialogPanel,
@@ -9,21 +9,21 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { PaymentData } from "./Payment/PaymentData";
-import { Button } from "./Button";
+import { PaymentData } from "./PaymentData";
+import { Button } from "../Button";
 
 const paymentOptions = [
   "Escolha a forma de pagamento",
   "Dinheiro",
   "Débito",
   "Crédito",
-  "Pix"
-]
+  "Pix",
+];
 
 const Payment = () => {
   const { total } = useCartProducts();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [selected, setSelected] = useState(paymentOptions[0]);
+  const [firstPaymentOption, setFirstPaymentOption] = useState(paymentOptions[0]);
   const navigate = useNavigate();
 
   const finalize = searchParams.get("Finalize");
@@ -85,8 +85,20 @@ const Payment = () => {
                       <h2 className="text-xl text-zinc-300 mt-10">
                         Escolha a forma de pagamento:
                       </h2>
-                      <PaymentOptions selected={selected} setSelected={setSelected} paymentOptions={paymentOptions} />
-                      {paymentOptions[0] !== selected && <PaymentData secondPayment={paymentOptions.filter(option => option !== selected)} />}
+                      <PaymentOptions
+                        selected={firstPaymentOption}
+                        setSelected={setFirstPaymentOption}
+                        paymentOptions={paymentOptions}
+                      />
+
+                      {paymentOptions[0] !== firstPaymentOption && (
+                        <PaymentData
+                          secondPayment={paymentOptions.filter(
+                            (option) => option !== firstPaymentOption
+                          )}
+                        />
+                      )}
+
                     </div>
                   </div>
                 </div>
