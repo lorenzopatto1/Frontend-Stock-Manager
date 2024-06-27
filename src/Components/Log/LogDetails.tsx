@@ -1,9 +1,16 @@
 import { useLogData } from "../../hooks/useLogData";
+import { LogFilter } from "./LogFilter";
+import { useShowPayments } from "../../hooks/useShowPayments";
+import { useAggregateProducts } from "../../hooks/useAggregateProducts";
 
 export const LogDetails = () => {
+  const values = useShowPayments();
+
+  const { aggregateProducts } = useAggregateProducts();
+
   const { data: logs } = useLogData();
 
-  const today = new Date().toLocaleDateString("pt-br");
+  const tratedProducts = aggregateProducts();
 
   const cashFormat = (value: number) => {
     return value.toLocaleString("pt-br", {
@@ -11,82 +18,34 @@ export const LogDetails = () => {
       currency: "BRL",
     });
   };
-  console.log(logs);
 
   if (logs) {
-    const sumPayments = (paymentType: string) => {
-      return logs?.reduce((acc, log) => {
-        if (
-          log.firstPayment === paymentType &&
-          new Date(log.saleDate).toLocaleDateString("pt-br") === today
-        ) {
-          acc += log.firstAmountPaid;
-        }
-        if (
-          log.secondPayment === paymentType &&
-          log.secondAmountPaid &&
-          new Date(log.saleDate).toLocaleDateString("pt-br") === today
-        ) {
-          acc += log.secondAmountPaid;
-        }
-        return acc;
-      }, 0);
-    };
-
-    const cashTotal = sumPayments("Dinheiro");
-    const debitTotal = sumPayments("Débito");
-    const creditTotal = sumPayments("Crédito");
-    const pixTotal = sumPayments("Pix");
-    const totalValue = logs
-      .filter(
-        (log) => new Date(log.saleDate).toLocaleDateString("pt-br") === today
-      )
-      .reduce((acc, log) => (acc += log.totalValue), 0);
-
     return (
-      <div className="flex flex-col gap-4 w-screen">
-        <div>Filtrar pelo dia: {today}</div>
-        <div className="flex w-[80%] justify-between mt-4">
-          <h3 className="text-2xl font-bold text-green-400">
-            Ganhos: {cashFormat(totalValue)}
-          </h3>
-          <h3 className="text-2xl font-bold text-green-400">
-            Dinheiro: {cashFormat(cashTotal)}
-          </h3>
-          <h3 className="text-2xl font-bold text-green-400">
-            Débito: {cashFormat(debitTotal)}
-          </h3>
-          <h3 className="text-2xl font-bold text-green-400">
-            Crédito: {cashFormat(creditTotal)}
-          </h3>
-          <h3 className="text-2xl font-bold text-green-400">
-            Pix: {cashFormat(pixTotal)}
-          </h3>
+      <div className="flex flex-col gap-4 w-full">
+        <LogFilter />
+        <div className="flex w-full gap-2 sm:justify-center sm:text-sm md:text-base lg:text-2xl font-bold text-green-400 flex-wrap md:flex-row text-nowrap md:justify-between mt-4">
+          {values.map(([key, value]) => (
+            <h3 key={key}>
+              {key}: {cashFormat(value)}
+            </h3>
+          ))}
         </div>
-        <div className="gap-4 flex-col flex p-12 rounded-md w-[80vw] bg-gray-950 h-[80vh]">
+        <div className="gap-4 flex-col flex p-2 md:p-12 lg:p-12 rounded-md w-full bg-gray-950 h-[80vh]">
           <div>
             <table className="table-fixed w-full text-nowrap divide-y divide-gray-700">
               <thead className="sticky top-0 z-10 bg-gray-800">
-                <tr>
+                <tr className="sm:text-sm md:text-base text-xs">
                   <th>Produto</th>
                   <th>Quantidade Vendida</th>
                 </tr>
               </thead>
               <tbody className="bg-gray-900 text-nowrap divide-y divide-gray-700">
-                {logs
-                  .filter(
-                    (log) =>
-                      new Date(log.saleDate).toLocaleDateString("pt-br") ===
-                      today
-                  )
-                  .map((log) =>
-                    log.products.map((product) => (
-                      <tr key={product.id}>
-                        <td>{product.name}</td>
-                        <td>{product.quantity}</td>
-                      </tr>
-                    ))
-                  )}
+                {tratedProducts.map((log) => (
+                  <tr key={log.id}>
+                    <td>{log.name}</td>
+                    <td>{log.quantity}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
