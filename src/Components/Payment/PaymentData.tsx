@@ -8,11 +8,11 @@ interface PaymentDataProps {
 }
 
 export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
-  const [amountPayd, setAmountPayd] = useState("");
+  const { total } = useCartProducts();
+  const [amountPayd, setAmountPayd] = useState(total.toString());
   const [secondOption, setSecondOption] = useState(
     "Escolha a forma de pagamento"
   );
-  const { total } = useCartProducts();
 
   const cashChange = total - Number(amountPayd.replace(",", "."));
 
@@ -40,7 +40,7 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
                 </span>
               </p>
               <div>
-                <p className="text-xl text-zinc-300 mt-4 font-normal">
+                <p className="text-xl text-zinc-300 font-normal">
                   Como será pago o restante?
                 </p>
                 <PaymentOptions
@@ -51,7 +51,7 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
               </div>
             </div>
           ) : (
-            cashChange < 0 && (
+            cashChange < 0 ? (
               <p className="text-lg mt-2 font-bold">
                 Troco a ser devolvido:{" "}
                 <span className="text-orange-700">
@@ -61,6 +61,8 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
                   })}
                 </span>
               </p>
+            ) : (
+              <p>Tudo certo! você pode finalizar a venda</p>
             )
           )}
         </>

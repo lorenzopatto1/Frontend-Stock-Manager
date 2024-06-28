@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 html {
-  @apply h-full;
+  @apply max-h-screen;
 };
 
 body {
-  @apply max-h-screen bg-white;
+  @apply max-h-full bg-white;
   @apply bg-gray-900 text-zinc-100;
   overflow: hidden;
   height: 100vh;

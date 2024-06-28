@@ -5,18 +5,16 @@ export const useFilteredLogs = () => {
   const { data: logs } = useLogData();
   const [searchParams] = useSearchParams();
   
-  const filter = searchParams.get("Filter")
-  
-  const today = new Date().toLocaleDateString("pt-br");
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
+  const date = searchParams.get("Data")
+  const minDate = searchParams.get("dataMinima")
+  const maxDate = searchParams.get("dataMaxima")
   
   const filteredLogs = logs?.filter((log) => {
     const logDate = new Date(log.saleDate).toLocaleDateString("pt-BR");
-    return filter === "Hoje"
-      ? logDate === today
-      : logDate === yesterday.toLocaleDateString("pt-br");
+    return date
+      ? logDate === date
+      : minDate && maxDate && logDate >= minDate && logDate <= maxDate;
   }) || [];
   
-  return { filteredLogs, today, yesterday }
+  return { filteredLogs }
 }

@@ -22,7 +22,9 @@ export const LogDetails = () => {
   if (logs) {
     return (
       <div className="flex flex-col gap-4 w-full">
-        <LogFilter />
+        <div>
+          <LogFilter />
+        </div>
         <div className="flex w-full gap-2 sm:justify-center sm:text-sm md:text-base lg:text-2xl font-bold text-green-400 flex-wrap md:flex-row text-nowrap md:justify-between mt-4">
           {values.map(([key, value]) => (
             <h3 key={key}>

@@ -19,13 +19,14 @@ export const useShowPayments = () => {
   const creditTotal = sumPayments("Crédito");
   const pixTotal = sumPayments("Pix");
   const totalValue =
-    filteredLogs?.reduce((acc, log) => (acc += log.totalValue), 0) ?? 0;
+    filteredLogs?.reduce((acc, log) => (log.secondAmountPaid ? acc += log.firstAmountPaid + log.secondAmountPaid : acc += log.firstAmountPaid), 0) ?? 0;
+
 
   return Object.entries({
-    Ganhos: cashTotal,
-    Dinheiro: debitTotal,
-    Débito: creditTotal,
-    Crédito: pixTotal,
-    Pix: totalValue,
+    Ganhos: totalValue,
+    Dinheiro: cashTotal,
+    Débito: debitTotal,
+    Crédito: creditTotal,
+    Pix: pixTotal
   });
 };

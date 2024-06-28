@@ -5,8 +5,8 @@ export const Table = () => {
   return (
     <>
       <Filters />
-      <div className="flex overflow-y-auto h-[calc(49px * 12)] items-start justify-center">
-        <table className="table-fixed text-nowrap divide-y divide-gray-700 max-w-full">
+      <div className="flex overflow-y-auto overflow-x-hidden items-start justify-center">
+        <table className="table-fixed text-nowrap divide-y divide-gray-700 w-full">
           <thead className="sticky top-0 z-10 text-sm bg-gray-900">
             <tr>
               <th>Categoria</th>

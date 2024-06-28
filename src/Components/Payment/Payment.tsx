@@ -44,7 +44,7 @@ const Payment = () => {
 
   return (
     <Transition show={!!finalize}>
-      <Dialog className="relative z-9999" onClose={handleClose}>
+      <Dialog className="relative" onClose={handleClose}>
         <TransitionChild
           enter="ease-out duration-300"
           enterFrom="opacity-0"
@@ -57,7 +57,7 @@ const Payment = () => {
         </TransitionChild>
 
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center text-center sm:items-center sm:p-0 ">
+          <div className="flex min-h-full items-center justify-center text-center sm:p-0 ">
             <TransitionChild
               enter="ease-out duration-300"
               enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -66,12 +66,12 @@ const Payment = () => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <DialogPanel className="relative w-[70%] min-h-[70vh] flex flex-col items-center p-4 transform overflow-hidden rounded-lg bg-gray-950 text-left shadow-xl transition-all">
+              <DialogPanel className="relative max-w-[60%] min-h-[80vh] flex flex-col items-center p-4 transform overflow-hidden rounded-lg bg-gray-950 text-left shadow-xl transition-all">
                 <div className="bg-gray-950 px-4 flex-1 pb-4 pt-5 sm:p-6 sm:pb-4">
                   <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                     <DialogTitle
                       as="h3"
-                      className="text-3xl font-semibold leading-6"
+                      className="md:text-2xl lg:text-3xl text-base text-nowrap font-semibold leading-6"
                     >
                       Total da compra:{" "}
                       <span className="text-green-700">
@@ -82,7 +82,7 @@ const Payment = () => {
                       </span>
                     </DialogTitle>
                     <div>
-                      <h2 className="text-xl text-zinc-300 mt-10">
+                      <h2 className="text-sm sm:text-base md:text-xl lg:text-2xl text-nowrap text-zinc-300 mt-10">
                         Escolha a forma de pagamento:
                       </h2>
                       <PaymentOptions

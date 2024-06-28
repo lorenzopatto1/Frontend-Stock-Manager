@@ -27,7 +27,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="h-screen">
+    <div className="flex flex-col h-full">
       <Nav />
           <TotalCostAndSalePrices />
       <header className="bg-gray-800 shadow flex items-center max-h-12 py-1 justify-between">
@@ -46,9 +46,9 @@ const Dashboard = () => {
           </h1>
         </button>
       </header>
-      <main className="my-8">
+      <main className="flex-1 h-full py-6">
         
-        <div className="mx-auto max-w-7xl h-full min-h-full p-4 flex flex-col gap-6 bg-[#00081d] rounded-[2rem] sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl h-[80%] p-4 flex flex-col gap-6 bg-[#00081d] rounded-[2rem] sm:px-6 lg:px-8">
           <Table />
           <NewProductModal
             open={openNewProductModal}
