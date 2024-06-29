@@ -69,6 +69,11 @@ export const SaleData = () => {
   const handleFinishSale = () => {
     setProductFocus(undefined);
 
+    // setSale(prevState => ({
+    //   ...prevState,
+    //   products: productsInCart
+    // }))
+
     setSearchParams((state) => {
       state.delete("Quantity");
       state.delete("Price");
@@ -107,11 +112,11 @@ export const SaleData = () => {
         Preço
       </Input>
 
-      <div className="flex-1 transition-all group w-[12%] hover:ring-indigo-500 focus-within:ring-indigo-500 flex ring-1 rounded-lg ring-zinc-500 p-3 relative flex-col">
-        <div className="font-bold rounded-md absolute group-focus-within:text-indigo-500 -top-4 px-2 bg-gray-900">
+      <div className="flex-1 transition-all text-xs md:text-sm lg:text-base p-3 group w-[12%] hover:ring-indigo-500 focus-within:ring-indigo-500 flex ring-1 rounded-lg ring-zinc-500 relative flex-col">
+        <div className="font-bold rounded-md text-nowrap absolute group-focus-within:text-indigo-500 -top-4 px-1 md:px-2 bg-gray-900">
           Total Item
         </div>
-        <p className="font-bold ring-1 group-hover:ring-indigo-500 ring-zinc-500 w-full p-4 rounded-md">
+        <p className="font-bold ring-1  group-hover:ring-indigo-500 ring-zinc-500 w-full text-center py-4 md:text-start md:p-4 rounded-md">
           {productFocus
             ? totalItem.toLocaleString("pt-br", {
                 style: "currency",
@@ -121,11 +126,11 @@ export const SaleData = () => {
         </p>
       </div>
 
-      <div className="flex-1 transition-all group w-[12%] hover:ring-indigo-500 focus-within:ring-indigo-500 flex ring-1 rounded-lg ring-zinc-500 p-3 relative flex-col">
-        <div className="font-bold rounded-md absolute group-focus-within:text-indigo-500 -top-4 px-2 bg-gray-900">
+      <div className="flex-1 transition-all text-xs md:text-sm lg:text-base group w-[12%] hover:ring-indigo-500 focus-within:ring-indigo-500 flex ring-1 rounded-lg ring-zinc-500 p-3 relative flex-col">
+        <div className="font-bold rounded-md absolute text-nowrap group-focus-within:text-indigo-500 -top-4 px-2 bg-gray-900">
           Total
         </div>
-        <p className="font-bold ring-1 group-hover:ring-indigo-500 ring-zinc-500 w-full p-4 rounded-md">
+        <p className="font-bold ring-1  group-hover:ring-indigo-500 ring-zinc-500 w-full text-center py-4 md:text-start md:p-4 rounded-md">
           {productFocus
             ? total.toLocaleString("pt-br", {
                 style: "currency",
@@ -139,7 +144,7 @@ export const SaleData = () => {
         type="button"
         disabled={productsInCart.length > 0 ? false : true}
         onClick={handleFinishSale}
-        className="disabled:hover:ring-zinc-500 disabled:hover:text-zinc-200 flex flex-1 items-center justify-center p-3 h-16 focus:outline-none focus:ring-indigo-700 focus:text-indigo-700 rounded-md ring-1 ring-zinc-500 hover:text-indigo-700 hover:ring-indigo-700 font-bold transition-all"
+        className="disabled:hover:ring-zinc-500 text-xs md:text-sm lg:text-base disabled:hover:text-zinc-200 flex flex-1 items-center justify-center py-3 md:p-3 text-nowrap h-16 focus:outline-none focus:ring-indigo-700 focus:text-indigo-700 rounded-md ring-1 ring-zinc-500 hover:text-indigo-700 hover:ring-indigo-700 font-bold transition-all"
       >
         Finalizar venda
       </button>

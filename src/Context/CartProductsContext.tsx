@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useContext, useState } from "react";
-import { ProductsSold } from "../interfaces/products-sold";
+import { ProductsSold, SaleRelatory } from "../interfaces/products-sold";
 import { ProductData } from "../interfaces/product-data";
 
 interface CartProductsProviderProps {
@@ -7,6 +7,8 @@ interface CartProductsProviderProps {
 }
 
 type CartProductsContextProps = {
+  sale: SaleRelatory | undefined
+  setSale: React.Dispatch<React.SetStateAction<SaleRelatory | undefined>>
   productsInCart: ProductsSold[]
   setProductsInCart: React.Dispatch<React.SetStateAction<ProductsSold[]>>
   productFocus: ProductsSold | undefined
@@ -24,24 +26,18 @@ export function CartProductsProvider({ children }: CartProductsProviderProps) {
   const [productsInCart, setProductsInCart] = useState<ProductsSold[]>([]);
   const [productFocus, setProductFocus] = useState<ProductsSold>();
   const [productSearch, setProductSearch] = useState('');
+  const [sale, setSale] = useState<SaleRelatory>();
 
   const total = productsInCart.reduce((acc, product) => acc += product.total, 0);
 
   const handleSelectProduct = (productData: ProductData) => {
     const quantity = 1;
     const productAlreadyInCart = productsInCart && productsInCart.find(product => product.id === productData.id)
-
-    if (productAlreadyInCart) 
-      {
-        productAlreadyInCart.quantity += 1;
-        productAlreadyInCart.total = productData.wholesaleMinimalQuantity && productData.wholesaleUnityPrice && productAlreadyInCart.quantity >= productData.wholesaleMinimalQuantity ? productData.wholesaleUnityPrice * productAlreadyInCart.quantity : productData.salePrice * productAlreadyInCart.quantity
-      }
-    else 
-      setProductsInCart(prevState => [...prevState, data]);
     
     const data: ProductsSold = {
       ...productAlreadyInCart,
-      id: productData.id!,
+      id: productData.id,
+      productId: productData.id,
       name: productData.name,
       price: productData.salePrice,
       wholesalePrice: productData.wholesaleUnityPrice ?? null,
@@ -50,8 +46,21 @@ export function CartProductsProvider({ children }: CartProductsProviderProps) {
       total: productData.wholesaleMinimalQuantity && productData.wholesaleUnityPrice && quantity >= productData.wholesaleMinimalQuantity ? productData.wholesaleUnityPrice * quantity : productData.salePrice * quantity
     }
     
+    if (productAlreadyInCart) 
+      {
+        productAlreadyInCart.quantity += 1;
+        productAlreadyInCart.total = productData.wholesaleMinimalQuantity && productData.wholesaleUnityPrice && productAlreadyInCart.quantity >= productData.wholesaleMinimalQuantity ? productData.wholesaleUnityPrice * productAlreadyInCart.quantity : productData.salePrice * productAlreadyInCart.quantity
+      }
+      else 
+      setProductsInCart(prevState => [...prevState, data]);
+    
+    
     setProductSearch('');
     setProductFocus(data);
+    setSale(prevState => ({
+      ...prevState,
+      products: productsInCart
+    }))
   }
 
   const handleRemoveProductAtCart = () => {
@@ -65,7 +74,7 @@ export function CartProductsProvider({ children }: CartProductsProviderProps) {
   }
 
   return (
-    <CartProductsContext.Provider value={{productsInCart, setProductsInCart, productFocus, setProductFocus, total, handleRemoveProductAtCart, productSearch, setProductSearch, handleSelectProduct}}>
+    <CartProductsContext.Provider value={{sale, setSale, productsInCart, setProductsInCart, productFocus, setProductFocus, total, handleRemoveProductAtCart, productSearch, setProductSearch, handleSelectProduct}}>
       {children}
     </CartProductsContext.Provider>
   )

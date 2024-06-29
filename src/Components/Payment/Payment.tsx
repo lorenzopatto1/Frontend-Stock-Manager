@@ -11,6 +11,7 @@ import {
 } from "@headlessui/react";
 import { PaymentData } from "./PaymentData";
 import { Button } from "../Button";
+import { useUserData } from "../../hooks/useUserData";
 
 const paymentOptions = [
   "Escolha a forma de pagamento",
@@ -21,12 +22,24 @@ const paymentOptions = [
 ];
 
 const Payment = () => {
-  const { total } = useCartProducts();
+  const { data: user } = useUserData();
+  const { sale, setSale, total } = useCartProducts();
   const [searchParams, setSearchParams] = useSearchParams();
   const [firstPaymentOption, setFirstPaymentOption] = useState(paymentOptions[0]);
   const navigate = useNavigate();
 
   const finalize = searchParams.get("Finalize");
+
+  const handleFinishSale = () => {
+    if (user) {
+      setSale(prevState => ({ 
+        ...prevState,
+        userId: user.id,
+        seller: user.fullName
+      }))
+      console.log(sale)
+    }
+  }
 
   const handleClose = () => {
     setSearchParams((state) => {
@@ -66,7 +79,7 @@ const Payment = () => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <DialogPanel className="relative max-w-[60%] min-h-[80vh] flex flex-col items-center p-4 transform overflow-hidden rounded-lg bg-gray-950 text-left shadow-xl transition-all">
+              <DialogPanel className="relative max-w-[60%] lg:w-[60%] min-h-[80vh] flex flex-col items-center p-4 transform overflow-hidden rounded-lg bg-gray-950 text-left shadow-xl transition-all">
                 <div className="bg-gray-950 px-4 flex-1 pb-4 pt-5 sm:p-6 sm:pb-4">
                   <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                     <DialogTitle
@@ -103,7 +116,7 @@ const Payment = () => {
                   </div>
                 </div>
                 <div className="flex gap-4 items-center">
-                  <Button type="button">Finalizar venda</Button>
+                  <Button onClick={handleFinishSale} type="button">Finalizar venda</Button>
                   <Link to="/cash-register">Voltar</Link>
                 </div>
               </DialogPanel>

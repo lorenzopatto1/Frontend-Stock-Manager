@@ -99,7 +99,7 @@ export const Nav = () => {
                 </div>
               </div>
               <div>
-                  <Link className="text-nowrap p-2 rounded-md hover:ring-zinc-200 focus:outline-none focus:ring-indigo-700 hover:bg-indigo-700 ring-1 ring-indigo-500" to="/cash-register">
+                  <Link className="text-nowrap p-2 rounded-md hover:ring-indigo-700 focus:outline-none focus:ring-indigo-700 hover:bg-indigo-700 ring-1 ring-indigo-500" to="/cash-register">
                     Abrir caixa
                   </Link>
               </div>

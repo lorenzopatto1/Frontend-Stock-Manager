@@ -35,6 +35,7 @@ export const CashRegister = () => {
       productsInCart.find((product) => product.id === productFocus?.id);
     const quantity = Number(searchParams.get("Quantity"));
     const price = Number(searchParams.get("Price"));
+
     if (editedProduct) {
       const edit: ProductsSold = {
         ...editedProduct,
@@ -69,10 +70,10 @@ export const CashRegister = () => {
   return (
     <>
       <div
-        className="relative flex py-12 px-[15%] h-full flex-col w-screen items-center"
+        className="relative flex py-12 px-[5%] md:px-[15%] h-full flex-col w-screen items-center"
         onClick={() => searchProductModal && setSearchProductModal(false)}
       >
-        <Link className="absolute top-4 left-4 p-3 ring-1 ring-indigo-500 rounded-md hover:bg-indigo-500 hover:text-white transition-all" onClick={() => setProductFocus(undefined)} to="/home">Fechar caixa</Link>
+        <Link className="absolute top-4 left-4 p-[1%] text-xs md:text-base sm:p-2 ring-1 ring-indigo-500 rounded-md hover:bg-indigo-500 hover:text-white transition-all" onClick={() => {setProductFocus(undefined); setProductsInCart([])}} to="/home">Fechar caixa</Link>
         <ToastContainer theme="dark" limit={1} position="top-center" />
         <input
           className="bg-transparent p-2 rounded-md ring-1 focus:ring-indigo-500 ring-zinc-500 w-[50%]"
@@ -85,7 +86,7 @@ export const CashRegister = () => {
           onChange={(e) => setProductSearch(e.target.value)}
         />
         {searchProductModal && productSearch && (
-          <div className="fixed rounded-md flex-col top-24 z-10 w-[35%] flex justify-center bg-gray-700 p-2">
+          <div className="fixed rounded-md flex-col top-24 z-50 w-[81%] md:w-[35%] flex justify-center bg-gray-700 p-2">
             {hasProduct ? (
               data
                 ?.filter((product) =>
@@ -107,7 +108,7 @@ export const CashRegister = () => {
             )}
           </div>
         )}
-        <div className="flex mt-4 flex-1 w-full bg-[#00081d] rounded-md p-2 overflow-y-auto items-start justify-center">
+        <div className="flex mt-4 flex-1 bg-[#00081d] rounded-md p-2 overflow-y-auto items-start justify-center">
           <Table />
         </div>
         <SaleData />

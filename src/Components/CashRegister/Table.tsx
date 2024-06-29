@@ -14,8 +14,8 @@ export const Table = () => {
   };
 
   return (
-    <table className="table-fixed text-nowrap divide-y divide-gray-700 w-full">
-      <thead className="sticky top-0 z-9 text-sm bg-gray-800">
+    <table className="table-fixed text-xs md:text-sm lg:text-base text-nowrap divide-y divide-gray-700 w-full">
+      <thead className="sticky top-0 z-9 bg-gray-800">
         <tr>
           <th>Nome</th>
           <th>Quantidade</th>
@@ -35,10 +35,10 @@ export const Table = () => {
         {productsInCart ? (
           productsInCart.map((product) => (
             <tr
-              key={product.id}
+              key={product.productId}
               className={`${
                 productFocus?.id === product.id && "!bg-indigo-600 "
-              } hover:bg-indigo-900 relative`}
+              } hover:bg-indigo-900 relative transition-all cursor-pointer`}
               onClick={() => handleSelect(product)}
             >
               <td>{product.name}</td>

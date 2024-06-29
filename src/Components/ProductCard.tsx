@@ -52,7 +52,7 @@ export const ProductCard = () => {
   if (isSuccess && productData) {
     return (
       <>
-        {productData.filter(product => productName !== null ? product.name.includes(productName) : product.name).filter(product => productCategory !== null ? productCategory === product.group : product.group).map((product) => (
+        {productData.filter(product => productName !== null ? product.name.toLowerCase().includes(productName.toLowerCase()) : product.name).filter(product => productCategory !== null ? productCategory === product.group : product.group).map((product) => (
               <tr className="w-full" key={product.id}>
                 <td>{product.group}</td>
                 <td>{product.name}</td>

@@ -21,6 +21,19 @@ input {
   outline: none;
 }
 
+input[type="checkbox"] {
+  @apply flex items-center appearance-none justify-center;
+}
+
+input[type="checkbox"]:checked::before {
+  content: '✓';
+  @apply text-zinc-200 text-sm;
+}
+
+input[type="checkbox"]:checked {
+  @apply  appearance-none ring-1;
+}
+
 input[type=number]::-webkit-inner-spin-button { 
   -webkit-appearance: none;
   
