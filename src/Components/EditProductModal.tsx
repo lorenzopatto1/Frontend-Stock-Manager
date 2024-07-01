@@ -17,6 +17,7 @@ import { productFormSchema } from "../Schema/ProductFormSchema";
 import { useCategorysData } from "../hooks/useCategoryData";
 import { useEffect } from "react";
 import { inputsProps } from "../Data/productFormProps";
+import { toast } from "sonner";
 interface INewProductModal {
   open: boolean;
   handleClose: () => void;
@@ -30,7 +31,7 @@ export const EditProductModal = ({
 }: INewProductModal) => {
   const { data, isSuccess: dataSuccess, refetch } = useProductsByIdData(id);
   const { data: categorys } = useCategorysData();
-  const { mutate } = useProductEditMutate();
+  const { mutate, isError: mutateError } = useProductEditMutate();
   const {
     register,
     handleSubmit,
@@ -65,6 +66,10 @@ export const EditProductModal = ({
 
     mutate(dataMutate);
 
+    !mutateError
+    ? toast.success("Produto editado!")
+    : toast.error("Falha ao editar produto")
+
     handleClose();
     reset();
   };
@@ -91,7 +96,7 @@ export const EditProductModal = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <div className="fixed inset-0 bg-gray-500 dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 transition-opacity" />
           </TransitionChild>
 
           <div className="fixed inset-0 overflow-hidden">
@@ -117,7 +122,7 @@ export const EditProductModal = ({
                       <div className="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 sm:-ml-10 sm:pr-4">
                         <button
                           type="button"
-                          className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                          className="relative rounded-md dark:text-gray-300 hover:text-gray-700 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
                           onClick={handleClose}
                         >
                           <span className="absolute -inset-2.5" />
@@ -126,9 +131,9 @@ export const EditProductModal = ({
                         </button>
                       </div>
                     </TransitionChild>
-                    <div className="flex h-full flex-col overflow-y-scroll bg-gray-800 py-6 shadow-xl">
+                    <div className="flex h-full flex-col overflow-y-scroll bg-white dark:bg-gray-800 py-6 shadow-xl">
                       <div className="px-4 sm:px-6">
-                        <DialogTitle className="text-base font-semibold leading-6">
+                        <DialogTitle className="text-xl font-bold leading-6">
                           Editar produto: {data?.name}
                         </DialogTitle>
                       </div>

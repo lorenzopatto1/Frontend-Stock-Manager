@@ -32,7 +32,7 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
   return (
     <>
       <Input
-        className="block w-full rounded-md bg-[#09090A] p-4 border-0 py-1.5 shadow-sm ring-1 ring-inset ring-zinc-500 placeholder:text-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 hover:ring-indigo-600 sm:text-sm sm:leading-6 selection:bg-indigo-600"
+        className="block w-full rounded-md dark:bg-[#09090A] p-4 border-0 py-1.5 shadow-sm ring-2 ring-inset ring-zinc-500 placeholder:text-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 hover:ring-indigo-600 sm:text-sm sm:leading-6 selection:bg-indigo-600"
         value={amountPayd}
         onChange={(e) => setAmountPayd(e.target.value)}
         type="text"
@@ -42,7 +42,7 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
       {amountPayd !== "" && (
         <>
           {cashChange > 0 ? (
-            <div className="flex flex-col mt-2 gap-4 text-zinc-200 font-bold">
+            <div className="flex flex-col mt-2 gap-4 dark:text-zinc-200 font-bold">
               <p className="text-lg">
                 Ainda falta ser pago:{" "}
                 <span className="text-red-700">
@@ -66,17 +66,17 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
           ) : cashChange < 0 ? (
             <p className="text-lg flex-1 flex-col justify-center mt-16 flex gap-1 font-bold">
 
-                <span className="text-zinc-400 text-center text-xs">*Deixe desmarcado caso fique como gorjeta*</span>
+                <span className="text-zinc-600 dark:text-zinc-400 text-center text-xs">*Deixe desmarcado caso fique como gorjeta*</span>
 
               <div className="flex justify-center items-center gap-2">
                 <span>Troco a ser devolvido:</span>
-                <span className="text-orange-700">
+                <span className="text-orange-600 dark:text-orange-700">
                   {(cashChange * -1).toLocaleString("pt-br", {
                     style: "currency",
                     currency: "BRL",
                   })}
                 </span>
-                <input className="w-6 h-6 cursor-pointer appearance-none checked:appearance-auto ring-zinc-200 ring-1 checked:ring-0 bg-gray-600 rounded-md text-red-500" checked={changeCheck} onChange={(e) => setChangeCheck(e.target.checked)} type="checkbox" />
+                <input className="w-6 h-6 cursor-pointer appearance-none checked:appearance-auto ring-zinc-200 ring-1 checked:ring-0 bg-black dark:bg-gray-600 rounded-md text-red-500" checked={changeCheck} onChange={(e) => setChangeCheck(e.target.checked)} type="checkbox" />
               </div>
             </p>
           ) : (

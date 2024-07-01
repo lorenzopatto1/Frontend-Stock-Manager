@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 import Cookies from "js-cookie";
@@ -50,11 +50,11 @@ export const Login = () => {
 
   const handleSignIn: SubmitHandler<SignInFormData> = async (userLogin) => {
     mutate(userLogin);
+    toast.success("Usuário logado!")
   };
 
   return (
     <div className="flex min-h-full flex-1 flex-col items-center justify-center px-6 py-12 lg:px-8">
-       <ToastContainer theme="dark" limit={1} position="top-center" />
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           className="mx-auto h-10 w-auto"

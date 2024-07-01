@@ -14,6 +14,9 @@ import { CashRegister } from './routes/CashRegister.tsx'
 import Payment from './Components/Payment/Payment.tsx';
 import { CartProductsProvider } from './Context/CartProductsContext.tsx';
 
+import { Toaster } from "../@/components/ui/sonner.tsx"
+import { ThemeProvider } from './Context/ThemeContext.tsx';
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -47,7 +50,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={client}>
       <CartProductsProvider>
-        <RouterProvider router={router} />
+        <ThemeProvider defaultTheme="system" storageKey="stock-manager-theme">
+          <RouterProvider router={router} />
+        </ThemeProvider>
+        <Toaster richColors />
       </CartProductsProvider>
     </QueryClientProvider>
   </React.StrictMode>,

@@ -32,11 +32,10 @@ export function CartProductsProvider({ children }: CartProductsProviderProps) {
 
   const handleSelectProduct = (productData: ProductData) => {
     const quantity = 1;
-    const productAlreadyInCart = productsInCart && productsInCart.find(product => product.id === productData.id)
+    const productAlreadyInCart = productsInCart && productsInCart.find(product => product.productId === productData.id)
     
     const data: ProductsSold = {
       ...productAlreadyInCart,
-      id: productData.id,
       productId: productData.id,
       name: productData.name,
       price: productData.salePrice,
@@ -57,12 +56,7 @@ export function CartProductsProvider({ children }: CartProductsProviderProps) {
     
     setProductSearch('');
     setProductFocus(data);
-    setSale(prevState => ({
-      ...prevState,
-      products: productsInCart
-    }))
   }
-
   const handleRemoveProductAtCart = () => {
     if (productFocus) {
       setProductsInCart(prevState => [

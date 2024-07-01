@@ -81,9 +81,9 @@ export const LogFilter = () => {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <ListboxOptions className="absolute top-16 z-20 overflow-auto rounded-md bg-gray-800 text-base shadow-lg focus:outline-none sm:text-sm">
+              <ListboxOptions className="absolute top-16 z-20 overflow-auto rounded-md bg-white dark:bg-gray-800 text-base shadow-lg focus:outline-none sm:text-sm">
                 <Calendar
-                  className="!bg-gray-800 !border-none !font-bold"
+                  className="dark:!bg-gray-800 !border-none !font-bold"
                   selectRange={true}
                   value={filterDate}
                   onChange={setFilterDate}
@@ -91,7 +91,7 @@ export const LogFilter = () => {
                   prev2Label={<ChevronDoubleLeftIcon className="w-6" />}
                   nextLabel={<ChevronRightIcon className="w-6" />}
                   next2Label={<ChevronDoubleRightIcon className="w-6" />}
-                  tileClassName={"rounded-md hover:!bg-indigo-500"}
+                  tileClassName={"rounded-md hover:!bg-indigo-400 dark:hover:!bg-indigo-500"}
                 />
               </ListboxOptions>
             </Transition>

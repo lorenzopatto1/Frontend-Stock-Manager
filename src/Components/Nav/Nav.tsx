@@ -59,7 +59,7 @@ export const Nav = () => {
   const logsMatch = useMatch("logs");
 
   return (
-    <Disclosure as="nav" className="relative bg-gray-800 rounded-lg">
+    <Disclosure as="nav" className="relative bg-gray-300 dark:bg-gray-800 md:rounded-lg">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -81,9 +81,9 @@ export const Nav = () => {
                         className={({ isActive }) =>
                           classNames(
                             isActive
-                              ? "bg-gray-900 text-white "
-                              : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                            "rounded-md px-3 py-2 text-sm font-medium flex gap-2 items-center"
+                              ? "bg-gray-500 dark:bg-gray-900 text-white"
+                              : "bg-gray-400 dark:bg-gray-700 text-gray-800 dark:text-gray-300 dark:hover:bg-gray-900 dark:hover:text-white",
+                            "rounded-md px-3 py-2 text-sm font-medium transition-all flex gap-2 items-center"
                           )
                         }
                         aria-current={item.current ? "page" : undefined}
@@ -99,7 +99,7 @@ export const Nav = () => {
                 </div>
               </div>
               <div>
-                  <Link className="text-nowrap p-2 rounded-md hover:ring-indigo-700 focus:outline-none focus:ring-indigo-700 hover:bg-indigo-700 ring-1 ring-indigo-500" to="/cash-register">
+                  <Link className="text-nowrap transition-all font-bold p-2 rounded-md dark:hover:border-indigo-700 focus:outline-none text-indigo-700 hover:text-zinc-200 dark:hover:text-zinc-200 dark:text-indigo-500 dark:focus:border-indigo-700  hover:bg-indigo-700 border-2 border-indigo-700 dark:border-indigo-500" to="/cash-register">
                     Abrir caixa
                   </Link>
               </div>
@@ -108,7 +108,7 @@ export const Nav = () => {
                   <div>
                     <>
                       <button
-                        className="sticky text-nowrap gap-2 overflow-hidden z-10 flex justify-center items-center p-2 rounded-md ring-1 w-full ring-indigo-500 focus:outline-none focus:ring-indigo-700"
+                        className="sticky font-bold text-nowrap gap-2 overflow-hidden z-10 flex justify-center items-center p-2 rounded-md ring-2 w-full ring-indigo-500 focus:outline-none focus:ring-indigo-700"
                         onKeyDown={(e) =>
                           e.key === "Escape" && setIsModalOpen(false)
                         }
@@ -141,7 +141,7 @@ export const Nav = () => {
                         >
                           <input
                             type="text"
-                            className="relative bg-gray-700 ring-1 ring-indigo-500 focus:placeholder-shown:ring-red-500 placeholder-shown:ring-red-500 focus:ring-indigo-700 rounded-md p-2"
+                            className="relative dark:bg-gray-700 ring-2 ring-indigo-500 focus:placeholder-shown:ring-red-500 placeholder-shown:ring-red-500 focus:ring-indigo-700 rounded-md p-2"
                             value={storeName}
                             autoComplete="off"
                             spellCheck="false"
@@ -151,7 +151,7 @@ export const Nav = () => {
                             placeholder="Digite o nome da loja"
                           />
                           <button
-                            className="absolute right-1 group bg-gray-700 rounded-md"
+                            className="absolute right-1 group dark:bg-gray-700 rounded-md"
                             type="submit"
                             disabled={!storeName ? true : false}
                             onClick={handleChangeStoreName}
@@ -160,7 +160,7 @@ export const Nav = () => {
                               className={`group-hover:fill-indigo-400 font-bold ${
                                 storeName.length < 1
                                   ? "fill-red-500 group-hover:fill-red-500"
-                                  : "fill-zinc-200"
+                                  : "dark:fill-zinc-200"
                               } w-6`}
                             />
                           </button>

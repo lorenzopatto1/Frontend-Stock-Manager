@@ -4,6 +4,7 @@ import { EditProductModal } from "./EditProductModal";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { useSearchParams } from "react-router-dom";
 import { ProductCardSleketon } from "./ProductCardSleketon";
+import { toast } from "sonner";
 
 export const ProductCard = () => {
   const [searchParams] = useSearchParams();
@@ -32,6 +33,10 @@ export const ProductCard = () => {
   const handleCloseRemoveModal = () => {
     setOpenRemoveProductModal(false); 
   };
+
+  if (!isSuccess) {
+    toast.error("Falha ao encontrar produtos")
+  }
 
   if (isLoading) {
     return (
@@ -85,7 +90,7 @@ export const ProductCard = () => {
                   />
                 ) : null}
                   <td>
-                    <button className="text-red-500 font-bold hover:text-opacity-80" onClick={() => handleOpenRemoveModal(product.id!)}>Remover</button>
+                    <button className="text-red-500 hover:text-red-600 dark:text-red-500 font-bold dark:hover:text-opacity-80" onClick={() => handleOpenRemoveModal(product.id!)}>Remover</button>
                   </td> 
                   {product.id === productKey && (
                   <ConfirmDeleteModal id={productKey} productName={product.name} open={openRemoveProductModal} handleClose={handleCloseRemoveModal}  /> 

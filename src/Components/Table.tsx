@@ -7,7 +7,7 @@ export const Table = () => {
       <Filters />
       <div className="flex overflow-y-auto overflow-x-hidden items-start justify-center">
         <table className="table-fixed text-nowrap divide-y divide-gray-700 w-full">
-          <thead className="sticky top-0 z-[9] text-sm bg-gray-900">
+          <thead className="sticky top-0 z-[9] text-sm bg-gray-400 dark:bg-gray-900">
             <tr>
               <th>Categoria</th>
               <th>Nome</th>
@@ -19,7 +19,7 @@ export const Table = () => {
               <th></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-700">
+          <tbody className="divide-y font-bold divide-gray-700">
             <ProductCard />
           </tbody>
         </table>

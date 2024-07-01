@@ -8,16 +8,16 @@ export const useAggregateProducts = () => {
     const productMap: { [key: number]: ProductsSold } = {};
 
     filteredLogs.forEach((sale) => {
-      sale.products.forEach((product) => {
-        if (!productMap[product.productId]) {
+      sale.products?.forEach((product) => {
+        if (product.productId && !productMap[product.productId]) {
           productMap[product.productId] = { ...product };
         } else {
-          productMap[product.productId].quantity += product.quantity;
+          product.productId ? productMap[product.productId].quantity += product.quantity : null;
         }
       });
     });
 
-    return Object.values(productMap);
+    return Object.values(productMap).sort((a, b) => b.quantity - a.quantity);
   };
   
   return { aggregateProducts }

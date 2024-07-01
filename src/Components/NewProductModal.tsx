@@ -13,10 +13,11 @@ import { CreateProductFormData } from "../interfaces/product-data";
 import { Button } from "./Button";
 import { productFormSchema } from "../Schema/ProductFormSchema";
 import { useProductCreateMutate } from "../hooks/useProductCreateMutate";
-import { useEffect } from "react";
 import { useCategorysData } from "../hooks/useCategoryData";
 import Loading from "./Loading";
 import { inputsProps } from "../Data/productFormProps";
+
+import { toast } from "sonner";
 
 interface INewProductModal {
   open: boolean;
@@ -24,14 +25,9 @@ interface INewProductModal {
 }
 
 export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
-  const { mutate, isSuccess, isPending } = useProductCreateMutate();
-  const { register, handleSubmit, formState: { errors }, } = useForm({ resolver: yupResolver(productFormSchema), });
+  const { mutate, isPending, isSuccess: mutateError } = useProductCreateMutate();
+  const { reset, register, handleSubmit, formState: { errors }, } = useForm({ resolver: yupResolver(productFormSchema), });
   const { data: categorys } = useCategorysData();
-
-  useEffect(() => {
-    handleClose();
-  //eslint-disable-next-line
-    }, [isSuccess])
 
   const handleCreateProduct: SubmitHandler<CreateProductFormData> = (
     product
@@ -43,7 +39,14 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
       wholesaleUnityPrice: Number(product.wholesaleUnityPrice?.toString().replace(',', '.')),
       validationDate: product.validationDate && new Date(product.validationDate)
     }
-      mutate(data);
+    mutate(data);
+
+    !mutateError 
+    ? toast.success("Produto criado!")
+    : toast.error("Falha ao criar produto")
+
+    reset();
+    handleClose();
   };
 
   // const percentualChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +71,7 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          <div className="fixed inset-0 bg-gray-500 dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 transition-opacity" />
         </TransitionChild>
 
         <div className="fixed inset-0 overflow-hidden">
@@ -94,7 +97,7 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
                     <div className="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 sm:-ml-10 sm:pr-4">
                       <button
                         type="button"
-                        className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                        className="relative rounded-md text-black dark:text-gray-300 hover:text-zinc-800 black:hover:text-white focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
                         onClick={handleClose}
                       >
                         <span className="absolute -inset-2.5" />
@@ -103,9 +106,9 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
                       </button>
                     </div>
                   </TransitionChild>
-                  <div className="flex h-full flex-col overflow-y-scroll bg-gray-800 py-6 shadow-xl">
+                  <div className="flex h-full flex-col overflow-y-scroll bg-white dark:bg-gray-800 py-6 shadow-xl">
                     <div className="px-4 sm:px-6">
-                      <DialogTitle className="text-base font-semibold leading-6">
+                      <DialogTitle className="text-xl font-bold leading-6">
                         Cadastrar novo produto:
                       </DialogTitle>
                     </div>
