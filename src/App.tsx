@@ -23,14 +23,14 @@ function App() {
           alt="Your Company"
         />
         <Link
-          className="mt-10 text-center text-4xl font-bold leading-9 tracking-tight text-brand-300 hover:text-brand-500"
+          className="mt-10 text-center text-4xl font-bold leading-9 tracking-tight text-indigo-500 hover:text-indigo-400"
           to="/login"
         >
           Fazer login
         </Link>
         <h2 className="mt-10 text-center text-4xl font-bold leading-9 tracking-tight">
           Não tem uma conta?{" "}
-          <Link className="text-brand-300 hover:text-brand-500" to="/">
+          <Link className="text-indigo-500 hover:text-indigo-400" to="/">
             Registrar-se
           </Link>
         </h2>
