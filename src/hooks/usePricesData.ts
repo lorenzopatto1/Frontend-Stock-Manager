@@ -2,17 +2,21 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "../Data/api";
 
 import Cookies from 'js-cookie'
-import { AxiosPromise } from "axios";
 import { PricesResponse } from "../interfaces/product-data";
+import { toast } from "sonner";
 
-const getPrices = async (): AxiosPromise<PricesResponse[]> => {
-  const token = Cookies.get('token');
+const getPrices = async () => {
+  try {
+    const token = Cookies.get('token');
   const response = await api.get<PricesResponse[]>("/Products/Prices", {
     params: {
       token
       }
       });
   return response;
+  } catch (_) {
+    toast.error("Houve um problema ao encontrar os preços")
+  }
   }
 
 export function usePricesData ()

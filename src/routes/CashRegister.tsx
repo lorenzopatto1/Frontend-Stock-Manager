@@ -3,7 +3,6 @@ import { SaleData } from "../Components/CashRegister/SaleData";
 import { Table } from "../Components/CashRegister/Table";
 import { useProductsData } from "../hooks/useProductsData";
 import { ProductsSold } from "../interfaces/products-sold";
-import { toast } from "sonner";
 import { Link, useSearchParams } from "react-router-dom";
 import { useCartProducts } from "../Context/CartProductsContext";
 import Payment from "../Components/Payment/Payment";
@@ -11,7 +10,7 @@ import Payment from "../Components/Payment/Payment";
 export const CashRegister = () => {
   const [searchParams] = useSearchParams();
   const [searchProductModal, setSearchProductModal] = useState(false);
-  const { data, isError } = useProductsData();
+  const { data } = useProductsData();
   const {
     productsInCart,
     setProductsInCart,
@@ -63,9 +62,6 @@ export const CashRegister = () => {
     product.name.toLocaleLowerCase().startsWith(productSearch.toLowerCase())
   );
 
-  if (isError) {
-    toast.error("Houve um problema ao encontrar seus produtos");
-  }
 
   return (
     <>

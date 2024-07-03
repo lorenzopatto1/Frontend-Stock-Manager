@@ -2,12 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "../Data/api";
 
 import Cookies from "js-cookie";
-import { AxiosPromise } from "axios";
+import { toast } from "sonner";
 
-const getCategorys = async (): AxiosPromise<string[]> => {
-  const token = Cookies.get("token");
-  const response = await api.get<string[]>(`/Products/Categorys?token=${token}`);
-  return response;
+const getCategorys = async () => {
+  try {
+    const token = Cookies.get("token");
+    const response = await api.get<string[]>(`/Products/Categorys?token=${token}`);
+    return response;
+  } catch (_) {
+    toast.error("Não foi possível encontrar as categorias")
+  }
 };
 
 export function useCategorysData() {

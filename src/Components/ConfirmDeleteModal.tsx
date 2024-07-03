@@ -1,7 +1,6 @@
-import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react'
-import { TrashIcon } from '@heroicons/react/24/outline'
+import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
+import { TrashIcon } from '@heroicons/react/24/outline';
 import { useProductDeleteMutate } from '../hooks/useProductDeleteMutate';
-import { toast } from "sonner";
 
 interface ConfirmDeleteModalProps {
   open: boolean;
@@ -11,14 +10,10 @@ interface ConfirmDeleteModalProps {
 }
 
 const ConfirmDeleteModal = ({open, handleClose, productName, id}: ConfirmDeleteModalProps) => {
-  const { mutate, isError } = useProductDeleteMutate();
+  const { mutate } = useProductDeleteMutate();
 
   const handleRemove = () => {
     mutate(id!);
-
-    !isError
-    ? toast.success("Produto removido!")
-    : toast.error("Falha ao remover produto")
 
     handleClose();
   }

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: "https://localhost:44307/",
+  baseURL: "https://backend-stock-manager-1.onrender.com/",
   headers: {
     'Content-Type': 'application/json',
   },

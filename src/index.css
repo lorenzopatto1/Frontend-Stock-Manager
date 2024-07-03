@@ -42,10 +42,10 @@ input[type=number] {
  appearance: textfield;
 }
 
-input:-webkit-autofill, 
-input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  input:-webkit-autofill:active {
+.dark input:-webkit-autofill, 
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark input:-webkit-autofill:active {
   border: 1px solid white;
   -webkit-text-fill-color: rgb(244 244 245) !important;
   -webkit-box-shadow: 0 0 0px 1000px #09090A inset;

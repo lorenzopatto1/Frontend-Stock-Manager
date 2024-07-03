@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { useProductsData } from "../hooks/useProductsData";
-import { EditProductModal } from "./EditProductModal";
-import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { useSearchParams } from "react-router-dom";
+import { useProductsData } from "../hooks/useProductsData";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { EditProductModal } from "./EditProductModal";
 import { ProductCardSleketon } from "./ProductCardSleketon";
-import { toast } from "sonner";
 
 export const ProductCard = () => {
   const [searchParams] = useSearchParams();
@@ -33,10 +32,6 @@ export const ProductCard = () => {
   const handleCloseRemoveModal = () => {
     setOpenRemoveProductModal(false); 
   };
-
-  if (!isSuccess) {
-    toast.error("Falha ao encontrar produtos")
-  }
 
   if (isLoading) {
     return (

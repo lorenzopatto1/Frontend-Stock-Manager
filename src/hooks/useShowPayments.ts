@@ -5,7 +5,7 @@ export const useShowPayments = () => {
   const sumPayments = (paymentType: string) => {
     return filteredLogs?.reduce((acc, log) => {
       if (log.firstPayment === paymentType) {
-        acc += log.firstAmountPaid;
+        acc += log.firstAmountPaid!;
       }
       if (log.secondPayment === paymentType && log.secondAmountPaid) {
         acc += log.secondAmountPaid;
@@ -19,7 +19,7 @@ export const useShowPayments = () => {
   const creditTotal = sumPayments("Crédito");
   const pixTotal = sumPayments("Pix");
   const totalValue =
-    filteredLogs?.reduce((acc, log) => (log.secondAmountPaid ? acc += log.firstAmountPaid + log.secondAmountPaid : acc += log.firstAmountPaid), 0) ?? 0;
+    filteredLogs?.reduce((acc, log) => (log.secondAmountPaid ? acc += log.firstAmountPaid! + log.secondAmountPaid : acc += log.firstAmountPaid!), 0) ?? 0;
 
 
   return Object.entries({

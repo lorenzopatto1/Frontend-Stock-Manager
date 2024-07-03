@@ -1,7 +1,3 @@
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { useCartProducts } from "../../Context/CartProductsContext";
-import { useEffect, useState } from "react";
-import PaymentOptions from "./PaymentOptions";
 import {
   Dialog,
   DialogPanel,
@@ -9,10 +5,13 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { PaymentData } from "./PaymentData";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useCartProducts } from "../../Context/CartProductsContext";
+import { useRelatoryCreateMutate } from "../../hooks/useRelatoryCreateMutate";
 import { Button } from "../Button";
-import { useRelatoryMutate } from "../../hooks/useRelatoryMutate";
-import { toast } from "sonner";
+import { PaymentData } from "./PaymentData";
+import PaymentOptions from "./PaymentOptions";
 
 const paymentOptions = [
   "Escolha a forma de pagamento",
@@ -23,7 +22,7 @@ const paymentOptions = [
 ];
 
 const Payment = () => {
-  const { mutate, isError, isSuccess } = useRelatoryMutate();
+  const { mutate, isSuccess } = useRelatoryCreateMutate();
   const { sale, setSale, total, setProductsInCart } = useCartProducts();
   const [searchParams, setSearchParams] = useSearchParams();
   const [firstPaymentOption, setFirstPaymentOption] = useState(paymentOptions[0]);
@@ -52,13 +51,8 @@ const Payment = () => {
     if (sale) {
       mutate(sale);
 
-      if (isSuccess) handleClose();
     }
-
-    if (isError) {
-      toast("Erro na venda");
-    } else {
-      toast("Venda concluida");
+    if (isSuccess) {
       setProductsInCart([]);
       handleClose()
     }

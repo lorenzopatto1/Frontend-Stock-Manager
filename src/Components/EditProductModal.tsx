@@ -6,18 +6,17 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Input } from "./Input";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { CreateProductFormData } from "../interfaces/product-data";
-import { Button } from "./Button";
-import { useProductsByIdData } from "../hooks/useProductByIdData";
-import { useProductEditMutate } from "../hooks/useProductEditMutate";
+import { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { inputsProps } from "../Data/productFormProps";
 import { productFormSchema } from "../Schema/ProductFormSchema";
 import { useCategorysData } from "../hooks/useCategoryData";
-import { useEffect } from "react";
-import { inputsProps } from "../Data/productFormProps";
-import { toast } from "sonner";
+import { useProductsByIdData } from "../hooks/useProductByIdData";
+import { useProductEditMutate } from "../hooks/useProductEditMutate";
+import { CreateProductFormData } from "../interfaces/product-data";
+import { Button } from "./Button";
+import { Input } from "./Input";
 interface INewProductModal {
   open: boolean;
   handleClose: () => void;
@@ -31,7 +30,7 @@ export const EditProductModal = ({
 }: INewProductModal) => {
   const { data, isSuccess: dataSuccess, refetch } = useProductsByIdData(id);
   const { data: categorys } = useCategorysData();
-  const { mutate, isError: mutateError } = useProductEditMutate();
+  const { mutate } = useProductEditMutate();
   const {
     register,
     handleSubmit,
@@ -65,10 +64,6 @@ export const EditProductModal = ({
     };
 
     mutate(dataMutate);
-
-    !mutateError
-    ? toast.success("Produto editado!")
-    : toast.error("Falha ao editar produto")
 
     handleClose();
     reset();

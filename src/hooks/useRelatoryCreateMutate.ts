@@ -2,13 +2,19 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../Data/api';
 import Cookies from 'js-cookie';
 import { SaleRelatory } from '../interfaces/products-sold';
+import { toast } from 'sonner';
 
 const postRelatory = async (data: SaleRelatory) => {
-  const token = Cookies.get('token');
-  return await api.post(`/Relatory/?token=${token}`, data)
+  try {
+    toast.success("Venda concluida");
+    const token = Cookies.get('token');
+    await api.post(`/Relatory/?token=${token}`, data)
+  } catch (_) {
+    toast.error("Erro na venda");
+  }
 }
 
-export const useRelatoryMutate = () => {
+export const useRelatoryCreateMutate = () => {
   const queryClient = useQueryClient();
   const mutate = useMutation({
     mutationFn: postRelatory,

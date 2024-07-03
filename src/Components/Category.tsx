@@ -16,7 +16,7 @@ interface CategoryProps {
 export const Category = ({selected, setSelected}: CategoryProps) => {
   const [searchParams] = useSearchParams();
   const categoryValue = searchParams.get('category')
-  const { data, isSuccess, isLoading } = useCategorysData();
+  const { data, isSuccess, isLoading, isError } = useCategorysData();
   let groups: string[] = ['']
   if (data && isSuccess) {
     groups = [
@@ -36,9 +36,9 @@ export const Category = ({selected, setSelected}: CategoryProps) => {
     {({ open }) => (
       <>
         <div className="relative min-w-48">
-          <ListboxButton className="relative w-full cursor-pointer rounded-md py-1.5 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-black dark:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
+          <ListboxButton disabled={isLoading && isError ? true : false}  className="relative w-full cursor-pointer rounded-md py-1.5 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-black dark:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
             <span className="flex items-center">
-              <span className="ml-3 block truncate font-bold">{selected || groups[0] || 'Todas categorias'}</span>
+              <span className="ml-3 block truncate font-bold">{isLoading && "Carregando..." || isError && "Nenhuma" || selected || groups[0] || 'Todas categorias'}</span>
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
               <ChevronUpDownIcon className="h-5 w-5 text-black dark:text-gray-400" aria-hidden="true" />

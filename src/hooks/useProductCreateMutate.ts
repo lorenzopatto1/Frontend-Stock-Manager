@@ -2,11 +2,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ProductData } from '../interfaces/product-data';
 import { api } from '../Data/api';
 import Cookies from 'js-cookie';
+import { toast } from 'sonner';
 
 const createProduct = async (data: ProductData) => {
-  const token = Cookies.get('token');
-  return await api.post(`/Products?token=${token}`, data)
-
+  try {
+    const token = Cookies.get('token');
+    await api.post(`/Products?token=${token}`, data)
+    toast.success("Produto criado!")
+  } catch (_) {
+    toast.error("Falha ao criar produto")
+  }
 }
 
 export const useProductCreateMutate = () => {

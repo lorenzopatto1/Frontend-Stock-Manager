@@ -6,18 +6,17 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Input } from "./Input";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { inputsProps } from "../Data/productFormProps";
+import { productFormSchema } from "../Schema/ProductFormSchema";
+import { useCategorysData } from "../hooks/useCategoryData";
+import { useProductCreateMutate } from "../hooks/useProductCreateMutate";
 import { CreateProductFormData } from "../interfaces/product-data";
 import { Button } from "./Button";
-import { productFormSchema } from "../Schema/ProductFormSchema";
-import { useProductCreateMutate } from "../hooks/useProductCreateMutate";
-import { useCategorysData } from "../hooks/useCategoryData";
+import { Input } from "./Input";
 import Loading from "./Loading";
-import { inputsProps } from "../Data/productFormProps";
 
-import { toast } from "sonner";
 
 interface INewProductModal {
   open: boolean;
@@ -25,7 +24,7 @@ interface INewProductModal {
 }
 
 export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
-  const { mutate, isPending, isSuccess: mutateError } = useProductCreateMutate();
+  const { mutate, isPending } = useProductCreateMutate();
   const { reset, register, handleSubmit, formState: { errors }, } = useForm({ resolver: yupResolver(productFormSchema), });
   const { data: categorys } = useCategorysData();
 
@@ -40,10 +39,6 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
       validationDate: product.validationDate && new Date(product.validationDate)
     }
     mutate(data);
-
-    !mutateError 
-    ? toast.success("Produto criado!")
-    : toast.error("Falha ao criar produto")
 
     reset();
     handleClose();

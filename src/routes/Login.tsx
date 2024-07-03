@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 import Cookies from "js-cookie";
@@ -26,31 +25,28 @@ const signInFormSchema = yup
   .required();
 
 export const Login = () => {
-  const { mutate, isPending, isSuccess, isError } = useUserLogin();
+  const { mutate, isPending, isSuccess } = useUserLogin();
   const navigate = useNavigate();
-
-  if (isError) {
-    toast.error("Falha na autenticação")
-  }
+  const token = Cookies.get("token");
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(signInFormSchema),
   });
 
   useEffect(() => {
-    const token = Cookies.get("token");
     if (token !== undefined && isSuccess) {
       navigate("/home");
     }
-  }, [navigate, isSuccess]);
+    //eslint-disable-next-line
+  }, [token, isSuccess]);
 
   const handleSignIn: SubmitHandler<SignInFormData> = async (userLogin) => {
     mutate(userLogin);
-    toast.success("Usuário logado!")
   };
 
   return (
@@ -85,7 +81,7 @@ export const Login = () => {
             <div className="text-sm w-full text-end">
               <a
                 href="#"
-                className="font-semibold text-indigo-600 hover:text-indigo-500"
+                className="font-semibold text-indigo-600 dark:text-indigo-300 hover:text-indigo-500 dark:hover:text-indigo-500"
               >
                 Esqueceu sua senha?
               </a>
@@ -103,12 +99,8 @@ export const Login = () => {
           </div>
 
           <div>
-            <Button>
-              {isPending ? (
-                <Loading />
-              ) : (
-                "Fazer login"
-              )}
+            <Button disabled={watch().login === "" || watch().password === "" ? true : false}>
+              {isPending ? <Loading /> : "Fazer login"}
             </Button>
           </div>
         </form>

@@ -1,10 +1,16 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../Data/api';
 import Cookies from 'js-cookie';
+import { toast } from 'sonner';
 
 const deleteProduct = async (id: number) => {
-  const token = Cookies.get('token');
-  return await api.delete(`/Products/${id}?token=${token}`, {params: {id}})
+  try {
+    const token = Cookies.get('token');
+    await api.delete(`/Products/${id}?token=${token}`, {params: {id}})
+    toast.success("Produto removido!");
+  } catch (_) {
+    toast.error("Falha ao remover produto")
+  }
 }
 
 export const useProductDeleteMutate = () => {
