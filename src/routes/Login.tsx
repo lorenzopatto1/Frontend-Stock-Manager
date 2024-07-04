@@ -2,14 +2,14 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Cookies from "js-cookie";
-import { Input } from "../Components/Input";
+import { Input } from "../components/Input";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button } from "../Components/Button";
+import { Button } from "../components/Button";
 import { useUserLogin } from "../hooks/useUserLogin";
-import Loading from "../Components/Loading";
+import Loading from "../components/Loading";
 
 export interface SignInFormData {
   login: string;
@@ -43,10 +43,11 @@ export const Login = () => {
       navigate("/home");
     }
     //eslint-disable-next-line
-  }, [token, isSuccess]);
+  }, [isSuccess]);
 
-  const handleSignIn: SubmitHandler<SignInFormData> = async (userLogin) => {
+  const handleSignIn: SubmitHandler<SignInFormData> = (userLogin) => {
     mutate(userLogin);
+
   };
 
   return (

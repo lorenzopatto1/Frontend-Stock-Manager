@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { SaleData } from "../Components/CashRegister/SaleData";
-import { Table } from "../Components/CashRegister/Table";
+import { SaleData } from "../components/CashRegister/SaleData";
+import { Table } from "../components/CashRegister/Table";
 import { useProductsData } from "../hooks/useProductsData";
 import { ProductsSold } from "../interfaces/products-sold";
 import { Link, useSearchParams } from "react-router-dom";
-import { useCartProducts } from "../Context/CartProductsContext";
-import Payment from "../Components/Payment/Payment";
+import { useCartProducts } from "../context/CartProductsContext";
+import Payment from "../components/Payment/Payment";
 
 export const CashRegister = () => {
   const [searchParams] = useSearchParams();
@@ -31,7 +31,9 @@ export const CashRegister = () => {
   useEffect(() => {
     const editedProduct =
       productsInCart &&
-      productsInCart.find((product) => product.productId === productFocus?.productId);
+      productsInCart.find(
+        (product) => product.productId === productFocus?.productId
+      );
     const quantity = Number(searchParams.get("Quantity"));
     const price = Number(searchParams.get("Price"));
 
@@ -51,7 +53,9 @@ export const CashRegister = () => {
 
       setProductsInCart((prevProducts) =>
         prevProducts.map((product) =>
-          product.productId === editedProduct.productId ? { ...product, ...edit } : product
+          product.productId === editedProduct.productId
+            ? { ...product, ...edit }
+            : product
         )
       );
     }
@@ -62,14 +66,22 @@ export const CashRegister = () => {
     product.name.toLocaleLowerCase().startsWith(productSearch.toLowerCase())
   );
 
-
   return (
     <>
       <div
         className="relative flex py-12 px-[5%] md:px-[15%] h-full flex-col w-screen items-center"
         onClick={() => searchProductModal && setSearchProductModal(false)}
       >
-        <Link className="absolute top-4 left-4 p-[1%] text-xs md:text-base sm:p-2 ring-2 ring-indigo-700 dark:ring-indigo-500 dark:text-indigo-500 rounded-md hover:bg-indigo-700 font-bold dark:hover:bg-indigo-500 text-indigo-700 hover:text-white dark:hover:text-white transition-all" onClick={() => {setProductFocus(undefined); setProductsInCart([])}} to="/home">Fechar caixa</Link>
+        <Link
+          className="absolute top-4 left-4 p-[1%] text-xs md:text-base sm:p-2 ring-2 ring-indigo-700 dark:ring-indigo-500 dark:text-indigo-500 rounded-md hover:bg-indigo-700 font-bold dark:hover:bg-indigo-500 text-indigo-700 hover:text-white dark:hover:text-white transition-all"
+          onClick={() => {
+            setProductFocus(undefined);
+            setProductsInCart([]);
+          }}
+          to="/home"
+        >
+          Fechar caixa
+        </Link>
         <input
           className="bg-transparent p-2 rounded-md ring-1 placeholder:text-black dark:placeholder:text-zinc-200 focus:ring-indigo-500 ring-zinc-500 w-[50%]"
           autoComplete="new-password"
@@ -103,10 +115,10 @@ export const CashRegister = () => {
             )}
           </div>
         )}
-        <div className="flex mt-4 flex-1 bg-gray-300 dark:bg-[#00081d] rounded-md p-2 overflow-y-auto items-start justify-center">
+        <div className="flex w-full mt-4 flex-1 bg-gray-300 dark:bg-[#00081d] rounded-md p-2 overflow-y-auto items-start justify-center">
           <Table />
         </div>
-        <SaleData />
+          <SaleData />
       </div>
       {finalize === "true" && <Payment />}
     </>

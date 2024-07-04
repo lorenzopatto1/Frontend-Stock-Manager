@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { api } from "../Data/api";
+import { api } from "../data/api";
 
 import Cookies from 'js-cookie'
 import { PricesResponse } from "../interfaces/product-data";

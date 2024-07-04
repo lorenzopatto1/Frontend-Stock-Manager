@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ProductData } from '../interfaces/product-data';
-import { api } from '../Data/api';
+import { api } from '../data/api';
 import Cookies from 'js-cookie';
 import { toast } from 'sonner';
 

@@ -8,7 +8,7 @@ import {
   MenuItems,
   Transition,
 } from "@headlessui/react";
-import { useTheme } from "../../Context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 import { MoonIcon, SunIcon } from "@heroicons/react/20/solid";
 
 interface ProfileProps {
@@ -36,14 +36,14 @@ export const Profile = ({ logOut }: ProfileProps) => {
       >
         <MenuItems className="absolute right-0 z-10 mt-2 w-48 font-bold origin-top-right rounded-md bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <MenuItem
-            className="text-left text-md w-full flex gap-2 px-4 py-2 bg-white text:zinc-800 dark:bg-gray-800 black:text-zinc-200 focus:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-700"
+            className="text-left text-md w-full flex gap-2 px-4 py-2 bg-white text:zinc-800 dark:bg-gray-800 black:text-zinc-200 focus:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-700"
             as="button"
           >
             <Cog6ToothIcon className="w-6 stroke-2" />
             Configurações
           </MenuItem>
           <MenuItem
-            className="text-left text-md w-full flex gap-2 px-4 py-2 bg-white text:zinc-800 dark:bg-gray-800 black:text-zinc-200 focus:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-700"
+            className="text-left text-md w-full flex gap-2 px-4 py-2 bg-white text:zinc-800 dark:bg-gray-800 black:text-zinc-200 focus:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-700"
             as="button"
             onClick={() => {
               theme === "light" || theme === "system" ? setTheme("dark") : theme === "dark" || theme === "system" ? setTheme("light") : setTheme("system")
@@ -62,7 +62,7 @@ export const Profile = ({ logOut }: ProfileProps) => {
             )}
           </MenuItem>
           <MenuItem
-            className="text-left text-md w-full flex gap-2 px-4 py-2 bg-white text:zinc-800 dark:bg-gray-800 black:text-zinc-200 focus:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-700"
+            className="text-left text-md w-full flex gap-2 px-4 py-2 bg-white text:zinc-800 dark:bg-gray-800 black:text-zinc-200 focus:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-700"
             as="button"
             onClick={logOut}
           >

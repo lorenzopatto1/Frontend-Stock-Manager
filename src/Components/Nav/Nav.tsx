@@ -8,10 +8,10 @@ import {
   ChevronUpDownIcon,
   XMarkIcon
 } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, NavLink, useMatch, useNavigate } from "react-router-dom";
-import { navigation } from "../../Data/navigation";
+import { navigation } from "../../data/navigation";
 import { useUserData } from "../../hooks/useUserData";
 import { useStoreNameEditMutate } from "../../hooks/useUserEditMutate";
 import { MobileNav } from "./MobileNav";
@@ -65,7 +65,7 @@ export const Nav = () => {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between">
               <div className="flex items-center">
-                <div className="flex-shrink-0">
+                <div className="flex-shrink-0 cursor-pointer" onClick={() => navigate('/home')}>
                   <img
                     className="h-8 w-8"
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
@@ -81,8 +81,8 @@ export const Nav = () => {
                         className={({ isActive }) =>
                           classNames(
                             isActive
-                              ? "bg-gray-500 dark:bg-gray-900 text-white"
-                              : "bg-gray-400 dark:bg-gray-700 text-gray-800 dark:text-gray-300 dark:hover:bg-gray-900 dark:hover:text-white",
+                              ? "bg-gray-400 dark:bg-gray-900 text-white"
+                              : "bg-gray-50 hover:bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 dark:hover:bg-gray-900 dark:hover:text-white",
                             "rounded-md px-3 py-2 text-sm font-medium transition-all flex gap-2 items-center"
                           )
                         }
@@ -158,7 +158,7 @@ export const Nav = () => {
                           >
                             <CheckIcon
                               className={`group-hover:fill-indigo-400 font-bold ${
-                                storeName.length < 1
+                                storeName
                                   ? "fill-red-500 group-hover:fill-red-500"
                                   : "dark:fill-zinc-200"
                               } w-6`}
@@ -174,7 +174,7 @@ export const Nav = () => {
                 </div>
               </div>
               <div className="-mr-2 flex md:hidden">
-                <DisclosureButton className="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                <DisclosureButton className="relative inline-flex items-center justify-center rounded-md dark:bg-gray-800 p-2 text-black dark:text-gray-400 hover:bg-gray-400 dark:hover:bg-gray-700 dark:hover:text-white focus:outline-none focus:ring-2 dark:focus:ring-white focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
                   {open ? (

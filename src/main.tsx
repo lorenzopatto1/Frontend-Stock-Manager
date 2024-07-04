@@ -11,11 +11,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Log } from './routes/Log.tsx'
 import { Login } from './routes/Login.tsx'
 import { CashRegister } from './routes/CashRegister.tsx'
-import Payment from './Components/Payment/Payment.tsx';
-import { CartProductsProvider } from './Context/CartProductsContext.tsx';
+import Payment from './components/Payment/Payment.tsx';
+import { CartProductsProvider } from './context/CartProductsContext.tsx';
 
 import { Toaster } from "../@/components/ui/sonner.tsx"
-import { ThemeProvider } from './Context/ThemeContext.tsx';
+import { ThemeProvider } from './context/ThemeContext.tsx';
 
 const router = createBrowserRouter([
   {

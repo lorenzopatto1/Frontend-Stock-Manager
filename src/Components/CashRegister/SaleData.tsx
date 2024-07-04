@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Input } from "./Input";
 import { useSearchParams } from "react-router-dom";
-import { useCartProducts } from "../../Context/CartProductsContext";
+import { useCartProducts } from "../../context/CartProductsContext";
 
 interface ChangeProps {
   input?: string;
@@ -69,10 +69,10 @@ export const SaleData = () => {
   const handleFinishSale = () => {
     setProductFocus(undefined);
 
-    setSale(prevState => ({
+    setSale((prevState) => ({
       ...prevState,
-      products: productsInCart
-    }))
+      products: productsInCart,
+    }));
 
     setSearchParams((state) => {
       state.delete("Quantity");
@@ -85,66 +85,68 @@ export const SaleData = () => {
   };
 
   return (
-    <form className="flex gap-4 w-full pt-10 h-[120px] items-center">
-      <Input
-        value={quantity}
-        onChange={(e) => {
-          {
-            handleChangeParams({ input: "quantity", value: e.target.value });
-            setQuantity(e.target.value);
-          }
-        }}
-        type="number"
-      >
-        Quantidade
-      </Input>
+    <form className="pt-10 w-full flex flex-col min-[870px]:flex-row items-center gap-4">
+      <div className="flex gap-4 w-full items-center">
+        <Input
+          value={quantity}
+          onChange={(e) => {
+            {
+              handleChangeParams({ input: "quantity", value: e.target.value });
+              setQuantity(e.target.value);
+            }
+          }}
+          type="number"
+        >
+          Quantidade
+        </Input>
 
-      <Input
-        value={price}
-        onChange={(e) => {
-          {
-            handleChangeParams({ input: "price", value: e.target.value });
-            setPrice(e.target.value);
-          }
-        }}
-        type="text"
-      >
-        Preço
-      </Input>
+        <Input
+          value={price}
+          onChange={(e) => {
+            {
+              handleChangeParams({ input: "price", value: e.target.value });
+              setPrice(e.target.value);
+            }
+          }}
+          type="text"
+        >
+          Preço
+        </Input>
 
-      <div className="flex-1 transition-all text-xs md:text-sm lg:text-base p-3 group w-[12%] hover:ring-indigo-500 focus-within:ring-indigo-500 flex ring-1 rounded-lg ring-zinc-700 dark:ring-zinc-500 relative flex-col">
-        <div className="font-bold rounded-md text-nowrap absolute group-focus-within:text-indigo-500 -top-4 px-1 md:px-2 bg-white dark:bg-gray-900">
-          Total Item
+        <div className="w-full flex-1 transition-all text-xs min-[478px]:text-base p-3 group hover:ring-indigo-500 focus-within:ring-indigo-500 flex ring-1 rounded-lg ring-zinc-700 dark:ring-zinc-500 relative flex-col">
+          <div className="font-bold rounded-md text-nowrap absolute group-focus-within:text-indigo-500 left-1 -top-4 px-1 md:px-2 bg-white dark:bg-gray-900">
+            Total Item
+          </div>
+          <p className="text-ellipsis overflow-hidden font-bold ring-1  group-hover:ring-indigo-500 ring-zinc-700 dark:ring-zinc-500 w-full text-center py-4 md:text-start md:p-4 rounded-md">
+            {productFocus
+              ? totalItem.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "BRL",
+                })
+              : 0}
+          </p>
         </div>
-        <p className="font-bold ring-1  group-hover:ring-indigo-500 ring-zinc-700 dark:ring-zinc-500 w-full text-center py-4 md:text-start md:p-4 rounded-md">
-          {productFocus
-            ? totalItem.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              })
-            : 0}
-        </p>
-      </div>
 
-      <div className="flex-1 transition-all text-xs md:text-sm lg:text-base group w-[12%] hover:ring-indigo-500 focus-within:ring-indigo-500 flex ring-1 rounded-lg ring-zinc-500 p-3 relative flex-col">
-        <div className="font-bold rounded-md absolute text-nowrap group-focus-within:text-indigo-500 -top-4 px-2 bg-white dark:bg-gray-900">
-          Total
+        <div className="w-full flex-1 transition-all text-xs min-[478px]:text-base group hover:ring-indigo-500 focus-within:ring-indigo-500 flex ring-1 rounded-lg ring-zinc-500 p-3 relative flex-col">
+          <div className="font-bold rounded-md absolute text-nowrap group-focus-within:text-indigo-500 left-1 -top-4 px-2 bg-white dark:bg-gray-900">
+            Total
+          </div>
+          <p className="text-ellipsis overflow-hidden font-bold ring-1  group-hover:ring-indigo-500 ring-zinc-500 w-full text-center py-4 md:text-start md:p-4 rounded-md">
+            {productFocus
+              ? total.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "BRL",
+                })
+              : 0}
+          </p>
         </div>
-        <p className="font-bold ring-1  group-hover:ring-indigo-500 ring-zinc-500 w-full text-center py-4 md:text-start md:p-4 rounded-md">
-          {productFocus
-            ? total.toLocaleString("pt-br", {
-                style: "currency",
-                currency: "BRL",
-              })
-            : 0}
-        </p>
       </div>
 
       <button
         type="button"
         disabled={productsInCart.length > 0 ? false : true}
         onClick={handleFinishSale}
-        className="disabled:hover:ring-zinc-700 disabled:cursor-not-allowed text-xs md:text-sm lg:text-base disabled:hover:text-zinc-700 flex flex-1 items-center justify-center py-3 md:p-3 text-nowrap h-16 focus:outline-none focus:ring-indigo-700 focus:text-indigo-700 rounded-md ring-1 ring-zinc-700 dark:ring-zinc-500 hover:text-indigo-700 hover:ring-indigo-700 font-bold transition-all"
+        className="w-full disabled:hover:ring-zinc-700 disabled:cursor-not-allowed disabled:hover:text-zinc-700 flex flex-1 items-center justify-center py-3 md:p-3 text-nowrap h-16 focus:outline-none focus:ring-indigo-700 focus:text-indigo-700 rounded-md ring-1 ring-zinc-700 dark:ring-zinc-500 hover:text-indigo-700 hover:ring-indigo-700 font-bold transition-all"
       >
         Finalizar venda
       </button>

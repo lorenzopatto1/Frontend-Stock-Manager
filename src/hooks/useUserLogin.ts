@@ -1,4 +1,4 @@
-import { api } from "../Data/api";
+import { api } from "../data/api";
 
 import Cookies from "js-cookie";
 import { SignInFormData } from "../routes/Login";

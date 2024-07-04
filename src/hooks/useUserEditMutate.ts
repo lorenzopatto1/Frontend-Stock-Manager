@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { api } from '../Data/api';
+import { api } from '../data/api';
 import Cookies from 'js-cookie';
 
 const editStoreName = async (storeName: string) => {

@@ -57,24 +57,24 @@ export const Filters = () => {
   }
 
   return (
-    <div>
+    <div className="flex">
       <div className="w-full rounded-md flex items-center gap-2">
         <h3 className="font-bold">Pesquisar:</h3> 
         
         <form className="w-full flex gap-10 text-sm" onSubmit={handleSubmit(handleFilter)}>
           <Input
             type="text"
-            className="bg-transparent p-2 flex-1 shadow-sm ring-1 ring-inset rounded-md placeholder:text-black dark:placeholder:text-zinc-200  ring-black dark:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="bg-transparent p-2 flex-1 shadow-sm ring-1 ring-inset rounded-md placeholder:text-black dark:placeholder:text-zinc-200  ring-black dark:ring-gray-500 hover:ring-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             placeholder="Nome do produto"
             {...register("productName")}
             defaultValue={productName ? productName : ''}
           />
           <Category selected={selected} setSelected={setSelected} />
-          <Button className="max-w-[20%] flex gap-2 shadow-sm ring-1 ring-inset ring-black dark:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-md items-center p-[.3rem] dark:text-gray-400 font-bold" type="submit"> 
+          <Button className="hidden text-nowrap min-[910px]:flex gap-2 shadow-sm ring-1 ring-inset ring-black dark:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:ring-2 rounded-md items-center p-[.3rem] dark:text-gray-400 font-bold" type="submit"> 
             <MagnifyingGlassIcon className="w-5" />
             Filtrar resultados
           </Button>
-          <Button type="button" className="max-w-[20%] flex gap-2 shadow-sm ring-1 ring-inset ring-black dark:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-md items-center p-[.5rem] dark:text-gray-400 font-bold" onClick={handleClearFilter}> 
+          <Button type="button" className="hidden text-nowrap xl:flex gap-2 shadow-sm ring-1 ring-inset ring-black dark:ring-gray-500 hover:ring-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-md items-center p-[.5rem] dark:text-gray-400 font-bold" onClick={handleClearFilter}> 
             Limpar Filtros
           </Button>
         </form>

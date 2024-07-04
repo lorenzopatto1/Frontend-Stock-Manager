@@ -53,11 +53,11 @@ input[type=number] {
 }
 
 th {
-  @apply py-3 px-6 text-left  font-medium uppercase tracking-wider;
+  @apply px-1 py-3 sm:px-6 text-left font-medium uppercase tracking-wider text-ellipsis overflow-hidden;
 }
 
 td {
-  @apply py-3 px-6;
+  @apply px-1 py-3 sm:px-6 text-ellipsis overflow-hidden;
 }
 
 ::-webkit-scrollbar {

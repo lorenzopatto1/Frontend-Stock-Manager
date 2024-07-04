@@ -1,4 +1,4 @@
-import { api } from "../Data/api";
+import { api } from "../data/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const PostLogout = async () => {

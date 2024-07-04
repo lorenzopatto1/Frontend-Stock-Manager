@@ -5,18 +5,30 @@ export const Table = () => {
   return (
     <>
       <Filters />
-      <div className="flex overflow-y-auto overflow-x-hidden items-start justify-center">
+      <div className="flex overflow-y-auto w-full h-full overflow-x-hidden items-start justify-center">
         <table className="table-fixed text-nowrap divide-y divide-gray-700 w-full">
-          <thead className="sticky top-0 z-[9] text-sm bg-gray-400 dark:bg-gray-900">
+          <thead className="w-full sticky top-0 z-[9] text-xs lg:text-sm  bg-gray-400 dark:bg-gray-900">
             <tr>
-              <th>Categoria</th>
-              <th>Nome</th>
-              <th>Quantidade</th>
-              <th>Preço de compra</th>
-              <th>Preço de venda</th>
-              <th>Validade</th>
-              <th></th>
-              <th></th>
+              <th>
+                <abbr title="Categoria">Categoria</abbr>
+              </th>
+              <th>
+                <abbr title="Nome">Nome</abbr>
+              </th>
+              <th>
+                <abbr title="Quantidade">Quantidade</abbr>
+              </th>
+              <th className="hidden min-[530px]:table-cell">
+                <abbr title="Preço de compra">Preço de compra</abbr>
+              </th>
+              <th className="hidden min-[392px]:table-cell">
+                <abbr title="Preço de venda">Preço de venda</abbr>
+              </th>
+              <th className="hidden md:table-cell">
+                <abbr title="Validade">Validade</abbr>
+              </th>
+              <th className="hidden xl:table-cell"></th>
+              <th className="hidden xl:table-cell"></th>
             </tr>
           </thead>
           <tbody className="divide-y font-bold divide-gray-700">

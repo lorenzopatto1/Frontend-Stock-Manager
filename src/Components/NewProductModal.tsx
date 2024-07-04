@@ -8,8 +8,8 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { inputsProps } from "../Data/productFormProps";
-import { productFormSchema } from "../Schema/ProductFormSchema";
+import { inputsProps } from "../data/productFormProps";
+import { productFormSchema } from "../schema/ProductFormSchema";
 import { useCategorysData } from "../hooks/useCategoryData";
 import { useProductCreateMutate } from "../hooks/useProductCreateMutate";
 import { CreateProductFormData } from "../interfaces/product-data";
@@ -17,15 +17,19 @@ import { Button } from "./Button";
 import { Input } from "./Input";
 import Loading from "./Loading";
 
-
 interface INewProductModal {
   open: boolean;
   handleClose: () => void;
 }
 
 export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
-  const { mutate, isPending } = useProductCreateMutate();
-  const { reset, register, handleSubmit, formState: { errors }, } = useForm({ resolver: yupResolver(productFormSchema), });
+  const { mutate, isPending, isSuccess } = useProductCreateMutate();
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(productFormSchema) });
   const { data: categorys } = useCategorysData();
 
   const handleCreateProduct: SubmitHandler<CreateProductFormData> = (
@@ -33,15 +37,20 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
   ) => {
     const data = {
       ...product,
-      purchasePrice: Number(product.purchasePrice.toString().replace(',', '.')),
-      salePrice: Number(product.salePrice.toString().replace(',', '.')),
-      wholesaleUnityPrice: Number(product.wholesaleUnityPrice?.toString().replace(',', '.')),
-      validationDate: product.validationDate && new Date(product.validationDate)
-    }
+      purchasePrice: Number(product.purchasePrice.toString().replace(",", ".")),
+      salePrice: Number(product.salePrice.toString().replace(",", ".")),
+      wholesaleUnityPrice: Number(
+        product.wholesaleUnityPrice?.toString().replace(",", ".")
+      ),
+      validationDate:
+        product.validationDate && new Date(product.validationDate),
+    };
     mutate(data);
 
-    reset();
-    handleClose();
+    if (!isPending && isSuccess) {
+      reset();
+      handleClose();
+    }
   };
 
   // const percentualChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -117,7 +126,9 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
                             key={key}
                             type={input.type}
                             {...register(input.name)}
-                          >{input.label}</Input>
+                          >
+                            {input.label}
+                          </Input>
                         ))}
                         <Input
                           type="text"
@@ -127,11 +138,11 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
                         >
                           Categoria:
                         </Input>
-                          <datalist id="categorys">
-                            {categorys?.map(category => (
-                              <option key={category}>{category}</option>
-                            ))}
-                          </datalist>
+                        <datalist id="categorys">
+                          {categorys?.map((category) => (
+                            <option key={category}>{category}</option>
+                          ))}
+                        </datalist>
                         <Input
                           type="date"
                           error={errors.validationDate}
@@ -139,7 +150,12 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
                         >
                           Data de validade do produto/lote:
                         </Input>
-                        <Button type="submit" disabled={isPending ? true : false}>{isPending ? (<Loading />) : 'Criar produto'}</Button>
+                        <Button
+                          type="submit"
+                          disabled={isPending ? true : false}
+                        >
+                          {isPending ? <Loading /> : "Criar produto"}
+                        </Button>
                       </form>
                     </div>
                   </div>

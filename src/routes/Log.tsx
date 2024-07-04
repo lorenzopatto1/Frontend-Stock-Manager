@@ -1,5 +1,5 @@
-import { LogDetails } from "../Components/Log/LogDetails";
-import { Nav } from "../Components/Nav/Nav";
+import { LogDetails } from "../components/Log/LogDetails";
+import { Nav } from "../components/Nav/Nav";
 
 export const Log = () => {
   return (

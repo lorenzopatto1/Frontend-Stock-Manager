@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Input } from "../Input";
-import { useCartProducts } from "../../Context/CartProductsContext";
+import { useCartProducts } from "../../context/CartProductsContext";
 import PaymentOptions from "./PaymentOptions";
 
 interface PaymentDataProps {

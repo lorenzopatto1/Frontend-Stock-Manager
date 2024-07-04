@@ -7,7 +7,7 @@ import {
 } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { useCartProducts } from "../../Context/CartProductsContext";
+import { useCartProducts } from "../../context/CartProductsContext";
 import { useRelatoryCreateMutate } from "../../hooks/useRelatoryCreateMutate";
 import { Button } from "../Button";
 import { PaymentData } from "./PaymentData";

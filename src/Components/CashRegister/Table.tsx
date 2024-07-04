@@ -1,4 +1,4 @@
-import { useCartProducts } from "../../Context/CartProductsContext";
+import { useCartProducts } from "../../context/CartProductsContext";
 import { ProductsSold } from "../../interfaces/products-sold";
 
 export const Table = () => {
@@ -14,7 +14,7 @@ export const Table = () => {
   };
 
   return (
-    <table className="table-fixed text-xs md:text-sm lg:text-base text-nowrap divide-ydivide-gray-700 w-full">
+    <table className="relative table-fixed text-xs md:text-sm lg:text-base text-nowrap divide-ydivide-gray-700 w-full">
       <thead className="sticky top-0 z-9 bg-gray-400 text-white dark:bg-gray-800">
         <tr>
           <th>Nome</th>
@@ -23,22 +23,22 @@ export const Table = () => {
           <th>Total</th>
         </tr>
       </thead>
-      <tbody className="divide-y divide-gray-700 relative">
         {productFocus && (
           <button
             onClick={handleRemoveProductAtCart}
-            className="absolute -top-9 right-4 z-10 font-bold text-red-500 hover:text-red-400"
+            className="absolute top-1 right-1 z-10 font-bold bg-white hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-950 p-2 rounded-md text-red-500 hover:text-red-700 dark:hover:text-red-400"
           >
             Remover
           </button>
         )}
+      <tbody className="divide-y divide-gray-700 relative">
         {productsInCart ? (
           productsInCart.map((product) => (
             <tr
               key={product.productId}
               className={`${
-                productFocus?.productId === product.productId && "!bg-indigo-500 dark:!bg-indigo-600 "
-              } hover:bg-indigo-400 dark:hover:bg-indigo-900 relative transition-all cursor-pointer`}
+                productFocus?.productId === product.productId && "!bg-indigo-400 dark:!bg-indigo-600 "
+              } hover:bg-indigo-300 dark:hover:bg-indigo-900 relative transition-all cursor-pointer`}
               onClick={() => handleSelect(product)}
             >
               <td>{product.name}</td>

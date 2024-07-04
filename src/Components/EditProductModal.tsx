@@ -9,8 +9,8 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { inputsProps } from "../Data/productFormProps";
-import { productFormSchema } from "../Schema/ProductFormSchema";
+import { inputsProps } from "../data/productFormProps";
+import { productFormSchema } from "../schema/ProductFormSchema";
 import { useCategorysData } from "../hooks/useCategoryData";
 import { useProductsByIdData } from "../hooks/useProductByIdData";
 import { useProductEditMutate } from "../hooks/useProductEditMutate";
@@ -30,7 +30,7 @@ export const EditProductModal = ({
 }: INewProductModal) => {
   const { data, isSuccess: dataSuccess, refetch } = useProductsByIdData(id);
   const { data: categorys } = useCategorysData();
-  const { mutate } = useProductEditMutate();
+  const { mutate, isSuccess: mutateSuccess } = useProductEditMutate();
   const {
     register,
     handleSubmit,
@@ -64,9 +64,11 @@ export const EditProductModal = ({
     };
 
     mutate(dataMutate);
-
-    handleClose();
-    reset();
+    
+    if (mutateSuccess) {
+      handleClose();
+      reset();
+    }
   };
 
   // const percentualChange = (event: ChangeEvent<HTMLInputElement>) => {

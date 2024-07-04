@@ -32,22 +32,21 @@ const PaymentOptions = ({ selected, setSelected, paymentOptions }: PaymentOption
               {paymentOptions.map((option, key) => (
                 <ListboxOption
                   key={key}
-                  className={({ focus }) =>
+                  className={({ selected, focus }) =>
                     classNames(
-                      focus ? 'bg-indigo-600 dark:text-white' : '',
-                      !focus ? 'text-gray-900' : '',
-                      'relative cursor-default select-none py-2 pl-3 pr-9',
+                      selected ? '!bg-indigo-400 dark:bg-indigo-600 dark:text-white' : 'text-gray-900', focus ? 'hover:bg-indigo-300' : '',
+                      'relative cursor-default select-none py-2 pl-3 pr-9 transition-all',
                     )
                   }
                   value={option || selected} 
                 >
-                  {({ selected, focus }) => (
+                  {({ selected }) => (
                     <>
                       <div className="flex items-center">
                         {selected ? (
                             <span
                               className={classNames(
-                                focus ? 'text-white' : 'text-indigo-500',
+                                selected ? 'text-white' : 'text-indigo-500',
                                 'absolute inset-y-0 left-1 flex items-center pr-4',
                               )}
                             >
