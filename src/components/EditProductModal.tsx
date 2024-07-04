@@ -10,11 +10,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { inputsProps } from "../data/productFormProps";
-import { productFormSchema } from "../schema/ProductFormSchema";
 import { useCategorysData } from "../hooks/useCategoryData";
 import { useProductsByIdData } from "../hooks/useProductByIdData";
 import { useProductEditMutate } from "../hooks/useProductEditMutate";
 import { CreateProductFormData } from "../interfaces/product-data";
+import { productFormSchema } from "../schema/ProductFormSchema";
 import { Button } from "./Button";
 import { Input } from "./Input";
 interface INewProductModal {

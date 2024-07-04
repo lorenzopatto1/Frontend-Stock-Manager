@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { SaleData } from "../components/CashRegister/SaleData";
 import { Table } from "../components/CashRegister/Table";
+import Payment from "../components/Payment/Payment";
+import { useCartProducts } from "../context/CartProductsContext";
 import { useProductsData } from "../hooks/useProductsData";
 import { ProductsSold } from "../interfaces/products-sold";
-import { Link, useSearchParams } from "react-router-dom";
-import { useCartProducts } from "../context/CartProductsContext";
-import Payment from "../components/Payment/Payment";
 
 export const CashRegister = () => {
   const [searchParams] = useSearchParams();

@@ -8,8 +8,8 @@ import {
   MenuItems,
   Transition,
 } from "@headlessui/react";
-import { useTheme } from "../../context/ThemeContext";
 import { MoonIcon, SunIcon } from "@heroicons/react/20/solid";
+import { useTheme } from "../../context/ThemeContext";
 
 interface ProfileProps {
   logOut: () => void;

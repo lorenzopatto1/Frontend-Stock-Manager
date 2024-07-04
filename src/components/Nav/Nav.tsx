@@ -8,15 +8,15 @@ import {
   ChevronUpDownIcon,
   XMarkIcon
 } from "@heroicons/react/24/outline";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, NavLink, useMatch, useNavigate } from "react-router-dom";
 import { navigation } from "../../data/navigation";
 import { useUserData } from "../../hooks/useUserData";
 import { useStoreNameEditMutate } from "../../hooks/useUserEditMutate";
+import { useUserLogout } from "../../hooks/useUserLogout";
 import { MobileNav } from "./MobileNav";
 import { Profile } from "./Profile";
-import { useUserLogout } from "../../hooks/useUserLogout";
 
 import Cookies from "js-cookie";
 
