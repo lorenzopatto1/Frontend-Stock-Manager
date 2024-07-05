@@ -37,6 +37,7 @@ export function CartProductsProvider({ children }: CartProductsProviderProps) {
     const data: ProductsSold = {
       ...productAlreadyInCart,
       productId: productData.id,
+      type: productData.type,
       name: productData.name,
       price: productData.salePrice,
       wholesalePrice: productData.wholesaleUnityPrice ?? null,
