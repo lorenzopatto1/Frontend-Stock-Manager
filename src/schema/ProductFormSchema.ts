@@ -22,6 +22,7 @@ export const productFormSchema = yup.object().shape({
   purchasePrice: isPositiveMonetaryValue().required(
     "Por favor, informe o valor de compra"
   ),
+  percentual: isPositiveMonetaryValue(),
   salePrice: isPositiveMonetaryValue().required(
     "Por favor, informe o valor de venda"
   ),

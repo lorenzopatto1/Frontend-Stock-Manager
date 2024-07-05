@@ -63,8 +63,8 @@ export const CashRegister = () => {
   }, [searchParams]);
 
   const hasProduct = data?.find((product) =>
-    product.name.toLocaleLowerCase().startsWith(productSearch.toLowerCase())
-  );
+    product.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase().startsWith(productSearch.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase())
+);
 
   return (
     <>
@@ -98,8 +98,9 @@ export const CashRegister = () => {
               data
                 ?.filter((product) =>
                   product.name
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
                     .toLocaleLowerCase()
-                    .startsWith(productSearch.toLowerCase())
+                    .startsWith(productSearch.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase())
                 )
                 .map((product) => (
                   <div

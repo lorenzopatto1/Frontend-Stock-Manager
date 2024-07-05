@@ -1,6 +1,6 @@
 export interface InputProps {
   type: string;
-  name: 'name' | 'quantity' | 'purchasePrice' | 'salePrice' | 'wholesaleMinimalQuantity' | 'wholesaleUnityPrice';
+  name: 'name' | 'quantity' | 'purchasePrice' | 'percentual' | 'salePrice' | 'wholesaleMinimalQuantity' | 'wholesaleUnityPrice';
   label: string;
 }
 
@@ -19,6 +19,11 @@ export const inputsProps: InputProps[] = [
     type: 'text',
     name: 'purchasePrice',
     label: 'Preço unitário de compra:'
+  },
+  {
+    type: 'text',
+    name: 'percentual',
+    label: 'Porcentagem de lucro:'
   },
   {
     type: 'text',

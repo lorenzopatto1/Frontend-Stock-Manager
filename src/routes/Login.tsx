@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Cookies from "js-cookie";
@@ -10,6 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "../components/Button";
 import { useUserLogin } from "../hooks/useUserLogin";
 import Loading from "../components/Loading";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 export interface SignInFormData {
   login: string;
@@ -26,7 +27,10 @@ const signInFormSchema = yup
 
 export const Login = () => {
   const { mutate, isPending, isSuccess } = useUserLogin();
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
+
   const token = Cookies.get("token");
 
   const {
@@ -87,15 +91,16 @@ export const Login = () => {
                 Esqueceu sua senha?
               </a>
             </div>
-            <div className="-mt-5">
+            <div className="relative flex flex-col justify-center -mt-5">
               <Input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 error={errors.password}
                 placeholder="Insira sua senha"
                 {...register("password")}
               >
                 Senha
               </Input>
+                {showPassword ? (<EyeIcon className="cursor-pointer right-2 bottom-1.5 absolute w-6" onClick={() => setShowPassword(!showPassword)}/>) : (<EyeSlashIcon className="cursor-pointer right-2 bottom-1.5 absolute w-6" onClick={() => setShowPassword(!showPassword)}/>)}
             </div>
           </div>
 

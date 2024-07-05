@@ -16,6 +16,8 @@ import { productFormSchema } from "../schema/ProductFormSchema";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import Loading from "./Loading";
+import { ChangeEvent } from "react";
+import { useDecimalFormat } from "../hooks/useDecimalFormat";
 
 interface INewProductModal {
   open: boolean;
@@ -28,9 +30,12 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
     reset,
     register,
     handleSubmit,
+    getValues,
+    setValue,
     formState: { errors },
   } = useForm({ resolver: yupResolver(productFormSchema) });
   const { data: categorys } = useCategorysData();
+  const { formatter } = useDecimalFormat();
 
   const handleCreateProduct: SubmitHandler<CreateProductFormData> = (
     product
@@ -52,16 +57,21 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
     }
   };
 
-  // const percentualChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setPercentual(event.target.value);
-  //   setSalePrice(Number(purchasePrice) + purchasePrice * (event.target.value / 100));
-  // }
+  const percentualChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const percentual = Number(event.target.value.replace(",", "."));
+    const purchasePrice = Number(getValues().purchasePrice.replace(",", "."));
+    const calcSalePrice = purchasePrice + purchasePrice * (percentual! / 100);
 
-  // const salePriceChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setSalePrice(event.target.value)
-  //   setPercentual(event.target.value / purchasePrice * 100 - 100);
-  //   console.log((salePrice / purchasePrice) * 100 - 100)
-  // }
+    setValue("salePrice", percentual > 0 ? formatter(calcSalePrice) : "");
+  };
+
+  const salePriceChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const purchasePrice = Number(getValues().purchasePrice.replace(",", "."));
+    const salePrice = Number(event.target.value.replace(",", "."));
+    const calcPercentual = (salePrice / purchasePrice) * 100 - 100;
+
+    setValue("percentual", salePrice > 0 ? formatter(calcPercentual) : "");
+  };
 
   return (
     <Transition show={open}>
@@ -125,6 +135,14 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
                             key={key}
                             type={input.type}
                             {...register(input.name)}
+                            onChange={(e) => {
+                              if (input.name === "percentual") {
+                                percentualChange(e);
+                              }
+                              if (input.name === "salePrice") {
+                                salePriceChange(e);
+                              }
+                            }}
                           >
                             {input.label}
                           </Input>

@@ -68,6 +68,7 @@ export const Filters = () => {
             placeholder="Nome do produto"
             {...register("productName")}
             defaultValue={productName ? productName : ''}
+            onChange={(e) => handleFilter({productName: e.target.value})}
           />
           <Category selected={selected} setSelected={setSelected} />
           <Button className="hidden text-nowrap min-[910px]:flex gap-2 shadow-sm ring-1 ring-inset ring-black dark:ring-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:ring-2 rounded-md items-center p-[.3rem] dark:text-gray-400 font-bold" type="submit"> 

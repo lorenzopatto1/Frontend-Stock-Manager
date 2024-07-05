@@ -27,8 +27,7 @@ export const Table = () => {
               <th className="hidden md:table-cell">
                 <abbr title="Validade">Validade</abbr>
               </th>
-              <th className="hidden xl:table-cell"></th>
-              <th className="hidden xl:table-cell"></th>
+              <th className="px-0 hidden xl:table-cell"></th>
             </tr>
           </thead>
           <tbody className="divide-y font-bold divide-gray-700">

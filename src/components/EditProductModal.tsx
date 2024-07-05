@@ -7,7 +7,7 @@ import {
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { inputsProps } from "../data/productFormProps";
 import { useCategorysData } from "../hooks/useCategoryData";
@@ -18,6 +18,7 @@ import { productFormSchema } from "../schema/ProductFormSchema";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import Loading from "./Loading";
+import { useDecimalFormat } from "../hooks/useDecimalFormat";
 interface INewProductModal {
   open: boolean;
   handleClose: () => void;
@@ -32,24 +33,39 @@ export const EditProductModal = ({
   const { data, isSuccess: dataSuccess, refetch } = useProductsByIdData(id);
   const { data: categorys } = useCategorysData();
   const { mutate, isPending, isError: mutateError } = useProductEditMutate();
+
+  const { formatter } = useDecimalFormat();
+
   const {
     register,
     handleSubmit,
+    getValues,
+    setValue,
     formState: { errors },
     reset,
   } = useForm({
     resolver: yupResolver(productFormSchema),
+    defaultValues: {
+      percentual: "",
+    },
   });
 
   useEffect(() => {
     (async () => {
       if (open) {
         await refetch();
+        const calcPercentual =
+          (Number(getValues().salePrice) / Number(getValues().purchasePrice)) *
+            100 -
+          100;
+
+        setValue("percentual", formatter(calcPercentual));
+      } else {
         reset();
       }
     })();
     //eslint-disable-next-line
-  }, [open]);
+  }, [open, data]);
 
   const handleEditProduct: SubmitHandler<CreateProductFormData> = (product) => {
     const dataMutate = {
@@ -65,23 +81,29 @@ export const EditProductModal = ({
     };
 
     mutate(dataMutate);
-    
+
     if (!mutateError) {
       handleClose();
       reset();
     }
   };
 
-  // const percentualChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setPercentual(event.target.value);
-  //   setSalePrice(Number(purchasePrice) + purchasePrice * (event.target.value / 100));
-  // }
+  const percentualChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const percentual = Number(event.target.value.replace(",", "."));
+    const purchasePrice = Number(getValues().purchasePrice.replace(",", "."));
+    const calcSalePrice = purchasePrice + purchasePrice * (percentual! / 100);
 
-  // const salePriceChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setSalePrice(event.target.value)
-  //   setPercentual(event.target.value / purchasePrice * 100 - 100);
-  //   console.log((salePrice / purchasePrice) * 100 - 100)
-  // }
+    setValue("salePrice", percentual > 0 ? formatter(calcSalePrice) : "");
+  };
+
+  const salePriceChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const purchasePrice = Number(getValues().purchasePrice.replace(",", "."));
+    const salePrice = Number(event.target.value.replace(",", "."));
+    const calcPercentual = (salePrice / purchasePrice) * 100 - 100;
+
+    setValue("percentual", salePrice > 0 ? formatter(calcPercentual) : "");
+  };
+
   if (dataSuccess) {
     return (
       <Transition show={open}>
@@ -147,7 +169,20 @@ export const EditProductModal = ({
                               type={input.type}
                               {...register(input.name)}
                               error={errors.name}
-                              defaultValue={data && data[input.name] || undefined}
+                              defaultValue={
+                                (data &&
+                                  input.name !== "percentual" &&
+                                  data[input.name]) ||
+                                undefined
+                              }
+                              onChange={(e) => {
+                                if (input.name === "percentual") {
+                                  percentualChange(e);
+                                }
+                                if (input.name === "salePrice") {
+                                  salePriceChange(e);
+                                }
+                              }}
                             >
                               {input.label}
                             </Input>
@@ -170,11 +205,13 @@ export const EditProductModal = ({
                             type="date"
                             error={errors.validationDate}
                             {...register("validationDate")}
-                            defaultValue={data?.validationDate?.toString().split('T')[0]}
+                            defaultValue={
+                              data?.validationDate?.toString().split("T")[0]
+                            }
                           >
                             Data de validade do produto/lote:
                           </Input>
-                          <Button>{isPending ? <Loading /> : 'Editar'}</Button>
+                          <Button>{isPending ? <Loading /> : "Editar"}</Button>
                         </form>
                       </div>
                     </div>

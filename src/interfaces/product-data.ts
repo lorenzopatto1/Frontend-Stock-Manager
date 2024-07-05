@@ -23,6 +23,7 @@ export interface CreateProductFormData {
   name: string;
   quantity: number;
   purchasePrice: string | number;
+  percentual?: string;
   salePrice: string | number;
   wholesaleMinimalQuantity?: Maybe<number | undefined>;
   wholesaleUnityPrice?: Maybe<string | number | undefined>;

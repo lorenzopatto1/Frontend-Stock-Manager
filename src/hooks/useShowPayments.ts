@@ -19,7 +19,9 @@ export const useShowPayments = () => {
   const creditTotal = sumPayments("Crédito");
   const pixTotal = sumPayments("Pix");
   const totalValue =
-    filteredLogs?.reduce((acc, log) => (log.secondAmountPaid ? acc += log.firstAmountPaid! + log.secondAmountPaid : acc += log.firstAmountPaid!), 0) ?? 0;
+    filteredLogs?.reduce((acc, log) => (acc += log.firstAmountPaid! + log.secondAmountPaid!), 0) ?? 0;
+    // Todo: implement full cost to see profit
+  // const totalCost = filteredLogs?.map(log => log.products?.reduce((acc, product) => (acc += product.)), 0) ?? 0;
 
 
   return Object.entries({

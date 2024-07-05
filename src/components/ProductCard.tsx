@@ -53,7 +53,7 @@ export const ProductCard = () => {
         {productData
           .filter((product) =>
             productName !== null
-              ? product.name.toLowerCase().includes(productName.toLowerCase())
+              ? product.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().startsWith(productName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase())
               : product.name
           )
           .filter((product) =>
@@ -118,14 +118,14 @@ export const ProductCard = () => {
                     : "--/--/----"}
                 </abbr>
               </td>
-              <td className="hidden xl:table-cell">
+              <div className="hidden xl:flex justify-between py-3 pr-6 ">
                 <button
                   className="text-indigo-500 font-bold hover:text-opacity-80"
                   onClick={() => handleOpenEditModal(product.id!)}
                 >
                   Editar
                 </button>
-              </td>
+
               {product.id && product.id === productKey ? (
                 <EditProductModal
                   id={product.id}
@@ -133,14 +133,14 @@ export const ProductCard = () => {
                   handleClose={handleCloseEditModal}
                 />
               ) : null}
-              <td className="hidden xl:table-cell">
+
                 <button
                   className="text-red-500 hover:text-red-600 dark:text-red-500 font-bold dark:hover:text-opacity-80"
                   onClick={() => handleOpenRemoveModal(product.id!)}
                 >
                   Remover
                 </button>
-              </td>
+              </div>
               {product.id === productKey && (
                 <ConfirmDeleteModal
                   id={productKey}
