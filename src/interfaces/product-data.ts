@@ -1,7 +1,13 @@
 import { Maybe } from "yup";
 
+export enum ProductType {
+  Unity = 1,
+  Mix
+}
+
 export interface ProductData {
   id?: number;
+  type: ProductType;
   name: string;
   quantity: number;
   purchasePrice: number;
@@ -20,6 +26,7 @@ export interface PricesResponse {
 }
 
 export interface CreateProductFormData {
+  type: ProductType;
   name: string;
   quantity: number;
   purchasePrice: string | number;

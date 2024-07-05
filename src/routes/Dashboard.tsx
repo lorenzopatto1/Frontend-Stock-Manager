@@ -1,7 +1,7 @@
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Nav } from "../components/Nav/Nav.tsx";
 import { NewProductModal } from "../components/NewProductModal.tsx";
 import { Table } from "../components/Table.tsx";
@@ -9,14 +9,18 @@ import TotalCostAndSalePrices from "../components/TotalCostAndSalePrices.tsx";
 import { useProductsData } from "../hooks/useProductsData.ts";
 
 const Dashboard = () => {
+  const [, setSearchParams] = useSearchParams();
   const { count } = useProductsData();
   const [openNewProductModal, setOpenNewProductModal] = useState(false);
   const navigate = useNavigate();
 
   const handleClose = () => {
     setOpenNewProductModal(false);
+    setSearchParams(state => {
+      state.delete("productType")
+      return state
+    })
   };
-
   useEffect(() => {
     const token = Cookies.get("token");
     if (token === undefined) {

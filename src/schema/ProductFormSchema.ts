@@ -11,6 +11,7 @@ const isPositiveMonetaryValue = () => {
 };
 
 export const productFormSchema = yup.object().shape({
+  type: yup.number().required("Por favor, insira o nome do produto"),
   name: yup.string().required("Por favor, insira o nome do produto"),
   quantity: yup
     .number()

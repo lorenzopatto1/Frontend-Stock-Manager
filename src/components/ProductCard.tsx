@@ -6,7 +6,7 @@ import { EditProductModal } from "./EditProductModal";
 import { ProductCardSkeleton } from "./ProductCardSkeleton";
 
 export const ProductCard = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { data: productData, isLoading, isSuccess } = useProductsData();
   const [openEditProductModal, setOpenEditProductModal] = useState(false);
   const [openRemoveProductModal, setOpenRemoveProductModal] = useState(false);
@@ -22,6 +22,10 @@ export const ProductCard = () => {
 
   const handleCloseEditModal = () => {
     setOpenEditProductModal(false);
+    setSearchParams(state => {
+      state.delete("productType")
+      return state
+    })
   };
 
   const handleOpenRemoveModal = (id: number) => {

@@ -11,13 +11,15 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { inputsProps } from "../data/productFormProps";
 import { useCategorysData } from "../hooks/useCategoryData";
 import { useProductCreateMutate } from "../hooks/useProductCreateMutate";
-import { CreateProductFormData } from "../interfaces/product-data";
+import { CreateProductFormData, ProductData } from "../interfaces/product-data";
 import { productFormSchema } from "../schema/ProductFormSchema";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import Loading from "./Loading";
 import { ChangeEvent } from "react";
 import { useDecimalFormat } from "../hooks/useDecimalFormat";
+import { ProductTypePopover } from "../components/ProductTypePopover";
+import { useSearchParams } from "react-router-dom";
 
 interface INewProductModal {
   open: boolean;
@@ -36,11 +38,14 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
   } = useForm({ resolver: yupResolver(productFormSchema) });
   const { data: categorys } = useCategorysData();
   const { formatter } = useDecimalFormat();
+  const [searchParams] = useSearchParams();
+
+  const productType = searchParams.get("productType")
 
   const handleCreateProduct: SubmitHandler<CreateProductFormData> = (
     product
   ) => {
-    const data = {
+    const data: ProductData = {
       ...product,
       purchasePrice: Number(product.purchasePrice.toString().replace(",", ".")),
       salePrice: Number(product.salePrice.toString().replace(",", ".")),
@@ -62,15 +67,14 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
     const purchasePrice = Number(getValues().purchasePrice.replace(",", "."));
     const calcSalePrice = purchasePrice + purchasePrice * (percentual! / 100);
 
-    setValue("salePrice", percentual > 0 ? formatter(calcSalePrice) : "");
+    setValue("salePrice", calcSalePrice > 0 ? formatter(calcSalePrice) : "");
   };
 
   const salePriceChange = (event: ChangeEvent<HTMLInputElement>) => {
     const purchasePrice = Number(getValues().purchasePrice.replace(",", "."));
     const salePrice = Number(event.target.value.replace(",", "."));
     const calcPercentual = (salePrice / purchasePrice) * 100 - 100;
-
-    setValue("percentual", salePrice > 0 ? formatter(calcPercentual) : "");
+    setValue("percentual", calcPercentual > 0 && calcPercentual !== Infinity ? formatter(calcPercentual) : "");
   };
 
   return (
@@ -121,8 +125,9 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
                   </TransitionChild>
                   <div className="flex h-full flex-col overflow-y-scroll bg-white dark:bg-gray-800 py-6 shadow-xl">
                     <div className="px-4 sm:px-6">
-                      <DialogTitle className="text-xl font-bold leading-6">
-                        Cadastrar novo produto:
+                      <DialogTitle className="flex text-nowrap justify-between text-xl font-bold leading-6 items-center">
+                        Cadastrar produto:
+                        <ProductTypePopover />
                       </DialogTitle>
                     </div>
                     <div className="relative mt-6 flex-1 flex gap-8 flex-col px-4 sm:px-6 w-full">
@@ -130,11 +135,13 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
                         className="space-y-2 w-full"
                         onSubmit={handleSubmit(handleCreateProduct)}
                       >
+                        <input type="number" hidden value={productType!} {...register("type")}/>
                         {inputsProps.map((input, key) => (
                           <Input
                             key={key}
                             type={input.type}
                             {...register(input.name)}
+                            autoComplete="new-password"
                             onChange={(e) => {
                               if (input.name === "percentual") {
                                 percentualChange(e);

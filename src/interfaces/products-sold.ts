@@ -1,6 +1,9 @@
+import { ProductType } from "./product-data";
+
 export interface ProductsSold {
   id?: number,
   productId?: number;
+  type: ProductType;
   name: string;
   quantity: number;
   price: number;
@@ -11,8 +14,7 @@ export interface ProductsSold {
 
 export interface SaleRelatory {
   id?: number;
-  userId?: number;
-  products?: ProductsSold[]
+  totalCost?: number;
   totalValue?: number;
   firstPayment?: string;
   firstAmountPaid?: number;
@@ -22,4 +24,6 @@ export interface SaleRelatory {
   secondAmountPaid?: number | null;
   seller?: string;
   saleDate?: Date | null;
+  userId?: number;
+  products?: ProductsSold[]
 }

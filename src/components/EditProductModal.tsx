@@ -13,12 +13,14 @@ import { inputsProps } from "../data/productFormProps";
 import { useCategorysData } from "../hooks/useCategoryData";
 import { useProductsByIdData } from "../hooks/useProductByIdData";
 import { useProductEditMutate } from "../hooks/useProductEditMutate";
-import { CreateProductFormData } from "../interfaces/product-data";
+import { CreateProductFormData, ProductData } from "../interfaces/product-data";
 import { productFormSchema } from "../schema/ProductFormSchema";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import Loading from "./Loading";
 import { useDecimalFormat } from "../hooks/useDecimalFormat";
+import { ProductTypePopover } from "./ProductTypePopover";
+import { useSearchParams } from "react-router-dom";
 interface INewProductModal {
   open: boolean;
   handleClose: () => void;
@@ -30,12 +32,14 @@ export const EditProductModal = ({
   handleClose,
   id,
 }: INewProductModal) => {
+  const [searchParams] = useSearchParams();
+
   const { data, isSuccess: dataSuccess, refetch } = useProductsByIdData(id);
   const { data: categorys } = useCategorysData();
   const { mutate, isPending, isError: mutateError } = useProductEditMutate();
 
   const { formatter } = useDecimalFormat();
-
+  
   const {
     register,
     handleSubmit,
@@ -50,6 +54,8 @@ export const EditProductModal = ({
     },
   });
 
+  const productType = searchParams.get("productType");
+
   useEffect(() => {
     (async () => {
       if (open) {
@@ -59,18 +65,20 @@ export const EditProductModal = ({
             100 -
           100;
 
-        setValue("percentual", formatter(calcPercentual));
+        setValue("percentual", calcPercentual > 0 ? formatter(calcPercentual) : '');
       } else {
+        await refetch();
         reset();
       }
     })();
     //eslint-disable-next-line
   }, [open, data]);
 
-  const handleEditProduct: SubmitHandler<CreateProductFormData> = (product) => {
-    const dataMutate = {
+  const handleEditProduct: SubmitHandler<CreateProductFormData> = async (product) => {
+    const dataMutate: ProductData = {
       ...product,
       id,
+      type: Number(productType!),
       purchasePrice: Number(product.purchasePrice.toString().replace(",", ".")),
       salePrice: Number(product.salePrice.toString().replace(",", ".")),
       wholesaleUnityPrice: Number(
@@ -81,8 +89,8 @@ export const EditProductModal = ({
     };
 
     mutate(dataMutate);
-
     if (!mutateError) {
+      await refetch();
       handleClose();
       reset();
     }
@@ -93,15 +101,19 @@ export const EditProductModal = ({
     const purchasePrice = Number(getValues().purchasePrice.replace(",", "."));
     const calcSalePrice = purchasePrice + purchasePrice * (percentual! / 100);
 
-    setValue("salePrice", percentual > 0 ? formatter(calcSalePrice) : "");
+    setValue("salePrice", calcSalePrice > 0 ? formatter(calcSalePrice) : "");
   };
 
   const salePriceChange = (event: ChangeEvent<HTMLInputElement>) => {
     const purchasePrice = Number(getValues().purchasePrice.replace(",", "."));
     const salePrice = Number(event.target.value.replace(",", "."));
     const calcPercentual = (salePrice / purchasePrice) * 100 - 100;
-
-    setValue("percentual", salePrice > 0 ? formatter(calcPercentual) : "");
+    setValue(
+      "percentual",
+      calcPercentual > 0 && calcPercentual !== Infinity
+        ? formatter(calcPercentual)
+        : ""
+    );
   };
 
   if (dataSuccess) {
@@ -153,8 +165,9 @@ export const EditProductModal = ({
                     </TransitionChild>
                     <div className="flex h-full flex-col overflow-y-scroll bg-white dark:bg-gray-800 py-6 shadow-xl">
                       <div className="px-4 sm:px-6">
-                        <DialogTitle className="text-xl font-bold leading-6">
-                          Editar produto: {data?.name}
+                        <DialogTitle className="text-xl flex justify-between font-bold leading-6">
+                          Editar produto:
+                          <ProductTypePopover defaultValue={data?.type} />
                         </DialogTitle>
                       </div>
                       <div className="relative mt-6 flex-1 flex gap-8 flex-col px-4 sm:px-6 w-full">
@@ -163,6 +176,13 @@ export const EditProductModal = ({
                           className="space-y-2 w-full"
                           onSubmit={handleSubmit(handleEditProduct)}
                         >
+                          <Input
+                            type="text"
+                            // className="hidden"
+                            value={Number(productType!)}
+                            {...register("type")}
+                            error={errors.type}
+                          />
                           {inputsProps.map((input, key) => (
                             <Input
                               key={key}
@@ -211,7 +231,9 @@ export const EditProductModal = ({
                           >
                             Data de validade do produto/lote:
                           </Input>
-                          <Button>{isPending ? <Loading /> : "Editar"}</Button>
+                          <Button type="submit">
+                            {isPending ? <Loading /> : "Editar"}
+                          </Button>
                         </form>
                       </div>
                     </div>
