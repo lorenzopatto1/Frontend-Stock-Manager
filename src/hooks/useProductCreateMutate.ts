@@ -9,8 +9,9 @@ const createProduct = async (data: ProductData) => {
     const token = Cookies.get('token');
     await api.post(`/Products?token=${token}`, data)
     toast.success("Produto criado!")
-  } catch (_) {
+  } catch (error) {
     toast.error("Falha ao criar produto")
+    throw error
   }
 }
 

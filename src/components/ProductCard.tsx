@@ -44,7 +44,7 @@ export const ProductCard = () => {
   }
 
   if (isSuccess && !productData?.length) {
-    return <div>Ainda não tem nenhum produto cadastrado</div>;
+    return <div className="mt-4">Ainda não tem nenhum produto cadastrado</div>;
   }
 
   if (isSuccess && productData) {

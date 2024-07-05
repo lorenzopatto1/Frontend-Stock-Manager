@@ -23,7 +23,7 @@ interface INewProductModal {
 }
 
 export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
-  const { mutate, isPending, isSuccess } = useProductCreateMutate();
+  const { mutate, isPending, isError } = useProductCreateMutate();
   const {
     reset,
     register,
@@ -47,9 +47,8 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
     };
     mutate(data);
 
-    if (!isPending && isSuccess) {
+    if (!isError) {
       reset();
-      handleClose();
     }
   };
 

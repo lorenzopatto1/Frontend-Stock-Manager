@@ -17,6 +17,7 @@ import { CreateProductFormData } from "../interfaces/product-data";
 import { productFormSchema } from "../schema/ProductFormSchema";
 import { Button } from "./Button";
 import { Input } from "./Input";
+import Loading from "./Loading";
 interface INewProductModal {
   open: boolean;
   handleClose: () => void;
@@ -30,7 +31,7 @@ export const EditProductModal = ({
 }: INewProductModal) => {
   const { data, isSuccess: dataSuccess, refetch } = useProductsByIdData(id);
   const { data: categorys } = useCategorysData();
-  const { mutate, isSuccess: mutateSuccess } = useProductEditMutate();
+  const { mutate, isPending, isError: mutateError } = useProductEditMutate();
   const {
     register,
     handleSubmit,
@@ -65,7 +66,7 @@ export const EditProductModal = ({
 
     mutate(dataMutate);
     
-    if (mutateSuccess) {
+    if (!mutateError) {
       handleClose();
       reset();
     }
@@ -173,7 +174,7 @@ export const EditProductModal = ({
                           >
                             Data de validade do produto/lote:
                           </Input>
-                          <Button>Editar</Button>
+                          <Button>{isPending ? <Loading /> : 'Editar'}</Button>
                         </form>
                       </div>
                     </div>

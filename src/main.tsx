@@ -50,7 +50,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={client}>
       <CartProductsProvider>
-        <ThemeProvider defaultTheme="system" storageKey="stock-manager-theme">
+        <ThemeProvider defaultTheme="light" storageKey="stock-manager-theme">
           <RouterProvider router={router} />
         </ThemeProvider>
         <Toaster richColors />
