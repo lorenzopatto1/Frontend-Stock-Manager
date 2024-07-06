@@ -178,7 +178,7 @@ export const EditProductModal = ({
                         >
                           <Input
                             type="text"
-                            // className="hidden"
+                            className="hidden"
                             value={Number(productType!)}
                             {...register("type")}
                             error={errors.type}

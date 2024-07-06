@@ -135,7 +135,7 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
                         className="space-y-2 w-full"
                         onSubmit={handleSubmit(handleCreateProduct)}
                       >
-                        <input type="number" hidden value={productType!} {...register("type")}/>
+                        <Input className="hidden" type="number" value={Number(productType!)} error={errors.type} {...register("type")}/>
                         {inputsProps.map((input, key) => (
                           <Input
                             key={key}
