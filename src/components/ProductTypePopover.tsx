@@ -34,6 +34,12 @@ export const ProductTypePopover = ({ defaultValue }: IProductTypePopover) => {
     //eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    if (!type) {
+      setPopoverOpen(false);
+    }
+  }, [type])
+
   return (
     <Popover open={popoverOpen}>
       <PopoverTrigger asChild>

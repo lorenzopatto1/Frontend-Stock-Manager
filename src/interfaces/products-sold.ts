@@ -6,6 +6,7 @@ export interface ProductsSold {
   type: ProductType;
   name: string;
   quantity: number;
+  purchasePrice: number;
   price: number;
   wholesalePrice?: number | null;
   wholesaleMinimalQuantity?: number | null;

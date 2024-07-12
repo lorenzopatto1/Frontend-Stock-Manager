@@ -20,12 +20,18 @@ export const useShowPayments = () => {
   const pixTotal = sumPayments("Pix");
   const totalValue =
     filteredLogs?.reduce((acc, log) => (acc += log.firstAmountPaid! + log.secondAmountPaid!), 0) ?? 0;
-    // Todo: implement full cost to see profit
-  // const totalCost = filteredLogs?.map(log => log.products?.reduce((acc, product) => (acc += product.)), 0) ?? 0;
 
+    const totalSalePrice = filteredLogs?.map(log =>
+      log.products?.reduce<number>((acc, product) => acc + (product.price || 0), 0) || 0
+    ).reduce((acc, cost) => acc + cost, 0);
+
+    const totalPurchasePrice = filteredLogs?.map(log =>
+      log.products?.reduce<number>((acc, product) => acc + (product.purchasePrice || 0), 0) || 0
+    ).reduce((acc, cost) => acc + cost, 0);
 
   return Object.entries({
-    Ganhos: totalValue,
+    Bruto: totalValue,
+    Liquido: totalSalePrice - totalPurchasePrice,
     Dinheiro: cashTotal,
     Débito: debitTotal,
     Crédito: creditTotal,

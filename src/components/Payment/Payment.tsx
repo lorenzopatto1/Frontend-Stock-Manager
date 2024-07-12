@@ -12,6 +12,7 @@ import { useRelatoryCreateMutate } from "../../hooks/useRelatoryCreateMutate";
 import { Button } from "../Button";
 import { PaymentData } from "./PaymentData";
 import PaymentOptions from "./PaymentOptions";
+import Loading from "../Loading";
 
 const paymentOptions = [
   "Escolha a forma de pagamento",
@@ -22,20 +23,22 @@ const paymentOptions = [
 ];
 
 const Payment = () => {
-  const { mutate, isSuccess } = useRelatoryCreateMutate();
+  const { mutate, isPending, isError } = useRelatoryCreateMutate();
   const { sale, setSale, total, setProductsInCart } = useCartProducts();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [firstPaymentOption, setFirstPaymentOption] = useState(paymentOptions[0]);
+  const [firstPaymentOption, setFirstPaymentOption] = useState(
+    paymentOptions[0]
+  );
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    setSale(prevState => ({ 
+    setSale((prevState) => ({
       ...prevState,
       firstPayment: firstPaymentOption,
-    }))
+    }));
     //eslint-disable-next-line
-  }, [firstPaymentOption])
+  }, [firstPaymentOption]);
 
   const finalize = searchParams.get("Finalize");
 
@@ -45,18 +48,16 @@ const Payment = () => {
       return state;
     });
   };
-  
-  const handleFinishSale = () => {
 
+  const handleFinishSale = () => {
     if (sale) {
       mutate(sale);
-
     }
-    if (isSuccess) {
+    if (!isError) {
       setProductsInCart([]);
-      handleClose()
+      handleClose();
     }
-}
+  };
 
   useEffect(() => {
     if (total === 0) {
@@ -121,12 +122,19 @@ const Payment = () => {
                           )}
                         />
                       )}
-
                     </div>
                   </div>
                 </div>
                 <div className="flex gap-4 items-center">
-                  <Button disabled={firstPaymentOption === paymentOptions[0] ? true : false} onClick={handleFinishSale} type="button">Finalizar venda</Button>
+                  <Button
+                    disabled={
+                      firstPaymentOption === paymentOptions[0] ? true : false
+                    }
+                    onClick={handleFinishSale}
+                    type="button"
+                  >
+                    {isPending ? <Loading /> : 'Finalizar venda'}
+                  </Button>
                   <Link to="/cash-register">Voltar</Link>
                 </div>
               </DialogPanel>

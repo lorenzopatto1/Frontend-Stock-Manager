@@ -159,8 +159,8 @@ export const Nav = () => {
                             <CheckIcon
                               className={`group-hover:fill-indigo-400 font-bold ${
                                 storeName
-                                  ? "fill-red-500 group-hover:fill-red-500"
-                                  : "dark:fill-zinc-200"
+                                  ? "dark:fill-zinc-200"
+                                  : "fill-red-500 group-hover:fill-red-500"
                               } w-6`}
                             />
                           </button>

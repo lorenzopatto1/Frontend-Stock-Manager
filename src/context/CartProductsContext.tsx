@@ -39,6 +39,7 @@ export function CartProductsProvider({ children }: CartProductsProviderProps) {
       productId: productData.id,
       type: productData.type,
       name: productData.name,
+      purchasePrice: productData.purchasePrice,
       price: productData.salePrice,
       wholesalePrice: productData.wholesaleUnityPrice ?? null,
       wholesaleMinimalQuantity: productData.wholesaleMinimalQuantity ?? null,
