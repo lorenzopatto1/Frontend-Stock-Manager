@@ -10,6 +10,7 @@ import {
 } from "@headlessui/react";
 import { MoonIcon, SunIcon } from "@heroicons/react/20/solid";
 import { useTheme } from "../../context/ThemeContext";
+import { useSearchParams } from "react-router-dom";
 
 interface ProfileProps {
   logOut: () => void;
@@ -17,6 +18,15 @@ interface ProfileProps {
 
 export const Profile = ({ logOut }: ProfileProps) => {
   const { theme, setTheme } = useTheme();
+  const [, setSearchParams] = useSearchParams();
+
+  const handleOpenSettings = () => {
+    setSearchParams(state => {
+      state.set("settings", "open")
+      return state
+    })
+  }
+
   return (
     <Menu as="div" className="relative ml-3">
       <div>
@@ -38,6 +48,7 @@ export const Profile = ({ logOut }: ProfileProps) => {
           <MenuItem
             className="text-left text-md w-full flex gap-2 px-4 py-2 bg-white text:zinc-800 dark:bg-gray-800 black:text-zinc-200 focus:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-700"
             as="button"
+            onClick={handleOpenSettings}
           >
             <Cog6ToothIcon className="w-6 stroke-2" />
             Configurações

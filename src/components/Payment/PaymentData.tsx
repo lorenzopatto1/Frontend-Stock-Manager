@@ -18,6 +18,11 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
   const cashChange = total - Number(amountPayd.replace(",", "."));
 
   useEffect(() => {
+    if (cashChange > 0) {
+      setChangeCheck(false);
+    } else {
+      setChangeCheck(true);
+    }
     setSale(prevState => ({ 
       ...prevState,
       totalValue: total,

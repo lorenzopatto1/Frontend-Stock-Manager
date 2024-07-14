@@ -8,6 +8,8 @@ import { Table } from "../components/Table.tsx";
 import TotalCostAndSalePrices from "../components/TotalCostAndSalePrices.tsx";
 import { useProductsData } from "../hooks/useProductsData.ts";
 
+import { Settings } from "../components/Settings/Settings.tsx";
+
 const Dashboard = () => {
   const [, setSearchParams] = useSearchParams();
   const { count } = useProductsData();
@@ -31,6 +33,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col h-full">
+      <Settings />
       <Nav />
       <TotalCostAndSalePrices />
       <header className=" bg-gray-300 dark:bg-gray-800 shadow flex items-center max-h-12 py-1 justify-between">

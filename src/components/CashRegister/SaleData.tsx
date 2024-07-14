@@ -113,11 +113,11 @@ export const SaleData = () => {
           Preço
         </Input>
 
-        <div className="w-full flex-1 transition-all text-xs min-[478px]:text-base p-3 group hover:ring-indigo-500 focus-within:ring-indigo-500 flex ring-1 rounded-lg ring-zinc-700 dark:ring-zinc-500 relative flex-col">
-          <div className="font-bold rounded-md text-nowrap absolute group-focus-within:text-indigo-500 left-1 -top-4 px-1 md:px-2 bg-white dark:bg-gray-900">
+        <div className="w-full flex-1 transition-all text-xs min-[478px]:text-base group hover:ring-indigo-500 focus-within:ring-indigo-500 flex ring-1 rounded-lg ring-zinc-500 p-3 relative flex-col">
+          <div className="font-bold rounded-md absolute text-nowrap group-focus-within:text-indigo-500 left-1 -top-4 px-2 bg-white dark:bg-gray-900">
             Total Item
           </div>
-          <p className="text-ellipsis overflow-hidden font-bold ring-1  group-hover:ring-indigo-500 ring-zinc-700 dark:ring-zinc-500 w-full text-center py-4 md:text-start md:p-4 rounded-md">
+          <p className="text-ellipsis overflow-hidden font-bold ring-1 group-hover:text-indigo-500 group-hover:ring-indigo-500 ring-zinc-700 dark:ring-zinc-500 w-full text-center py-4 md:text-start md:p-4 rounded-md">
             {productFocus
               ? totalItem.toLocaleString("pt-br", {
                   style: "currency",
@@ -131,7 +131,7 @@ export const SaleData = () => {
           <div className="font-bold rounded-md absolute text-nowrap group-focus-within:text-indigo-500 left-1 -top-4 px-2 bg-white dark:bg-gray-900">
             Total
           </div>
-          <p className="text-ellipsis overflow-hidden font-bold ring-1  group-hover:ring-indigo-500 ring-zinc-500 w-full text-center py-4 md:text-start md:p-4 rounded-md">
+          <p className="text-ellipsis overflow-hidden font-bold ring-1 group-hover:text-indigo-500 group-hover:ring-indigo-500 ring-zinc-500 w-full text-center py-4 md:text-start md:p-4 rounded-md">
             {productFocus
               ? total.toLocaleString("pt-br", {
                   style: "currency",

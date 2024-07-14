@@ -38,7 +38,7 @@ export const ProductTypePopover = ({ defaultValue }: IProductTypePopover) => {
     if (!type) {
       setPopoverOpen(false);
     }
-  }, [type])
+  }, [type]);
 
   return (
     <Popover open={popoverOpen}>
@@ -53,13 +53,17 @@ export const ProductTypePopover = ({ defaultValue }: IProductTypePopover) => {
       <PopoverContent className="p-1 w-32 dark:bg-gray-700">
         <div className="flex flex-col gap-2">
           <button
-            className="p-1 ring-1 ring-gray-600 hover:ring-indigo-500 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-md"
+            className={`${
+              type === "1" ? "!bg-indigo-700 ring-black dark:ring-gray-600 !text-white" : "dark:bg-gray-800 ring-gray-600"
+            } p-1 ring-1  hover:ring-indigo-500 hover:bg-indigo-400 hover:text-black dark:hover:text-white  dark:hover:bg-gray-900 rounded-md`}
             onClick={() => handleSelectProductType(ProductType.Unity)}
           >
             Unidade
           </button>
           <button
-            className="p-1 ring-1 ring-gray-600 hover:ring-indigo-500 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-md"
+            className={`${
+              type === "2" ? "!bg-indigo-700 ring-black  dark:ring-gray-600 !text-white" : "dark:bg-gray-800 ring-gray-600"
+            } p-1 ring-1  hover:ring-indigo-500 hover:bg-indigo-400 hover:text-black dark:hover:text-white  dark:hover:bg-gray-900 rounded-md`}
             onClick={() => handleSelectProductType(ProductType.Mix)}
           >
             Mix
