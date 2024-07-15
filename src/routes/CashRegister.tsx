@@ -63,11 +63,20 @@ export const CashRegister = () => {
   }, [searchParams]);
 
   const hasProduct = data?.find((product) =>
-    product.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase().startsWith(productSearch.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase())
-);
+    product.name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLocaleLowerCase()
+      .startsWith(
+        productSearch
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+      )
+  );
 
   return (
-    <>
+    <div className="flex flex-col h-full">
       <div
         className="relative flex py-12 px-[5%] md:px-[15%] h-full flex-col w-screen items-center"
         onClick={() => searchProductModal && setSearchProductModal(false)}
@@ -98,9 +107,15 @@ export const CashRegister = () => {
               data
                 ?.filter((product) =>
                   product.name
-                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
                     .toLocaleLowerCase()
-                    .startsWith(productSearch.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase())
+                    .startsWith(
+                      productSearch
+                        .normalize("NFD")
+                        .replace(/[\u0300-\u036f]/g, "")
+                        .toLowerCase()
+                    )
                 )
                 .map((product) => (
                   <div
@@ -116,12 +131,12 @@ export const CashRegister = () => {
             )}
           </div>
         )}
-        <div className="flex w-full mt-4 flex-1 bg-gray-300 dark:bg-[#00081d] rounded-md p-2 overflow-y-auto items-start justify-center">
+        <div className="w-full md:w-[90%] min-[900px]:w-[80%] h-[90%] p-4 flex flex-col gap-6 mt-4 bg-gray-300 dark:bg-[#00081d] rounded-[2rem] sm:px-6 lg:px-8">
           <Table />
         </div>
-          <SaleData />
+        <SaleData />
       </div>
       {finalize === "true" && <Payment />}
-    </>
+    </div>
   );
 };

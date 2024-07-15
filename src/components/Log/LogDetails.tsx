@@ -25,9 +25,7 @@ export const LogDetails = () => {
         ))}
       </div>
       <div className="gap-4 flex-col flex h-full p-2 md:p-12 lg:p-12 rounded-md w-full bg-gray-300 dark:bg-gray-950">
-        <div>
           <Table />
-        </div>
       </div>
     </div>
   );
