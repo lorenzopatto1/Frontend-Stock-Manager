@@ -20,7 +20,7 @@ export const Table = () => {
                 <th>Produto</th>
                 <th>Quantidade Vendida</th>
                 <th>Custo Compra</th>
-                <th>Custo Venda</th>
+                <th>Preço Venda</th>
               </tr>
             </thead>
             <tbody className="dark:bg-gray-900 font-bold text-nowrap divide-y divide-gray-700">

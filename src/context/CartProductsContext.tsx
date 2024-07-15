@@ -62,10 +62,9 @@ export function CartProductsProvider({ children }: CartProductsProviderProps) {
   const handleRemoveProductAtCart = () => {
     if (productFocus) {
       setProductsInCart(prevState => [
-        ...prevState.filter(product => product.id !== productFocus.id)
+        ...prevState.filter(product => product.productId !== productFocus.productId)
       ])
-
-        setProductFocus(undefined);
+      setProductFocus(undefined);
     }
   }
 

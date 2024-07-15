@@ -5,14 +5,15 @@ export const useAggregateProducts = () => {
   const { filteredLogs } = useFilteredLogs();
   
   const aggregateProducts = () => {
-    const productMap: { [key: number]: ProductsSold } = {};
+    const productMap: { [key: string]: ProductsSold } = {};
 
     filteredLogs.forEach((sale) => {
       sale.products?.forEach((product) => {
-        if (product.productId && !productMap[product.productId]) {
-          productMap[product.productId] = { ...product };
+        const key = `${product.productId}-${product.price}`;
+        if (!productMap[key]) {
+          productMap[key] = { ...product };
         } else {
-          product.productId ? productMap[product.productId].quantity += product.quantity : null;
+          productMap[key].quantity += product.quantity;
         }
       });
     });

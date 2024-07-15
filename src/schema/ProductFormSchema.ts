@@ -18,7 +18,7 @@ export const productFormSchema = yup.object().shape({
     .typeError("Por favor, insira a quantidade do produto")
     .positive("A quantidade deve ser maior que 0")
     .integer("O numero deve ser inteiro")
-    .min(1, "Número deve ser maior que 0")
+    .min(0, "Número deve ser maior que 0")
     .required("Por favor, insira a quantidade do produto"),
   purchasePrice: isPositiveMonetaryValue().required(
     "Por favor, informe o valor de compra"
