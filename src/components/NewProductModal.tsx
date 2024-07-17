@@ -40,13 +40,14 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
   const { formatter } = useDecimalFormat();
   const [searchParams] = useSearchParams();
 
-  const productType = searchParams.get("productType")
+  const productType = Number(searchParams.get("productType"));
 
   const handleCreateProduct: SubmitHandler<CreateProductFormData> = (
     product
   ) => {
     const data: ProductData = {
       ...product,
+      type: productType,
       purchasePrice: Number(product.purchasePrice.toString().replace(",", ".")),
       salePrice: Number(product.salePrice.toString().replace(",", ".")),
       wholesaleUnityPrice: Number(
@@ -135,7 +136,7 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
                         className="space-y-2 w-full"
                         onSubmit={handleSubmit(handleCreateProduct)}
                       >
-                        <Input className="hidden" type="number" value={Number(productType!)} error={errors.type} {...register("type")}/>
+                        <Input className="hidden" type="number" value={productType} error={errors.type} {...register("type")}/>
                         {inputsProps.map((input, key) => (
                           <Input
                             key={key}

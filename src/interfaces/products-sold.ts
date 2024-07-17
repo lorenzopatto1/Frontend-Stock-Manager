@@ -5,6 +5,7 @@ export interface ProductsSold {
   productId?: number;
   type: ProductType;
   name: string;
+  group: string
   quantity: number;
   purchasePrice: number;
   price: number;

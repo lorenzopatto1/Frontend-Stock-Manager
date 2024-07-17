@@ -21,22 +21,17 @@ export const LogFilter = () => {
 
   const setFilter = () => {
     setSearchParams((state) => {
-      if (!Array.isArray(filterDate) && filterDate) {
-        state.set("Data", filterDate.toLocaleDateString("pt-br"));
-        state.delete("dataMinima");
-        state.delete("dataMaxima");
-      } 
       if (Array.isArray(filterDate) && filterDate[0] && filterDate[1] && filterDate[0].toLocaleDateString("pt-br") === filterDate[1].toLocaleDateString("pt-br")) {
         state.set("Data", filterDate[0].toLocaleDateString("pt-br"));
         state.delete("dataMinima");
         state.delete("dataMaxima");
       }
-        if (Array.isArray(filterDate) && filterDate[0] && filterDate[1] && filterDate[0].toLocaleDateString("pt-br") !== filterDate[1].toLocaleDateString("pt-br")) {
-          state.delete("Data");
-          state.set("dataMinima", filterDate[0].toLocaleDateString("pt-br"));
-          state.set("dataMaxima", filterDate[1].toLocaleDateString("pt-br"));
-        }
-      
+      if (Array.isArray(filterDate) && filterDate[0] && filterDate[1] && filterDate[0].toLocaleDateString("pt-br") !== filterDate[1].toLocaleDateString("pt-br")) {
+        state.delete("Data");
+        state.set("dataMinima", filterDate[0].toLocaleDateString("pt-br"));
+        state.set("dataMaxima", filterDate[1].toLocaleDateString("pt-br"));
+      }
+
       return state;
     });
   };
@@ -58,13 +53,13 @@ export const LogFilter = () => {
                     filterDate &&
                     filterDate.toLocaleDateString("pt-br")}
                   {Array.isArray(filterDate) &&
-                  filterDate[0]?.toLocaleDateString("pt-br") !==
+                    filterDate[0]?.toLocaleDateString("pt-br") !==
                     filterDate[1]?.toLocaleDateString("pt-br")
                     ? `${filterDate[0]?.toLocaleDateString(
-                        "pt-br"
-                      )} - ${filterDate[1]?.toLocaleDateString("pt-br")}`
+                      "pt-br"
+                    )} - ${filterDate[1]?.toLocaleDateString("pt-br")}`
                     : Array.isArray(filterDate) &&
-                      filterDate[0]?.toLocaleDateString("pt-br")}
+                    filterDate[0]?.toLocaleDateString("pt-br")}
                 </span>
               </span>
               <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">

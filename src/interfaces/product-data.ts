@@ -20,6 +20,7 @@ export interface ProductData {
 }
 
 export interface PricesResponse {
+    type: ProductType;
     quantity: number;
     purchasePrice: number;
     salePrice: number;

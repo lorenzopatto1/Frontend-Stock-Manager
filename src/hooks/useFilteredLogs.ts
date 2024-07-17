@@ -10,10 +10,11 @@ export const useFilteredLogs = () => {
   const maxDate = searchParams.get("dataMaxima")
   
   const filteredLogs = logs?.filter((log) => {
+    const today = new Date().toLocaleDateString("pt-BR");
     const logDate = new Date(log.saleDate || '').toLocaleDateString("pt-BR");
-    return date
-      ? logDate === date
-      : minDate && maxDate && logDate >= minDate && logDate <= maxDate;
+    return !!minDate && !!maxDate
+      ? minDate && maxDate && logDate >= minDate && logDate <= maxDate
+      : logDate === date ?? today;
   }) || [];
   
   return { filteredLogs }

@@ -1,8 +1,13 @@
+import { useSearchParams } from "react-router-dom";
 import { useAggregateProducts } from "../../hooks/useAggregateProducts";
 
 export const Table = () => {
+  const [searchParams] = useSearchParams();
   const { aggregateProducts } = useAggregateProducts();
 
+  const productName = searchParams.get("name")
+  const productCategory = searchParams.get("category")
+  
   const tratedProducts = aggregateProducts();
 
   const cashFormat = (value: number) => {
@@ -11,7 +16,7 @@ export const Table = () => {
       currency: "BRL",
     });
   };
-
+  
   return (
     <div className="flex flex-1 basis-0 overflow-y-auto w-full h-full overflow-x-hidden items-start justify-center">
       <table className="table-fixed w-full text-nowrap divide-y divide-gray-700">
@@ -24,7 +29,16 @@ export const Table = () => {
           </tr>
         </thead>
         <tbody className="dark:bg-gray-900 font-bold text-nowrap divide-y divide-gray-700">
-          {tratedProducts.map((log) => (
+          {tratedProducts.filter((product) =>
+            productName !== null
+              ? product.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().startsWith(productName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase())
+              : product.name
+          )
+          .filter((product) =>
+            productCategory !== null
+              ? productCategory === product.group
+              : product.group
+          ).map((log) => (
             <tr key={log.id}>
               <td>{log.name}</td>
               <td>{log.quantity}</td>

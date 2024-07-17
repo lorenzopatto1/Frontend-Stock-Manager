@@ -38,6 +38,7 @@ export function CartProductsProvider({ children }: CartProductsProviderProps) {
       ...productAlreadyInCart,
       productId: productData.id,
       type: productData.type,
+      group: productData.group,
       name: productData.name,
       purchasePrice: productData.purchasePrice,
       price: productData.salePrice,

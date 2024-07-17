@@ -1,12 +1,15 @@
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { usePricesData } from "../hooks/usePricesData";
+import { ProductType } from "../interfaces/product-data";
 
 const TotalCostAndSalePrices = () => {
   const [showValues, setShowValues] = useState(true);
   const { data, isLoading } = usePricesData();
-  const purchaseCost = data?.data.reduce((num, prices) => num + prices.purchasePrice * prices.quantity, 0) || 0
-  const saleCost = data?.data.reduce((num, prices) => num + prices.salePrice * prices.quantity, 0) || 0
+  const purchaseCost = data?.data.filter(product => product.type !== ProductType.Mix).reduce((num, prices) => num + prices.purchasePrice * prices.quantity, 0) || 0
+  const saleCost = data?.data.filter(product => product.type !== ProductType.Mix).reduce((num, prices) => num + prices.salePrice * prices.quantity, 0) || 0
+
+  console.log(data);
 
   const handleToggleShowValues = () => {
     setShowValues(!showValues);
