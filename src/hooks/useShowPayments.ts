@@ -22,16 +22,16 @@ export const useShowPayments = () => {
     filteredLogs?.reduce((acc, log) => (acc += log.firstAmountPaid! + log.secondAmountPaid!), 0) ?? 0;
 
     const totalSalePrice = filteredLogs?.map(log =>
-      log.products?.reduce<number>((acc, product) => acc + (product.price || 0), 0) || 0
+      log.products?.reduce<number>((acc, product) => acc + (product.price * product.quantity), 0) || 0
     ).reduce((acc, cost) => acc + cost, 0);
 
     const totalPurchasePrice = filteredLogs?.map(log =>
-      log.products?.reduce<number>((acc, product) => acc + (product.purchasePrice || 0), 0) || 0
+      log.products?.reduce<number>((acc, product) => acc + (product.purchasePrice * product.quantity), 0) || 0
     ).reduce((acc, cost) => acc + cost, 0);
 
   return Object.entries({
     Bruto: totalValue,
-    Liquido: totalSalePrice - totalPurchasePrice,
+    Liquido: totalSalePrice- totalPurchasePrice,
     Dinheiro: cashTotal,
     Débito: debitTotal,
     Crédito: creditTotal,

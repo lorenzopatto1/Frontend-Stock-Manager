@@ -14,7 +14,7 @@ export const useFilteredLogs = () => {
     const logDate = new Date(log.saleDate || '').toLocaleDateString("pt-BR");
     return !!minDate && !!maxDate
       ? minDate && maxDate && logDate >= minDate && logDate <= maxDate
-      : logDate === date ?? today;
+      : date ?  logDate === date : logDate === today;
   }) || [];
   
   return { filteredLogs }
