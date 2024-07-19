@@ -8,17 +8,17 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { inputsProps } from "../data/productFormProps";
-import { useCategorysData } from "../hooks/useCategoryData";
-import { useProductCreateMutate } from "../hooks/useProductCreateMutate";
-import { CreateProductFormData, ProductData } from "../interfaces/product-data";
-import { productFormSchema } from "../schema/ProductFormSchema";
-import { Button } from "./Button";
-import { Input } from "./Input";
-import Loading from "./Loading";
+import { inputsProps } from "../../data/productFormProps";
+import { useCategorysData } from "../../hooks/useCategoryData";
+import { useProductCreateMutate } from "../../hooks/useProductCreateMutate";
+import { CreateProductFormData, ProductData } from "../../interfaces/product-data";
+import { productFormSchema } from "../../schema/ProductFormSchema";
+import { Button } from "../Button";
+import { Input } from "../Input";
+import Loading from "../Loading";
 import { ChangeEvent } from "react";
-import { useDecimalFormat } from "../hooks/useDecimalFormat";
-import { ProductTypePopover } from "../components/ProductTypePopover";
+import { useDecimalFormat } from "../../hooks/useDecimalFormat";
+import { ProductTypePopover } from "./ProductTypePopover";
 import { useSearchParams } from "react-router-dom";
 
 interface INewProductModal {

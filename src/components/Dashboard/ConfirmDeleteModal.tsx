@@ -1,7 +1,7 @@
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { TrashIcon } from '@heroicons/react/24/outline';
-import { useProductDeleteMutate } from '../hooks/useProductDeleteMutate';
-import Loading from './Loading';
+import { useProductDeleteMutate } from '../../hooks/useProductDeleteMutate';
+import Loading from '../Loading';
 
 interface ConfirmDeleteModalProps {
   open: boolean;

@@ -15,7 +15,7 @@ type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-export const LogFilter = () => {
+export const LogCalendarFilter = () => {
   const [, setSearchParams] = useSearchParams();
   const [filterDate, setFilterDate] = useState<Value>([new Date(), new Date()]);
 

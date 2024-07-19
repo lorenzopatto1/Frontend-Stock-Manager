@@ -39,7 +39,7 @@ abbr {
 }
 
 .react-calendar--selectRange .react-calendar__tile--hover {
-  @apply bg-indigo-500
+  @apply !bg-indigo-500
 }
 
 .react-calendar__tile--now {
@@ -47,5 +47,5 @@ abbr {
 }
 
 .react-calendar__tile--active {
-  @apply bg-indigo-500 dark:text-white;
+  @apply !bg-indigo-500 dark:text-white;
 }

@@ -3,9 +3,9 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Nav } from "../components/Nav/Nav.tsx";
-import { NewProductModal } from "../components/NewProductModal.tsx";
-import { Table } from "../components/Table.tsx";
-import TotalCostAndSalePrices from "../components/TotalCostAndSalePrices.tsx";
+import { NewProductModal } from "../components/Dashboard/NewProductModal.tsx";
+import { Table } from "../components/Dashboard/Table.tsx";
+import TotalCostAndSalePrices from "../components/Dashboard/TotalCostAndSalePrices.tsx";
 import { useProductsData } from "../hooks/useProductsData.ts";
 
 import { Settings } from "../components/Settings/Settings.tsx";

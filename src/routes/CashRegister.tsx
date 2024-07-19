@@ -131,7 +131,7 @@ export const CashRegister = () => {
             )}
           </div>
         )}
-        <div className="w-full md:w-[90%] min-[900px]:w-[80%] h-[90%] p-4 flex flex-col gap-6 mt-4 bg-gray-300 dark:bg-[#00081d] rounded-[2rem] sm:px-6 lg:px-8">
+        <div className="w-full h-[90%] p-4 flex flex-col gap-6 mt-4 bg-gray-300 dark:bg-[#00081d] rounded-[2rem] sm:px-6 lg:px-8">
           <Table />
         </div>
         <SaleData />

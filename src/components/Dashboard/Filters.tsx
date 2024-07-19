@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
-import { Button } from "./Button";
-import { Category } from './Category';
-import { Input } from "./Input";
+import { Button } from "../Button";
+import { Category } from '../Category';
+import { Input } from "../Input";
 
 export const Filters = () => {  
   const [searchParams, setSearchParams] = useSearchParams();

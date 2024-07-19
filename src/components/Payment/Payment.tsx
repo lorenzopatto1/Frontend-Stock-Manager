@@ -6,7 +6,7 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useCartProducts } from "../../context/CartProductsContext";
 import { useRelatoryCreateMutate } from "../../hooks/useRelatoryCreateMutate";
 import { Button } from "../Button";
@@ -23,14 +23,12 @@ const paymentOptions = [
 ];
 
 const Payment = () => {
-  const { mutate, isPending, isError } = useRelatoryCreateMutate();
+  const { mutate, isPending, isSuccess } = useRelatoryCreateMutate();
   const { sale, setSale, total, setProductsInCart } = useCartProducts();
   const [searchParams, setSearchParams] = useSearchParams();
   const [firstPaymentOption, setFirstPaymentOption] = useState(
     paymentOptions[0]
   );
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     setSale((prevState) => ({
@@ -48,23 +46,15 @@ const Payment = () => {
       return state;
     });
   };
-
+console.log(isSuccess)
   const handleFinishSale = () => {
-    if (sale) {
-      mutate(sale);
-    }
-    if (!isError) {
-      setProductsInCart([]);
+      mutate(sale!);
+    };
+    
+    if (isSuccess) {
       handleClose();
+      setProductsInCart([]);
     }
-  };
-
-  useEffect(() => {
-    if (total === 0) {
-      navigate("/cash-register");
-    }
-    //eslint-disable-next-line
-  }, [total]);
 
   return (
     <Transition show={!!finalize}>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useProductsData } from "../hooks/useProductsData";
+import { useProductsData } from "../../hooks/useProductsData";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { EditProductModal } from "./EditProductModal";
 import { ProductCardSkeleton } from "./ProductCardSkeleton";
@@ -51,11 +51,13 @@ export const ProductCard = () => {
     return <div className="mt-4">Ainda não tem nenhum produto cadastrado</div>;
   }
 
-  if (isSuccess && productData) {
+  if (!isSuccess && !productData) {
+    return (<p>Houve um erro ao carregar suas informações.</p>)
+  }
     return (
       <>
         {productData
-          .filter((product) =>
+          ?.filter((product) =>
             productName !== null
               ? product.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().startsWith(productName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase())
               : product.name
@@ -157,7 +159,5 @@ export const ProductCard = () => {
           ))}
       </>
     );
-  } else {
-    return (<p>Houve um erro ao carregar suas informações.</p>)
-  }
+  
 };

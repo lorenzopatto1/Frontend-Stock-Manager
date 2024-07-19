@@ -6,9 +6,9 @@ import { toast } from 'sonner';
 
 const postRelatory = async (data: SaleRelatory) => {
   try {
-    toast.success("Venda concluida");
     const token = Cookies.get('token');
     await api.post(`/Relatory/?token=${token}`, data)
+    toast.success("Venda concluida");
   } catch (_) {
     toast.error("Erro na venda");
   }
