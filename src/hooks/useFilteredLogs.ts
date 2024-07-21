@@ -18,25 +18,26 @@ export const useFilteredLogs = () => {
   const stripTime = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   };
-
   const parsedMinDate = minDate ? stripTime(parseDate(minDate)!) : null;
   const parsedMaxDate = maxDate ? stripTime(parseDate(maxDate)!) : null;
   const parsedDate = date ? stripTime(parseDate(date)!) : null;
-
+  
   const filteredLogs = logs?.filter((log) => {
     const logDate = stripTime(new Date(log.saleDate || ''));
-
+    
     if (parsedMinDate && parsedMaxDate) {
       return logDate >= parsedMinDate && logDate <= parsedMaxDate;
     }
 
     if (parsedDate) {
       return logDate.getTime() === parsedDate.getTime();
+    } else {
+      const today = stripTime(new Date());
+      return logDate.getTime() === today.getTime();
     }
-
-    const today = stripTime(new Date());
-    return logDate.getTime() === today.getTime();
+    
   }) || [];
-
+  
+  console.log(filteredLogs)
   return { filteredLogs };
 };

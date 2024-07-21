@@ -19,7 +19,7 @@ export const useShowPayments = () => {
   const creditTotal = sumPayments("Crédito");
   const pixTotal = sumPayments("Pix");
   const totalValue =
-    filteredLogs?.reduce((acc, log) => (acc += log.firstAmountPaid! + log.secondAmountPaid!), 0) ?? 0;
+    filteredLogs?.reduce((acc, log) => (acc += log.firstAmountPaid! + log.secondAmountPaid! - log.change!), 0) ?? 0;
 
     const totalSalePrice = filteredLogs?.map(log =>
       log.products?.reduce<number>((acc, product) => acc + (product.price * product.quantity), 0) || 0

@@ -9,25 +9,28 @@ interface PaymentDataProps {
 
 export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
   const { setSale, total } = useCartProducts();
-  const [amountPayd, setAmountPayd] = useState(total.toString());
+  const [amountPayd, setAmountPayd] = useState(total.toFixed(2).toString());
   const [secondOption, setSecondOption] = useState(
     "Escolha a forma de pagamento"
   );
   const [changeCheck, setChangeCheck] = useState(true);
 
-  const cashChange = total - Number(amountPayd.replace(",", "."));
-
+  const cashChange = (total - Number(amountPayd.replace(",", "."))) * -1;
+  console.log(cashChange)
   useEffect(() => {
-    if (cashChange > 0) {
+    if (cashChange < 0) {
       setChangeCheck(false);
     } else {
       setChangeCheck(true);
     }
+  }, [cashChange])
+
+  useEffect(() => {
     setSale(prevState => ({ 
       ...prevState,
       totalValue: total,
       firstAmountPaid: Number(amountPayd),  
-      change: changeCheck ? cashChange * -1 : 0,
+      change: changeCheck ? cashChange : 0,
       balanceToPay: secondOption !== "Escolha a forma de pagamento" && cashChange > 0 ? cashChange : 0,
       secondPayment: secondOption !== "Escolha a forma de pagamento" ? secondOption : null,
       secondAmountPaid: secondOption !== "Escolha a forma de pagamento" && cashChange > 0 ? cashChange : 0,
@@ -46,7 +49,7 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
       </Input>
       {amountPayd !== "" && (
         <>
-          {cashChange > 0 ? (
+          {cashChange < 0 ? (
             <div className="flex flex-col mt-2 gap-4 dark:text-zinc-200 font-bold">
               <p className="text-lg">
                 Ainda falta ser pago:{" "}
@@ -68,7 +71,7 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
                 />
               </div>
             </div>
-          ) : cashChange < 0 ? (
+          ) : cashChange > 0 ? (
             <p className="text-lg flex-1 flex-col justify-center mt-16 flex gap-1 font-bold">
 
                 <span className="text-zinc-600 dark:text-zinc-400 text-center text-xs">*Deixe desmarcado caso fique como gorjeta*</span>
@@ -76,7 +79,7 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
               <div className="flex justify-center items-center gap-2">
                 <span>Troco a ser devolvido:</span>
                 <span className="text-orange-600 dark:text-orange-700">
-                  {(cashChange * -1).toLocaleString("pt-br", {
+                  {(cashChange).toLocaleString("pt-br", {
                     style: "currency",
                     currency: "BRL",
                   })}

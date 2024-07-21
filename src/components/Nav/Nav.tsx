@@ -28,7 +28,7 @@ function classNames(
 
 export const Nav = () => {
   const { register, handleSubmit } = useForm();
-  const { data: userData, isSuccess } = useUserData();
+  const { data: userData, isLoading, isSuccess } = useUserData();
   const { mutate } = useStoreNameEditMutate();
   const { mutate: logoutMutate, isError } = useUserLogout();
   const [storeName, setStoreName] = useState("");
@@ -89,7 +89,7 @@ export const Nav = () => {
                         aria-current={item.current ? "page" : undefined}
                       >
                         {homeMatch?.pathname === item.href ||
-                        logsMatch?.pathname === item.href
+                          logsMatch?.pathname === item.href
                           ? item.activeIcon
                           : item.icon}
                         {item.name}
@@ -99,29 +99,33 @@ export const Nav = () => {
                 </div>
               </div>
               <div>
-                  <Link className="text-nowrap transition-all font-bold p-2 rounded-md dark:hover:border-indigo-700 focus:outline-none text-indigo-700 hover:text-zinc-200 dark:hover:text-zinc-200 dark:text-indigo-500 dark:focus:border-indigo-700  hover:bg-indigo-700 border-2 border-indigo-700 dark:border-indigo-500" to="/cash-register">
-                    Abrir caixa
-                  </Link>
+                <button
+                  className="disabled:cursor-not-allowed text-nowrap transition-all font-bold p-2 rounded-md dark:hover:border-indigo-700 focus:outline-none text-indigo-700 hover:text-zinc-200 dark:hover:text-zinc-200 dark:text-indigo-500 dark:focus:border-indigo-700  hover:bg-indigo-700 border-2 border-indigo-700 dark:border-indigo-500"
+                  disabled={isLoading || !isSuccess ? true : false}
+                  onClick={() => navigate("/cash-register")}
+                >
+                  Abrir caixa
+                </button>
               </div>
               <div className="hidden md:block">
                 <div className="ml-4 flex items-center gap-2 md:ml-6">
                   <div>
                     <>
                       <button
-                        className="sticky font-bold text-nowrap gap-2 overflow-hidden z-10 flex justify-center items-center p-2 rounded-md ring-2 w-full ring-indigo-500 focus:outline-none focus:ring-indigo-700"
+                        className="disabled:cursor-not-allowed min-w-28 sticky font-bold text-nowrap gap-2 overflow-hidden z-10 flex items-center justify-between p-2 rounded-md ring-2 w-full ring-indigo-500 focus:outline-none focus:ring-indigo-700"
                         onKeyDown={(e) =>
                           e.key === "Escape" && setIsModalOpen(false)
                         }
                         onClick={() => setIsModalOpen(!isModalOpen)}
+                        disabled={isLoading || !isSuccess ? true : false}
                         type="button"
                       >
-                        {userData?.storeName || "Carregando..."}
+                        <p>{isLoading ? "Carregando..." : isSuccess ? userData?.storeName : "Erro"}</p>
                         <ChevronUpDownIcon className="w-4" />
                       </button>
                       <div
-                        className={`${
-                          isModalOpen ? "flex" : "hidden"
-                        } justify-center top-0 left-0`}
+                        className={`${isModalOpen ? "flex" : "hidden"
+                          } justify-center top-0 left-0`}
                         id="modal"
                         tabIndex={-1}
                         role="dialog"
@@ -157,11 +161,10 @@ export const Nav = () => {
                             onClick={handleChangeStoreName}
                           >
                             <CheckIcon
-                              className={`group-hover:fill-indigo-400 font-bold ${
-                                storeName
-                                  ? "dark:fill-zinc-200"
-                                  : "fill-red-500 group-hover:fill-red-500"
-                              } w-6`}
+                              className={`group-hover:fill-indigo-400 font-bold ${storeName
+                                ? "dark:fill-zinc-200"
+                                : "fill-red-500 group-hover:fill-red-500"
+                                } w-6`}
                             />
                           </button>
                         </form>
@@ -170,7 +173,7 @@ export const Nav = () => {
                   </div>
 
                   <Profile logOut={logOut} />
-                  
+
                 </div>
               </div>
               <div className="-mr-2 flex md:hidden">
@@ -186,7 +189,7 @@ export const Nav = () => {
               </div>
             </div>
           </div>
-              <MobileNav logOut={logOut} userData={userData!} />
+          <MobileNav logOut={logOut} userData={userData!} />
         </>
       )}
     </Disclosure>

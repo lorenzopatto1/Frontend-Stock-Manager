@@ -12,7 +12,7 @@ import { Settings } from "../components/Settings/Settings.tsx";
 
 const Dashboard = () => {
   const [, setSearchParams] = useSearchParams();
-  const { count } = useProductsData();
+  const { count, isLoading,isError } = useProductsData();
   const [openNewProductModal, setOpenNewProductModal] = useState(false);
   const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ const Dashboard = () => {
   };
   useEffect(() => {
     const token = Cookies.get("token");
-    if (token === undefined) {
+  if (token === undefined) {
       navigate("/");
     }
     //eslint-disable-next-line
@@ -43,8 +43,9 @@ const Dashboard = () => {
           </h1>
         </div>
         <button
-          className="mx-auto max-w-md h-full ring-2 rounded-md gap-1 dark:hover:bg-indigo-500 dark:text-zinc-200 hover:text-indigo-800 dark:hover:text-white text-brand-500 transition-colors flex items-center justify-center ring-black hover:ring-indigo-800 dark:ring-indigo-500 p-2"
+          className="disabled:cursor-not-allowed mx-auto max-w-md h-full ring-2 rounded-md gap-1 disabled:dark:hover:bg-transparent disabled:dark:text-zinc-200 dark:hover:bg-indigo-500 dark:text-zinc-200 hover:text-indigo-800 disabled:hover:text-black disabled:hover:ring-black disabled:dark:hover:ring-indigo-500 dark:hover:text-white text-brand-500 transition-colors flex items-center justify-center ring-black hover:ring-indigo-800 dark:ring-indigo-500 p-2"
           onClick={() => setOpenNewProductModal(true)}
+          disabled={isLoading || isError ? true : false}
         >
           <PlusCircleIcon className="size-4 sm:size-6 stroke-2" />
           <h1 className="text-xs min-[438px]:text-sm md:text-base font-bold tracking-tight">
