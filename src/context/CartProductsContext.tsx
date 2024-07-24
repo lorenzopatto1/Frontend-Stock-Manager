@@ -28,11 +28,11 @@ export function CartProductsProvider({ children }: CartProductsProviderProps) {
   const [productSearch, setProductSearch] = useState('');
   const [sale, setSale] = useState<SaleRelatory>();
 
-  const total = productsInCart.reduce((acc, product) => (
+  const total = Number(productsInCart.reduce((acc, product) => (
     product.wholesaleMinimalQuantity && product.quantity >= product.wholesaleMinimalQuantity
     ? acc += product.wholesalePrice! * product.quantity
     : acc += product.total
-  ), 0);
+  ), 0).toFixed(2));
 
   const handleSelectProduct = (productData: ProductData) => {
     const quantity = 1;
