@@ -9,7 +9,7 @@ interface PaymentDataProps {
 
 export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
   const { setSale, total } = useCartProducts();
-  const [amountPayd, setAmountPayd] = useState(total.toFixed(2).toString());
+  const [amountPayd, setAmountPayd] = useState(total.toFixed(2));
   const [secondOption, setSecondOption] = useState(
     "Escolha a forma de pagamento"
   );
@@ -33,10 +33,10 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
       change: changeCheck ? cashChange : 0,
       balanceToPay: secondOption !== "Escolha a forma de pagamento" && cashChange > 0 ? cashChange : 0,
       secondPayment: secondOption !== "Escolha a forma de pagamento" ? secondOption : null,
-      secondAmountPaid: secondOption !== "Escolha a forma de pagamento" && cashChange > 0 ? cashChange : 0,
+      secondAmountPaid: secondOption !== "Escolha a forma de pagamento" && cashChange < 0 ? cashChange * -1 : 0,
     }))
   }, [amountPayd, cashChange, changeCheck, secondOption, setSale, total])
-
+  
   return (
     <>
       <Input
