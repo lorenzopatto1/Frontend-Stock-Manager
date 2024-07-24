@@ -15,8 +15,8 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
   );
   const [changeCheck, setChangeCheck] = useState(true);
 
-  const cashChange = (total - Number(amountPayd.replace(",", "."))) * -1;
-  console.log(cashChange)
+  const cashChange = (Number(total.toFixed(2)) - Number(amountPayd.replace(",", "."))) * -1;
+
   useEffect(() => {
     if (cashChange < 0) {
       setChangeCheck(false);

@@ -28,7 +28,11 @@ export function CartProductsProvider({ children }: CartProductsProviderProps) {
   const [productSearch, setProductSearch] = useState('');
   const [sale, setSale] = useState<SaleRelatory>();
 
-  const total = productsInCart.reduce((acc, product) => acc += product.total, 0);
+  const total = productsInCart.reduce((acc, product) => (
+    product.wholesaleMinimalQuantity && product.quantity >= product.wholesaleMinimalQuantity
+    ? acc += product.wholesalePrice! * product.quantity
+    : acc += product.total
+  ), 0);
 
   const handleSelectProduct = (productData: ProductData) => {
     const quantity = 1;
@@ -45,9 +49,9 @@ export function CartProductsProvider({ children }: CartProductsProviderProps) {
       wholesalePrice: productData.wholesaleUnityPrice ?? null,
       wholesaleMinimalQuantity: productData.wholesaleMinimalQuantity ?? null,
       quantity: productAlreadyInCart?.quantity || quantity,
-      total: productData.wholesaleMinimalQuantity && productData.wholesaleUnityPrice && quantity >= productData.wholesaleMinimalQuantity ? productData.wholesaleUnityPrice * quantity : productData.salePrice * quantity
+      total: productData.wholesaleMinimalQuantity && quantity >= productData.wholesaleMinimalQuantity ? productData.wholesaleUnityPrice! * quantity : productData.salePrice * quantity
     }
-    
+
     if (productAlreadyInCart) 
       {
         productAlreadyInCart.quantity += 1;

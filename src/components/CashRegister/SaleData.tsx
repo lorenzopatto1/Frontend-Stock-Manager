@@ -9,25 +9,37 @@ interface ChangeProps {
 }
 
 export const SaleData = () => {
-  const { setSale, productsInCart, productFocus, setProductFocus, total } =
+  const { setSale, productsInCart, setProductsInCart, productFocus, setProductFocus, total } =
     useCartProducts();
   const [, setSearchParams] = useSearchParams();
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
 
-  const totalItem = Number(quantity) *  parseFloat(price.replace(",", "."));
+  const totalItem = Number((Number(quantity) *  parseFloat(price.replace(",", "."))).toFixed(2));
 
   useEffect(() => {
     setSearchParams((state) => {
-      if (productFocus?.wholesaleMinimalQuantity && productFocus.wholesalePrice && Number(quantity) >= productFocus?.wholesaleMinimalQuantity) {
-        setPrice(productFocus.wholesalePrice.toString())
-      }else if (productFocus) {
-        setQuantity(productFocus.quantity.toString());
+      if (productFocus) {
+        if (productFocus?.wholesaleMinimalQuantity && productFocus.wholesalePrice && Number(quantity) >= productFocus?.wholesaleMinimalQuantity && Number(price) !== productFocus.wholesalePrice) {
+          setPrice(productFocus.wholesalePrice.toString())
+          setProductsInCart(prevState => {
+            const updatedProducts = prevState.map(product => 
+              product.productId === productFocus?.productId 
+                ? { ...product, total: totalItem }
+                : product 
+            );
+            
+            return updatedProducts;
+          });
+        } else
         setPrice(productFocus.price.toString());
+
+        setQuantity(productFocus.quantity.toString());
+
 
         state.set("Quantity", productFocus.quantity.toString());
         state.set("Price", productFocus.price.toString());
-        state.set("TotalItem", productFocus.total.toString());
+        state.set("TotalItem", totalItem.toString());
       } else {
         setPrice("0");
         setQuantity("0");

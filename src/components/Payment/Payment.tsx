@@ -35,6 +35,9 @@ const Payment = () => {
       ...prevState,
       firstPayment: firstPaymentOption,
     }));
+
+    return () => {
+    };
     //eslint-disable-next-line
   }, [firstPaymentOption]);
 
@@ -46,15 +49,14 @@ const Payment = () => {
       return state;
     });
   };
-console.log(isSuccess)
   const handleFinishSale = () => {
-      mutate(sale!);
-    };
-    
-    if (isSuccess) {
-      handleClose();
-      setProductsInCart([]);
-    }
+    mutate(sale!);
+  };
+
+  if (isSuccess) {
+    handleClose();
+    setProductsInCart([]);
+  }
 
   return (
     <Transition show={!!finalize}>
@@ -80,7 +82,7 @@ console.log(isSuccess)
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <DialogPanel className="relative max-w-[60%] lg:w-[60%] min-h-[80vh] flex flex-col items-center p-4 transform overflow-hidden rounded-lg bg-white dark:bg-gray-950 text-left shadow-xl transition-all">
+              <DialogPanel className="relative max-w-[60%] lg:w-[60%] min-h-[80vh] flex flex-col items-center p-4 transform rounded-lg bg-white dark:bg-gray-950 text-left shadow-xl transition-all">
                 <div className="dark:bg-gray-950 px-4 flex-1 pb-4 pt-5 sm:p-6 sm:pb-4">
                   <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                     <DialogTitle
@@ -95,7 +97,7 @@ console.log(isSuccess)
                         })}
                       </span>
                     </DialogTitle>
-                    <div>
+                    <div className="max-h-full">
                       <h2 className="text-sm sm:text-base md:text-xl lg:text-2xl text-nowrap dark:text-zinc-300 mt-10">
                         Escolha a forma de pagamento:
                       </h2>
@@ -118,7 +120,7 @@ console.log(isSuccess)
                 <div className="flex gap-4 items-center">
                   <Button
                     disabled={
-                      firstPaymentOption === paymentOptions[0] ? true : false
+                      firstPaymentOption === paymentOptions[0] || isPending ? true : false
                     }
                     onClick={handleFinishSale}
                     type="button"

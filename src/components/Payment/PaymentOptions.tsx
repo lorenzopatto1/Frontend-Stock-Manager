@@ -27,8 +27,8 @@ const PaymentOptions = ({ selected, setSelected, paymentOptions }: PaymentOption
             </span>
           </ListboxButton>
 
-          <Transition show={open} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
-            <ListboxOptions className="absolute z-50 mt-1 max-h-56 w-full overflow-auto rounded-md bg-gray-300 dark:bg-gray-800 py-1 text-base shadow-lg focus:outline-none sm:text-sm">
+          <Transition show={open} as="div" leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
+            <ListboxOptions className="absolute z-50 mt-1 max-h-56 w-full overflow-y-auto rounded-md bg-gray-300 dark:bg-gray-800 py-1 text-base shadow-lg focus:outline-none sm:text-sm">
               {paymentOptions.map((option, key) => (
                 <ListboxOption
                   key={key}
