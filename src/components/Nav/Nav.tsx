@@ -56,7 +56,8 @@ export const Nav = () => {
   }
 
   const homeMatch = useMatch("home");
-  const logsMatch = useMatch("logs");
+  const stockMatch = useMatch("stock");
+  const logsMatch = useMatch("log");
 
   return (
     <Disclosure as="nav" className="relative bg-gray-300 dark:bg-gray-800 md:rounded-lg">
@@ -89,7 +90,8 @@ export const Nav = () => {
                         aria-current={item.current ? "page" : undefined}
                       >
                         {homeMatch?.pathname === item.href ||
-                          logsMatch?.pathname === item.href
+                          logsMatch?.pathname === item.href ||
+                          stockMatch?.pathname === item.href
                           ? item.activeIcon
                           : item.icon}
                         {item.name}
@@ -101,7 +103,7 @@ export const Nav = () => {
               <div>
                 <button
                   className="disabled:cursor-not-allowed text-nowrap transition-all font-bold p-2 rounded-md dark:hover:border-indigo-700 focus:outline-none text-indigo-700 hover:text-zinc-200 dark:hover:text-zinc-200 dark:text-indigo-500 dark:focus:border-indigo-700  hover:bg-indigo-700 border-2 border-indigo-700 dark:border-indigo-500"
-                  disabled={isLoading || !isSuccess ? true : false}
+                  disabled={isLoading || !isSuccess}
                   onClick={() => navigate("/cash-register")}
                 >
                   Abrir caixa
@@ -117,7 +119,7 @@ export const Nav = () => {
                           e.key === "Escape" && setIsModalOpen(false)
                         }
                         onClick={() => setIsModalOpen(!isModalOpen)}
-                        disabled={isLoading || !isSuccess ? true : false}
+                        disabled={isLoading || !isSuccess}
                         type="button"
                       >
                         <p>{isLoading ? "Carregando..." : isSuccess ? userData?.storeName : "Erro"}</p>
@@ -157,7 +159,7 @@ export const Nav = () => {
                           <button
                             className="absolute right-1 group dark:bg-gray-700 rounded-md"
                             type="submit"
-                            disabled={!storeName ? true : false}
+                            disabled={!storeName}
                             onClick={handleChangeStoreName}
                           >
                             <CheckIcon

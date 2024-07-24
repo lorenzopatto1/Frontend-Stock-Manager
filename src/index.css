@@ -6,6 +6,7 @@ body {
   @apply h-screen m-0 bg-white text-zinc-800 dark:bg-gray-900 dark:text-zinc-100 transition-all;
   overflow: hidden;
   height: 100vh;
+  @apply font-inter;
 }
 
 #root {

@@ -20,7 +20,7 @@ function classNames(
 
 export const MobileNav = ({ userData, logOut }: MobileNavProps) => {
   const [, setSearchParams] = useSearchParams();
-  const homeMatch = useMatch("home");
+  const stockMatch = useMatch("stock");
   const logsMatch = useMatch("log");
 
   const handleOpenSettings = () => {
@@ -39,15 +39,15 @@ export const MobileNav = ({ userData, logOut }: MobileNavProps) => {
             as={NavLink}
             to={item.href}
             className={classNames(
-              homeMatch?.pathname === item.href ||
+              stockMatch?.pathname === item.href ||
                 logsMatch?.pathname === item.href
                 ? "bg-gray-300 text-black dark:bg-gray-900 dark:text-white"
                 : "text-black hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white",
               "rounded-md px-3 py-2 text-base font-medium flex gap-4"
             )}
-            aria-current={homeMatch || logsMatch ? "page" : undefined}
+            aria-current={stockMatch || logsMatch ? "page" : undefined}
           >
-            {homeMatch?.pathname === item.href ||
+            {stockMatch?.pathname === item.href ||
             logsMatch?.pathname === item.href
               ? item.activeIcon
               : item.icon}

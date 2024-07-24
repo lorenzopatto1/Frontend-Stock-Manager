@@ -231,7 +231,7 @@ export const EditProductModal = ({
                           >
                             Data de validade do produto/lote:
                           </Input>
-                          <Button type="submit">
+                          <Button disabled={isPending} type="submit">
                             {isPending ? <Loading /> : "Editar"}
                           </Button>
                         </form>

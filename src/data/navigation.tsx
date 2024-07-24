@@ -1,18 +1,27 @@
 import {
   DocumentDuplicateIcon as DocumentDuplicateSolidIcon,
-  HomeIcon as HomeSolidIcon
+  HomeIcon as HomeSolidIcon,
+  CubeIcon as CubeSolidIcon
 } from "@heroicons/react/16/solid";
 import {
   DocumentDuplicateIcon,
-  HomeIcon
+  HomeIcon,
+  CubeIcon
 } from "@heroicons/react/24/outline";
 
 export const navigation = [
   {
     icon: <HomeIcon className="w-6" / >,
     activeIcon: <HomeSolidIcon className="w-6" />,
-    name: "Inicio",
+    name: "Dashboard",
     href: "/home",
+    current: false,
+  },
+  {
+    icon: <CubeIcon className="w-6" / >,
+    activeIcon: <CubeSolidIcon className="w-6" />,
+    name: "Estoque",
+    href: "/stock",
     current: false,
   },
   {

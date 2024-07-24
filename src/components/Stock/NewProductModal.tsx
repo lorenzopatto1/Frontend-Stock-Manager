@@ -177,7 +177,7 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
                         </Input>
                         <Button
                           type="submit"
-                          disabled={isPending ? true : false}
+                          disabled={isPending}
                         >
                           {isPending ? <Loading /> : "Criar produto"}
                         </Button>

@@ -120,7 +120,7 @@ const Payment = () => {
                 <div className="flex gap-4 items-center">
                   <Button
                     disabled={
-                      firstPaymentOption === paymentOptions[0] || isPending ? true : false
+                      firstPaymentOption === paymentOptions[0] || isPending
                     }
                     onClick={handleFinishSale}
                     type="button"

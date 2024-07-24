@@ -105,7 +105,7 @@ export const Login = () => {
           </div>
 
           <div>
-            <Button disabled={watch().login === "" || watch().password === "" ? true : false}>
+            <Button disabled={watch().login === "" || watch().password === ""}>
               {isPending ? <Loading /> : "Fazer login"}
             </Button>
           </div>
