@@ -20,7 +20,7 @@ export const SaleData = () => {
   useEffect(() => {
     setSearchParams((state) => {
       if (productFocus) {
-        if (productFocus?.wholesaleMinimalQuantity && productFocus.wholesalePrice && Number(quantity) >= productFocus?.wholesaleMinimalQuantity && Number(price) !== productFocus.wholesalePrice) {
+        if (productFocus?.wholesaleMinimalQuantity && productFocus.wholesalePrice && Number(quantity) >= productFocus?.wholesaleMinimalQuantity) {
           setPrice(productFocus.wholesalePrice.toString())
           setProductsInCart(prevState => {
             const updatedProducts = prevState.map(product => 
