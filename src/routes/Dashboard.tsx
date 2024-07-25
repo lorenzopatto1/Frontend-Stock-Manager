@@ -1,10 +1,10 @@
-import { ArrowTrendingDownIcon, ArrowTrendingUpIcon, ChartBarIcon, PercentBadgeIcon } from '@heroicons/react/16/solid'
-import { ValuesCard } from '../components/Dashboard/ValuesCard'
-import { Nav } from '../components/Nav/Nav'
-import { Settings } from '../components/Settings/Settings'
-import { Chart } from '../components/Dashboard/Chart'
-import { MonthResult } from '../components/Dashboard/MonthResult'
-import { CubeIcon } from '@heroicons/react/24/outline'
+import { ArrowTrendingDownIcon, ArrowTrendingUpIcon, ChartBarIcon, PercentBadgeIcon } from '@heroicons/react/16/solid';
+import { ValuesCard } from '../components/Dashboard/ValuesCard';
+import { Nav } from '../components/Nav/Nav';
+import { Settings } from '../components/Settings/Settings';
+import { Chart } from '../components/Dashboard/Chart';
+import { MonthResult } from '../components/Dashboard/MonthResult';
+import { CubeIcon } from '@heroicons/react/24/outline';
 
 const values = [
   {
@@ -21,8 +21,8 @@ const values = [
     title: "Meus investimentos",
     icon: <ArrowTrendingUpIcon className="w-6 fill-green-700 dark:fill-green-500" />,
     value: 500
-  },
-]
+  }
+];
 
 const stockValues = [
   {
@@ -41,84 +41,77 @@ const stockValues = [
     title: "Diferença do estoque",
     icon: <CubeIcon className="w-6 stroke-gray-600 dark:stroke-white" />,
     value: 100
+  }
+];
+
+const currentStockValues = [
+  {
+    title: "Produtos",
+    icon: <CubeIcon className="w-6 stroke-gray-600 dark:stroke-white" />,
+    value: 1592,
+
   },
-]
+  {
+    title: "Custo de compra",
+    icon: <CubeIcon className="w-6 stroke-gray-600 dark:stroke-white" />,
+    value: 802,
+
+  },
+  {
+    title: "Valor total de venda",
+    icon: <CubeIcon className="w-6 stroke-gray-600 dark:stroke-white" />,
+    value: 1539
+  }
+];
 
 export const Dashboard = () => {
   return (
-    <div className="flex flex-col h-screen overflow-auto">
+    <div className="flex flex-col h-screen">
       <Nav />
       <Settings />
 
-      <main className="flex flex-1 flex-col items-center justify-around py-4 gap-4 w-full">
-        <div className="flex w-full flex-col justify-around gap-16 min-[837px]:max-w-[80%]">
+      <main className="flex flex-1 flex-col items-center py-4 w-full">
+        <div className="grid w-full h-fit sm:gap-8 md:gap-16 p-4 md:w-[90%] xl:w-[80%] grid-cols-3">
+          {values.map(item => (
+            <ValuesCard key={item.title} icon={item.icon} title={item.title} value={item.value} />
+          ))}
 
-          <div className="flex gap-16">
-            {values.map(item => (
-              <ValuesCard icon={item.icon} title={item.title} value={item.value} />
-            ))}
+
+          <div className="flex items-center justify-center">
+            <Chart />
+          </div>
+   
+            <MonthResult />
+
+            <div className="grid  w-full gap-4">
+            <div className="flex flex-col w-full h-full bg-gray-300 dark:bg-black rounded-md p-3">
+              <div className="flex justify-between text-xs md:text-sm items-center lg:text-base text-nowrap text-gray-500 dark:text-gray-400">
+                Porcentagem Líquida:
+                <PercentBadgeIcon className="w-6" />
+              </div>
+              <p className="flex flex-1 h-full justify-center items-center text-2xl xl:text-3xl 2xl:text-5xl text-purple-700 dark:text-purple-500 font-bold">10%</p>
+            </div>
+            <div className="flex flex-col w-full h-full bg-gray-300 dark:bg-black rounded-md p-3">
+              <div className="flex justify-between text-xs md:text-sm items-center lg:text-base text-nowrap text-gray-500 dark:text-gray-400">
+                Porcentagem Bruta:
+                <PercentBadgeIcon className="w-6" />
+              </div>
+              <p className="flex flex-1 h-full justify-center items-center text-xl xl:text-3xl 2xl:text-5xl text-purple-700 dark:text-purple-500 font-bold">30%</p>
+            </div>
           </div>
 
-          <div className="flex gap-16">
-            <div className="flex w-[30%] flex-col justify-between">
-              <Chart />
-              <div className="flex flex-col mt-12 gap-3">
-                {stockValues.map(stockValue => (
-                  <ValuesCard icon={stockValue.icon} title={stockValue.title} value={stockValue.value} date={stockValue.date} />
-                ))}
-              </div>
-            </div>
 
-            <div className="flex flex-1 flex-col justify-between">
-              <MonthResult />
+  
+              {stockValues.map(stockValue => (
+                <ValuesCard key={stockValue.title} icon={stockValue.icon} title={stockValue.title} value={stockValue.value} date={stockValue.date} />
+              ))}
 
-              <div className="flex justify-around">
-                <div className="flex flex-col w-64 h-64 bg-gray-300 dark:bg-black rounded-md p-3">
-                  <div className="flex justify-between text-gray-500 dark:text-gray-400">
-                    Porcentagem Liquida:
-                    <PercentBadgeIcon className="w-6" />
-                  </div>
-                  <p className="flex flex-1 justify-center items-center text-5xl text-purple-700 dark:text-purple-500 font-bold">10%</p>
-                </div>
-                <div className="flex flex-col w-64 h-64 bg-gray-300 dark:bg-black rounded-md p-3">
-                  <div className="flex justify-between text-gray-500 dark:text-gray-400">
-                    Porcentagem Bruto:
-                    <PercentBadgeIcon className="w-6" />
-                  </div>
-                  <p className="flex flex-1 justify-center items-center text-5xl text-purple-700 dark:text-purple-500 font-bold">30%</p>
-                </div>
-              </div>
-            </div>
+              {currentStockValues.map(stockValue => (
+                <ValuesCard key={stockValue.title} icon={stockValue.icon} title={stockValue.title} value={stockValue.value} />
+              ))}
 
-          </div>
         </div>
       </main>
     </div>
-  )
-}
-
-// return (
-//   <div className="flex flex-col h-screen">
-//     <Nav />
-//     <Settings />
-
-//     <main className="flex flex-1 items-center p-4 flex-col">
-//       <div className="flex flex-col w-full gap-16 min-[837px]:max-w-[80%]">
-//         <div className="w-full flex justify-between gap-32">
-//           {values.map(item => (
-//             <ValuesCard icon={item.icon} title={item.title} value={item.value} />
-//           ))}
-//         </div>
-//         <div className='w-full justify-between flex'>
-//           <Chart />
-//           <MonthResult />
-//         </div>
-//         <div className="flex flex-col gap-16">
-//           {stockValues.map(stockValue => (
-//             <ValuesCard icon={stockValue.icon} title={stockValue.title} value={stockValue.value} />
-//           ))}
-//         </div>
-//       </div>
-//     </main>
-//   </div>
-// )
+  );
+};

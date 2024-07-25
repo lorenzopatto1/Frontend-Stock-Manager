@@ -73,7 +73,7 @@ export const Nav = () => {
                     alt="Your Company"
                   />
                 </div>
-                <div className="hidden md:block">
+                <div className="hidden min-[845px]:block">
                   <div className="ml-10 flex items-baseline space-x-4">
                     {navigation.map((item) => (
                       <NavLink
@@ -109,7 +109,7 @@ export const Nav = () => {
                   Abrir caixa
                 </button>
               </div>
-              <div className="hidden md:block">
+              <div className="hidden min-[845px]:block">
                 <div className="ml-4 flex items-center gap-2 md:ml-6">
                   <div>
                     <>
@@ -178,7 +178,7 @@ export const Nav = () => {
 
                 </div>
               </div>
-              <div className="-mr-2 flex md:hidden">
+              <div className="-mr-2 flex min-[845px]:hidden">
                 <DisclosureButton className="relative inline-flex items-center justify-center rounded-md dark:bg-gray-800 p-2 text-black dark:text-gray-400 hover:bg-gray-400 dark:hover:bg-gray-700 dark:hover:text-white focus:outline-none focus:ring-2 dark:focus:ring-white focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>

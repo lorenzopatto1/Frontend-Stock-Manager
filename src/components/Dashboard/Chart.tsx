@@ -47,9 +47,9 @@ const chartConfig = {
 
 export const Chart = () => {
   return (
-    <Card className="border-gray-300 bg-gray-300 h-fit dark:border-black dark:bg-black flex flex-col">
+    <Card className="border-gray-300 bg-gray-300 h-fit dark:border-black dark:bg-black my-1 2xl:my-0 flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle className="font-bold text-xl">Formas de pagamento:</CardTitle>
+        <CardTitle className="font-bold text-center text-xl">Formas de pagamento:</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer

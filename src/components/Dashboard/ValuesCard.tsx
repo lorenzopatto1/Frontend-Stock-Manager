@@ -8,13 +8,13 @@ interface IValuesCard {
 export const ValuesCard = ({ title, icon, value, date }: IValuesCard) => {
   const month = new Date().toLocaleString([], {month: 'long'});
   return (
-    <div className="p-3 flex-1 max-w-full bg-gray-300 dark:bg-black flex flex-col gap-1 rounded-md font-bold">
+    <div className="p-3 flex-1 max-w-full max-h-32 bg-gray-300 dark:bg-black flex flex-col 2xl:gap-1 rounded-md font-bold h-fit">
       <div className="flex justify-between">
-        <h3 className="text-gray-600 dark:text-gray-400 text-md">{title}</h3>
+        <h3 className="text-gray-600 dark:text-gray-400 text-sm 2xl:text-md">{title}</h3>
         {icon}
       </div>
       <div className="p-1">
-      <p className="text-lg">{value.toLocaleString("pt-br", {
+      <p className="text-md 2xl:text-lg">{value.toLocaleString("pt-br", {
         style: "currency",
         currency: "BRL"
       })}</p>

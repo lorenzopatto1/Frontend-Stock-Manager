@@ -31,7 +31,7 @@ export const MobileNav = ({ userData, logOut }: MobileNavProps) => {
   };
 
   return (
-    <DisclosurePanel className="md:hidden absolute w-screen h-screen flex flex-col bg-white dark:bg-gray-800 z-50">
+    <DisclosurePanel className="min-[845px]:hidden absolute w-screen h-screen flex flex-col bg-white dark:bg-gray-800 z-50">
       <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
         {navigation.map((item) => (
           <DisclosureButton
