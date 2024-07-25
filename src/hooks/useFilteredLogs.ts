@@ -18,26 +18,35 @@ export const useFilteredLogs = () => {
   const stripTime = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   };
+
   const parsedMinDate = minDate ? stripTime(parseDate(minDate)!) : null;
   const parsedMaxDate = maxDate ? stripTime(parseDate(maxDate)!) : null;
   const parsedDate = date ? stripTime(parseDate(date)!) : null;
-  
+
   const filteredLogs = logs?.filter((log) => {
-    const logDate = stripTime(new Date(log.saleDate || ''));
+  const logDate = new Date(log.saleDate || '');
     
     if (parsedMinDate && parsedMaxDate) {
-      return logDate >= parsedMinDate && logDate <= parsedMaxDate;
+      const maxDateWithTime = new Date(parsedMaxDate);
+      maxDateWithTime.setDate(maxDateWithTime.getDate() + 1);
+      maxDateWithTime.setHours(4, 0, 0, 0);
+      return logDate >= parsedMinDate && logDate < maxDateWithTime;
     }
-
+    
     if (parsedDate) {
-      return logDate.getTime() === parsedDate.getTime();
+      const nextDay = new Date(parsedDate);
+      nextDay.setDate(nextDay.getDate() + 1);
+      nextDay.setHours(4, 0, 0, 0);
+      return logDate >= parsedDate && logDate < nextDay;
     } else {
       const today = stripTime(new Date());
-      return logDate.getTime() === today.getTime();
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(4, 0, 0, 0);
+      return logDate >= today && logDate < tomorrow;
     }
     
   }) || [];
   
-  console.log(filteredLogs)
   return { filteredLogs };
 };
