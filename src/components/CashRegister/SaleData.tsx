@@ -159,7 +159,7 @@ export const SaleData = () => {
 
       <button
         type="button"
-        disabled={productsInCart.length > 0}
+        disabled={productsInCart.length <= 0}
         onClick={handleFinishSale}
         className="w-full disabled:hover:ring-zinc-700 disabled:cursor-not-allowed disabled:hover:text-zinc-700 flex flex-1 items-center justify-center py-3 md:p-3 text-nowrap h-16 focus:outline-none focus:ring-indigo-700 focus:text-indigo-700 rounded-md ring-1 ring-zinc-700 dark:ring-zinc-500 hover:text-indigo-700 focus:dark:text-indigo-500 focus:dark:ring-indigo-500 hover:dark:text-indigo-500 hover:dark:ring-indigo-500 hover:ring-indigo-700 font-bold transition-all"
       >

@@ -49,6 +49,11 @@ const Payment = () => {
       return state;
     });
   };
+
+  useEffect(() => {
+    total <= 0 && handleClose();
+  }, [])
+
   const handleFinishSale = () => {
     mutate(sale!);
   };
