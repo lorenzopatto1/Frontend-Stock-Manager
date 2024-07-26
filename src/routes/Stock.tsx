@@ -34,7 +34,7 @@ export const Stock = () => {
     <div className="flex flex-col h-full">
       <Settings />
       <Nav />
-      <header className="mt-16 bg-gray-300 dark:bg-gray-800 shadow flex items-center max-h-12 py-1 justify-between">
+      <header className="mt-6 bg-gray-300 dark:bg-gray-800 shadow flex items-center max-h-12 py-1 justify-between">
         <div className="mx-auto max-w-7xl flex px-4 py-6 sm:px-6 lg:px-8">
           <h1 className="text-sm min-[438px]:text-base xl:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-200">
             Seu estoque:
@@ -51,8 +51,8 @@ export const Stock = () => {
           </h1>
         </button>
       </header>
-      <main className="flex items-center justify-center flex-1">
-        <div className="w-full md:w-[90%] min-[900px]:w-[80%] h-[90%] p-4 flex flex-col gap-6 bg-gray-300 dark:bg-[#00081d] rounded-[2rem] sm:px-6 lg:px-8">
+      <main className="flex  justify-center flex-1">
+        <div className="w-full md:w-[90%] min-[900px]:w-[80%] my-6 p-4 flex flex-col gap-6 bg-gray-300 dark:bg-[#00081d] rounded-[2rem] sm:px-6 lg:px-8">
           <Table />
           <NewProductModal
             open={openNewProductModal}
