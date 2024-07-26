@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { NavLink, useMatch, useNavigate } from "react-router-dom";
 import { navigation } from "../../data/navigation";
 import { useUserData } from "../../hooks/useUserData";
-import { useStoreNameEditMutate } from "../../hooks/useUserEditMutate";
+import { useStoreNameEditMutate } from "../../hooks/useStoreNameEditMutate";
 import { useUserLogout } from "../../hooks/useUserLogout";
 import { MobileNav } from "./MobileNav";
 import { Profile } from "./Profile";

@@ -14,7 +14,7 @@ import { PaymentData } from "./PaymentData";
 import PaymentOptions from "./PaymentOptions";
 import Loading from "../Loading";
 
-const paymentOptions = [
+export const paymentOptions = [
   "Escolha a forma de pagamento",
   "Dinheiro",
   "Débito",

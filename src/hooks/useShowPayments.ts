@@ -2,6 +2,7 @@ import { useFilteredLogs } from "./useFilteredLogs";
 
 export const useShowPayments = () => {
   const { filteredLogs } = useFilteredLogs();
+  
   const sumPayments = (paymentType: string) => {
     return filteredLogs?.reduce((acc, log) => {
       if (log.firstPayment === paymentType) {
@@ -19,7 +20,7 @@ export const useShowPayments = () => {
   const creditTotal = sumPayments("Crédito");
   const pixTotal = sumPayments("Pix");
   const totalValue =
-    filteredLogs?.reduce((acc, log) => (acc += log.firstAmountPaid! + log.secondAmountPaid! - log.change!), 0) ?? 0;
+    filteredLogs?.reduce((acc, log) => (acc += log.totalValue!), 0) ?? 0;
 
     const totalSalePrice = filteredLogs?.map(log =>
       log.products?.reduce<number>((acc, product) => acc + (product.price * product.quantity), 0) || 0

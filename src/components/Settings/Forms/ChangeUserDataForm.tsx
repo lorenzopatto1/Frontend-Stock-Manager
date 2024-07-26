@@ -1,6 +1,6 @@
-import { useUserData } from "../../hooks/useUserData";
-import { Input } from "./Input";
-import { Button } from "../Button";
+import { useUserData } from "../../../hooks/useUserData";
+import { Input } from "../Input";
+import { Button } from "../../Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -23,7 +23,7 @@ type EditUserFormSchema = {
   afterPass?: string;
 };
 
-export const Form = () => {
+export const ChangeUserDataForm = () => {
   const { data } = useUserData();
 
   const {
@@ -40,7 +40,7 @@ export const Form = () => {
 
   return (
     <form
-      className="flex flex-col w-full py-8 px-16 gap-4 justify-center"
+      className="flex flex-col w-full py-8 px-16 gap-4 justify-between"
       onSubmit={handleSubmit(handleChangeUser)}
     >
       <div className="flex flex-col gap-2">

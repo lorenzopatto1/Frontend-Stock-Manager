@@ -2,20 +2,36 @@ import { useEffect, useState } from "react";
 import { useCartProducts } from "../../context/CartProductsContext";
 import { Input } from "../Input";
 import PaymentOptions from "./PaymentOptions";
+import { useUserData } from "../../hooks/useUserData";
+import { useQuery } from "@tanstack/react-query";
+import { paymentOptions } from "./Payment";
 
 interface PaymentDataProps {
   secondPayment: string[];
 }
 
 export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
-  const { setSale, total } = useCartProducts();
-  const [amountPayd, setAmountPayd] = useState(total.toFixed(2));
+  const { sale, setSale, total } = useCartProducts();
+  const [amountPayd, setAmountPayd] = useState(total.toString());
   const [secondOption, setSecondOption] = useState(
     "Escolha a forma de pagamento"
   );
   const [changeCheck, setChangeCheck] = useState(true);
 
-  const cashChange = (Number(total.toFixed(2)) - Number(amountPayd.replace(",", "."))) * -1;
+  const { data } = useQuery({
+    queryKey: ['user-data'],
+    queryFn: useUserData,
+    staleTime: 0,
+    refetchOnWindowFocus: false,
+  });
+
+  const feeValues = {
+    debitFee: data?.data?.debitFee,
+    creditFee: data?.data?.creditFee,
+    pixFee: data?.data?.pixFee
+  }
+
+  const cashChange = (total - Number(amountPayd.replace(",", "."))) * -1;
 
   useEffect(() => {
     if (cashChange < 0) {
@@ -26,16 +42,38 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
   }, [cashChange])
 
   useEffect(() => {
+    const feeAmountPaid = (type: string, amount: number) => {
+      if (feeValues.debitFee && feeValues.creditFee && feeValues.pixFee) {
+        switch (type) {
+          case paymentOptions[2]:
+            return Number((amount - (amount * (feeValues.debitFee / 100))).toFixed(2));
+          case paymentOptions[3]:
+            return Number((amount - (amount * (feeValues.creditFee / 100))).toFixed(2));
+          case paymentOptions[4]:
+            return Number((amount - (amount * (feeValues.pixFee / 100))).toFixed(2));
+          default:
+            return amount;
+          }
+        }
+        return amount;
+    }
+    const firstPayment = sale?.firstPayment || paymentOptions[0]
+
+    const firstAmountPaid = feeAmountPaid(firstPayment, Number(amountPayd))
+    const secondAmountPaid = secondOption !== "Escolha a forma de pagamento" ? feeAmountPaid(secondOption, cashChange * -1) : 0
+    const totalValue = changeCheck ? firstAmountPaid + secondAmountPaid - cashChange : firstAmountPaid + secondAmountPaid
+
     setSale(prevState => ({ 
       ...prevState,
-      totalValue: total,
-      firstAmountPaid: Number(amountPayd),  
+      totalValue,
+      firstAmountPaid,  
       change: changeCheck ? cashChange : 0,
       balanceToPay: secondOption !== "Escolha a forma de pagamento" && cashChange < 0 ? cashChange * -1 : 0,
       secondPayment: secondOption !== "Escolha a forma de pagamento" ? secondOption : null,
-      secondAmountPaid: secondOption !== "Escolha a forma de pagamento" && cashChange < 0 ? cashChange * -1 : 0,
+      secondAmountPaid: secondOption !== "Escolha a forma de pagamento" && cashChange < 0 ? secondAmountPaid : 0,
     }))
-  }, [amountPayd, cashChange, changeCheck, secondOption, setSale, total])
+    //eslint-disable-next-line
+  }, [sale?.firstPayment, amountPayd, cashChange, changeCheck, secondOption, setSale, total])
   
   return (
     <>

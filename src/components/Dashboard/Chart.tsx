@@ -41,7 +41,7 @@ const chartConfig = {
 
 export const Chart = () => {
   const values = useShowPayments();
-  console.log(values[3][1])
+  
   const chartData = [
     { payment: "credit", value: values[4][1], fill: chartConfig.credit.color },
     { payment: "debit", value: values[3][1], fill: chartConfig.debit.color },
