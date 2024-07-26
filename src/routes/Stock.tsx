@@ -5,14 +5,13 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Nav } from "../components/Nav/Nav.tsx";
 import { NewProductModal } from "../components/Stock/NewProductModal.tsx";
 import { Table } from "../components/Stock/Table.tsx";
-import TotalCostAndSalePrices from "../components/Stock/TotalCostAndSalePrices.tsx";
 import { useProductsData } from "../hooks/useProductsData.ts";
 
 import { Settings } from "../components/Settings/Settings.tsx";
 
 export const Stock = () => {
   const [, setSearchParams] = useSearchParams();
-  const { count, isLoading,isError } = useProductsData();
+  const { isLoading, isError } = useProductsData();
   const [openNewProductModal, setOpenNewProductModal] = useState(false);
   const navigate = useNavigate();
 
@@ -35,11 +34,10 @@ export const Stock = () => {
     <div className="flex flex-col h-full">
       <Settings />
       <Nav />
-      <TotalCostAndSalePrices />
-      <header className=" bg-gray-300 dark:bg-gray-800 shadow flex items-center max-h-12 py-1 justify-between">
+      <header className="mt-16 bg-gray-300 dark:bg-gray-800 shadow flex items-center max-h-12 py-1 justify-between">
         <div className="mx-auto max-w-7xl flex px-4 py-6 sm:px-6 lg:px-8">
           <h1 className="text-sm min-[438px]:text-base xl:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-200">
-            Produtos: {count}
+            Seu estoque:
           </h1>
         </div>
         <button

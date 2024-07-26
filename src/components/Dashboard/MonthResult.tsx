@@ -1,13 +1,18 @@
 import { BanknotesIcon } from "@heroicons/react/16/solid"
 
-const data = [
+interface IData {
+  title: string;
+  value: number | string;
+}
+
+const data: IData[] = [
   {
     title: "Resultado mensal:",
-    value: 1000
+    value: '----'
   },
   {
     title: "Resultado mensal + diferença no estoque:",
-    value: 1100
+    value: '----'
   },
 ]
 
@@ -24,7 +29,7 @@ export const MonthResult = () => {
           {result.value.toLocaleString("pt-br", {
             style: "currency",
             currency: "BRL"
-          })}
+          }) || result.value}
         </p>
       </div>
       ))}

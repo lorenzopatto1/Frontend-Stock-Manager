@@ -1,12 +1,13 @@
 interface IValuesCard {
   title: string;
   icon: JSX.Element;
-  value: number;
+  value: number | string;
   date?: Date;
+  month?: Date;
 }
 
-export const ValuesCard = ({ title, icon, value, date }: IValuesCard) => {
-  const month = new Date().toLocaleString([], {month: 'long'});
+export const ValuesCard = ({ title, icon, value, date, month }: IValuesCard) => {
+  const monthName = month?.toLocaleString([], {month: 'long'});
   return (
     <div className="p-3 flex-1 max-w-full max-h-32 bg-gray-300 dark:bg-black flex flex-col 2xl:gap-1 rounded-md font-bold h-fit">
       <div className="flex justify-between">
@@ -19,7 +20,7 @@ export const ValuesCard = ({ title, icon, value, date }: IValuesCard) => {
         currency: "BRL"
       })}</p>
 
-        <p className="text-xs font-normal text-gray-500 dark:text-gray-400">{date ? date.toLocaleDateString("pt-br") : `No mês de ${month}`}</p>
+        <p className="text-xs font-normal text-gray-500 dark:text-gray-400">{date ? date.toLocaleDateString("pt-br") : month ? `No mês de ${monthName}` : null}</p>
 
       </div>
     </div>
