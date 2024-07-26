@@ -82,8 +82,8 @@ export const Dashboard = () => {
       <Nav />
       <Settings />
 
-      <main className="flex flex-1 flex-col items-center py-4 w-full">
-        <div className="grid w-full h-fit sm:gap-8 md:gap-16 p-4 md:w-[90%] xl:w-[80%] grid-cols-3">
+      <main className="flex flex-1 flex-col md:justify-center items-center md:py-4 w-full">
+        <div className="grid w-full h-fit gap-0 md:gap-[2vh] 2xl:gap-8 md:p-4 md:w-[90%] xl:w-[80%] grid-cols-3">
           {values.map(item => (
             <ValuesCard key={item.title} icon={item.icon} title={item.title} value={item.value} month={item.date} />
           ))}
@@ -95,7 +95,7 @@ export const Dashboard = () => {
    
             <MonthResult />
 
-            <div className="grid  w-full gap-4">
+            <div className="grid  w-full gap-0 lg:gap-[1vh] 2xl:gap-4">
             <div className="flex flex-col w-full h-full bg-gray-300 dark:bg-black rounded-md p-3">
               <div className="flex justify-between text-xs md:text-sm items-center lg:text-base text-nowrap text-gray-500 dark:text-gray-400">
                 Porcentagem Líquida:
