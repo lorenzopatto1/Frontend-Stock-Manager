@@ -40,7 +40,7 @@ export const ChangeUserDataForm = () => {
 
   return (
     <form
-      className="flex flex-col w-full py-8 px-16 gap-4 justify-between"
+      className="flex flex-1 flex-col w-full py-8 px-16 gap-4 justify-between"
       onSubmit={handleSubmit(handleChangeUser)}
     >
       <div className="flex flex-col gap-2">

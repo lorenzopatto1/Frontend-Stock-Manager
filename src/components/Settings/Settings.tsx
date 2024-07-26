@@ -54,7 +54,7 @@ export const Settings = () => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="absolute w-full h-full sm:w-3/4 sm:h-3/5 z-50 rounded-md bg-white dark:bg-gray-800">
+          <div className="absolute w-full h-full sm:w-3/4 sm:max-h-[80%] z-50 rounded-md bg-white dark:bg-gray-800">
             <div className="absolute items-center justify-center left-10 sm:left-0 top-0 -ml-8 flex pr-2 pt-4 sm:-ml-10 sm:pr-4">
               <button
                 type="button"
