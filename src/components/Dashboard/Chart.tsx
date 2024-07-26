@@ -52,7 +52,7 @@ export const Chart = () => {
   return (
     <Card className="border-gray-300 bg-gray-300 h-fit dark:border-black dark:bg-black lg:my-1 2xl:my-0 flex flex-col">
     <CardHeader className="items-center pb-0">
-      <CardTitle className="font-bold text-center text-xl">
+      <CardTitle className="font-bold text-center text-sm md:text-lg 2xl:text-xl">
         Formas de pagamento:
       </CardTitle>
     </CardHeader>

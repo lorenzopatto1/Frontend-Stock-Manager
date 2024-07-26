@@ -78,11 +78,11 @@ export const Dashboard = () => {
   ];
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col overflow-auto  h-screen">
       <Nav />
       <Settings />
 
-      <main className="flex flex-1 flex-col md:justify-center items-center md:py-4 w-full">
+      <main className="flex flex-1 flex-col md:justify-center items-center md:py-4w-full">
         <div className="grid w-full h-fit gap-0 md:gap-[2vh] 2xl:gap-8 md:p-4 md:w-[90%] xl:w-[80%] grid-cols-3">
           {values.map(item => (
             <ValuesCard key={item.title} icon={item.icon} title={item.title} value={item.value} month={item.date} />
@@ -97,14 +97,14 @@ export const Dashboard = () => {
 
             <div className="grid  w-full gap-0 lg:gap-[1vh] 2xl:gap-4">
             <div className="flex flex-col w-full h-full bg-gray-300 dark:bg-black rounded-md p-3">
-              <div className="flex justify-between text-xs md:text-sm items-center lg:text-base text-nowrap text-gray-500 dark:text-gray-400">
+              <div className="flex justify-between text-xs md:text-sm items-center lg:text-base text-gray-500 dark:text-gray-400">
                 Porcentagem Líquida:
                 <PercentBadgeIcon className="w-6" />
               </div>
               <p className="flex flex-1 h-full justify-center items-center text-2xl xl:text-3xl 2xl:text-5xl text-purple-700 dark:text-purple-500 font-bold">---</p>
             </div>
             <div className="flex flex-col w-full h-full bg-gray-300 dark:bg-black rounded-md p-3">
-              <div className="flex justify-between text-xs md:text-sm items-center lg:text-base text-nowrap text-gray-500 dark:text-gray-400">
+              <div className="flex justify-between text-xs md:text-sm items-center lg:text-base text-gray-500 dark:text-gray-400">
                 Porcentagem Bruta:
                 <PercentBadgeIcon className="w-6" />
               </div>

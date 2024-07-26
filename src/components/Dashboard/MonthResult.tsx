@@ -21,7 +21,7 @@ export const MonthResult = () => {
     <div className="grid grid-cols-1 flex-col gap-0 lg:gap-[1vh] 2xl:gap-4">
       {data.map(result => (
         <div className="flex flex-col bg-gray-300 dark:bg-black flex-1 p-2 pb-3 2xl:p-3 2xl:pb-8 rounded-md font-bold text-gray-600 dark:text-gray-400">
-        <h3 className="flex text-sm 2xl:text-base justify-between">
+        <h3 className="flex text-sm 2xl:text-base justify-between overflow-hidden text-nowrap text-ellipsis">
           {result.title}
           <BanknotesIcon className="fill-green-700 dark:fill-green-500" width={32} />
         </h3>

@@ -11,7 +11,7 @@ export const ValuesCard = ({ title, icon, value, date, month }: IValuesCard) => 
   return (
     <div className="p-3 flex-1 max-w-full max-h-32 bg-gray-300 dark:bg-black flex flex-col 2xl:gap-1 rounded-md font-bold h-fit">
       <div className="flex justify-between">
-        <h3 className="text-gray-600 dark:text-gray-400 text-sm 2xl:text-md">{title}</h3>
+        <h3 className="text-gray-600 dark:text-gray-400 text-sm overflow-hidden text-nowrap text-ellipsis 2xl:text-md">{title}</h3>
         {icon}
       </div>
       <div className="p-1">
@@ -20,7 +20,7 @@ export const ValuesCard = ({ title, icon, value, date, month }: IValuesCard) => 
         currency: "BRL"
       })}</p>
 
-        <p className="text-xs font-normal text-gray-500 dark:text-gray-400">{date ? date.toLocaleDateString("pt-br") : month ? `No mês de ${monthName}` : null}</p>
+        <p className="text-xs font-normal text-gray-500 dark:text-gray-400 overflow-hidden text-nowrap text-ellipsis">{date ? date.toLocaleDateString("pt-br") : month ? `No mês de ${monthName}` : null}</p>
 
       </div>
     </div>
