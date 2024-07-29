@@ -1,22 +1,25 @@
 import { BanknotesIcon } from "@heroicons/react/16/solid"
+import { useShowPayments } from "../../hooks/useShowPayments";
 
 interface IData {
   title: string;
   value: number | string;
 }
 
-const data: IData[] = [
-  {
-    title: "Resultado mensal:",
-    value: '----'
-  },
-  {
-    title: "Resultado mensal + diferença no estoque:",
-    value: '----'
-  },
-]
 
 export const MonthResult = () => {
+const values = useShowPayments();
+  const data: IData[] = [
+    {
+      title: "Resultado mensal:",
+      value: values[1][1]
+    },
+    {
+      title: "Resultado mensal + diferença no estoque:",
+      value: '----'
+    },
+  ]
+
   return (
     <div className="grid grid-cols-1 flex-col gap-0 lg:gap-[1vh] 2xl:gap-4">
       {data.map(result => (

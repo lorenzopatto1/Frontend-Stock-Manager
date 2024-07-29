@@ -1,4 +1,4 @@
-import { ArrowTrendingDownIcon, ArrowTrendingUpIcon, ChartBarIcon, PercentBadgeIcon } from '@heroicons/react/16/solid';
+import { ArrowTrendingDownIcon, ArrowTrendingUpIcon, ChartBarIcon } from '@heroicons/react/16/solid';
 import { ValuesCard } from '../components/Dashboard/ValuesCard';
 import { Settings } from '../components/Settings/Settings';
 import { Chart } from '../components/Dashboard/Chart';
@@ -9,27 +9,10 @@ import { ProductType } from '../interfaces/product-data';
 import { useProductsData } from '../hooks/useProductsData';
 import { Nav } from '../components/Nav/Nav';
 import { Header } from '../components/Header';
+import { useShowPayments } from '../hooks/useShowPayments';
+import { Percentage } from '../components/Dashboard/Percentage';
 
-const values = [
-  {
-    title: "Meu faturamento",
-    icon: <ChartBarIcon className="w-6 fill-green-700 dark:fill-green-500" />,
-    value: '----',
-    date: new Date()
-  },
-  {
-    title: "Minhas despesas",
-    icon: <ArrowTrendingDownIcon className="w-6 fill-red-500" />,
-    value: '----',
-    date: new Date()
-  },
-  {
-    title: "Meus investimentos",
-    icon: <ArrowTrendingUpIcon className="w-6 fill-green-700 dark:fill-green-500" />,
-    value: '----',
-    date: new Date()
-  }
-];
+
 
 const stockValues = [
   {
@@ -57,8 +40,30 @@ const stockValues = [
 export const Dashboard = () => {
   const { count = 0 } = useProductsData();
   const { data } = usePricesData();
+  const billing = useShowPayments();
   const purchaseCost = data?.data.filter(product => product.type !== ProductType.Mix).reduce((num, prices) => num + prices.purchasePrice * prices.quantity, 0) || 0
   const saleCost = data?.data.filter(product => product.type !== ProductType.Mix).reduce((num, prices) => num + prices.salePrice * prices.quantity, 0) || 0
+
+  const values = [
+    {
+      title: "Meu faturamento",
+      icon: <ChartBarIcon className="w-6 fill-green-700 dark:fill-green-500" />,
+      value: billing[0][1],
+      date: new Date()
+    },
+    {
+      title: "Minhas despesas",
+      icon: <ArrowTrendingDownIcon className="w-6 fill-red-500" />,
+      value: '----',
+      date: new Date()
+    },
+    {
+      title: "Meus investimentos",
+      icon: <ArrowTrendingUpIcon className="w-6 fill-green-700 dark:fill-green-500" />,
+      value: '----',
+      date: new Date()
+    }
+  ];
 
   const currentStockValues = [
     {
@@ -94,33 +99,20 @@ export const Dashboard = () => {
           <div className="flex items-center justify-center">
             <Chart />
           </div>
-   
-            <MonthResult />
 
-            <div className="grid  w-full gap-0 lg:gap-[1vh] 2xl:gap-4">
-            <div className="flex flex-col w-full h-full bg-gray-300 dark:bg-black rounded-md p-3">
-              <div className="flex justify-between text-xs md:text-sm items-center lg:text-base text-gray-500 dark:text-gray-400">
-                Porcentagem Líquida:
-                <PercentBadgeIcon className="w-6" />
-              </div>
-              <p className="flex flex-1 h-full justify-center items-center text-2xl xl:text-3xl 2xl:text-5xl text-purple-700 dark:text-purple-500 font-bold">---</p>
-            </div>
-            <div className="flex flex-col w-full h-full bg-gray-300 dark:bg-black rounded-md p-3">
-              <div className="flex justify-between text-xs md:text-sm items-center lg:text-base text-gray-500 dark:text-gray-400">
-                Porcentagem Bruta:
-                <PercentBadgeIcon className="w-6" />
-              </div>
-              <p className="flex flex-1 h-full justify-center items-center text-xl xl:text-3xl 2xl:text-5xl text-purple-700 dark:text-purple-500 font-bold">---</p>
-            </div>
+          <MonthResult />
+
+          <div className="grid  w-full gap-0 lg:gap-[1vh] 2xl:gap-4">
+            <Percentage />
           </div>
 
-              {stockValues.map(stockValue => (
-                <ValuesCard key={stockValue.title} icon={stockValue.icon} title={stockValue.title} value={stockValue.value} date={stockValue.date} month={stockValue.month} />
-              ))}
+          {stockValues.map(stockValue => (
+            <ValuesCard key={stockValue.title} icon={stockValue.icon} title={stockValue.title} value={stockValue.value} date={stockValue.date} month={stockValue.month} />
+          ))}
 
-              {currentStockValues.map(stockValue => (
-                <ValuesCard key={stockValue.title} icon={stockValue.icon} title={stockValue.title} value={stockValue.value}  />
-              ))}
+          {currentStockValues.map(stockValue => (
+            <ValuesCard key={stockValue.title} icon={stockValue.icon} title={stockValue.title} value={stockValue.value} />
+          ))}
 
         </div>
       </main>

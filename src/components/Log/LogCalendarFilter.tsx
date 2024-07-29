@@ -18,18 +18,17 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 export const LogCalendarFilter = () => {
   const [, setSearchParams] = useSearchParams();
   const [filterDate, setFilterDate] = useState<Value>([new Date(), new Date()]);
-
   const setFilter = () => {
     setSearchParams((state) => {
       if (Array.isArray(filterDate) && filterDate[0] && filterDate[1] && filterDate[0].toLocaleDateString("pt-br") === filterDate[1].toLocaleDateString("pt-br")) {
-        state.set("Data", filterDate[0].toLocaleDateString("pt-br"));
+        state.set("Data", filterDate[0].toLocaleDateString("pt-br").replace(/\//g, "-"));
         state.delete("dataMinima");
         state.delete("dataMaxima");
       }
       if (Array.isArray(filterDate) && filterDate[0] && filterDate[1] && filterDate[0].toLocaleDateString("pt-br") !== filterDate[1].toLocaleDateString("pt-br")) {
         state.delete("Data");
-        state.set("dataMinima", filterDate[0].toLocaleDateString("pt-br"));
-        state.set("dataMaxima", filterDate[1].toLocaleDateString("pt-br"));
+        state.set("dataMinima", filterDate[0].toLocaleDateString("pt-br").replace(/\//g, "-"));
+        state.set("dataMaxima", filterDate[1].toLocaleDateString("pt-br").replace(/\//g, "-"));
       }
 
       return state;
