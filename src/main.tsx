@@ -17,6 +17,7 @@ import { CartProductsProvider } from './context/CartProductsContext.tsx';
 import { Toaster } from "../@/components/ui/sonner.tsx"
 import { ThemeProvider } from './context/ThemeContext.tsx';
 import { Dashboard } from './routes/Dashboard.tsx';
+import { Expenses } from './routes/Expenses.tsx';
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
     path: "/payment",
     element: <Payment />
   },
+  {
+    path: "/expenses",
+    element: <Expenses />
+  }
 ])
 
 const client = new QueryClient();

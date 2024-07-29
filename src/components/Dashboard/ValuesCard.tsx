@@ -15,7 +15,7 @@ export const ValuesCard = ({ title, icon, value, date, month }: IValuesCard) => 
         {icon}
       </div>
       <div className="p-1">
-      <p className="text-md 2xl:text-lg">{value.toLocaleString("pt-br", {
+      <p className="text-xs sm:text-md md:text-base 2xl:text-lg overflow-hidden text-nowrap text-ellipsis">{value.toLocaleString("pt-br", {
         style: "currency",
         currency: "BRL"
       })}</p>

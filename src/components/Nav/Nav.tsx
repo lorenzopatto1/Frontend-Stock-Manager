@@ -1,24 +1,9 @@
-import {
-  Disclosure,
-  DisclosureButton
-} from "@headlessui/react";
-import { CheckIcon } from "@heroicons/react/20/solid";
-import {
-  Bars3Icon,
-  ChevronUpDownIcon,
-  XMarkIcon
-} from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { NavLink, useMatch, useNavigate } from "react-router-dom";
-import { navigation } from "../../data/navigation";
-import { useUserData } from "../../hooks/useUserData";
-import { useStoreNameEditMutate } from "../../hooks/useStoreNameEditMutate";
-import { useUserLogout } from "../../hooks/useUserLogout";
-import { MobileNav } from "./MobileNav";
-import { Profile } from "./Profile";
 
-import Cookies from "js-cookie";
+import { navigation } from "../../data/navigation";
+
+import { Profile } from "./Profile";
+import { useState } from "react";
 
 function classNames(
   ...classes: (string | undefined | null | boolean)[]
@@ -27,173 +12,77 @@ function classNames(
 }
 
 export const Nav = () => {
-  const { register, handleSubmit } = useForm();
-  const { data: userData, isLoading, isSuccess } = useUserData();
-  const { mutate } = useStoreNameEditMutate();
-  const { mutate: logoutMutate, isError } = useUserLogout();
-  const [storeName, setStoreName] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openNavBar, setOpenNavBar] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isSuccess && userData && storeName === "")
-      setStoreName(userData.storeName);
-    //eslint-disable-next-line
-  }, [isSuccess]);
 
-  const handleChangeStoreName = () => {
-    mutate(storeName);
+  const paths = [
+    useMatch("home"),
+    useMatch("stock"),
+    useMatch("log"),
+    useMatch("expenses")
+  ]
 
-    if (isSuccess) setIsModalOpen(false);
+  const isPathMatched = (href: string) => {
+    return paths.some((path) => path?.pathname === href);
   };
 
-  const logOut = () => {
-    logoutMutate();
-    if (!isError) {
-      Cookies.remove("token");
-      navigate('/');
-    }
-  }
-
-  const homeMatch = useMatch("home");
-  const stockMatch = useMatch("stock");
-  const logsMatch = useMatch("log");
-
   return (
-    <Disclosure as="nav" className="relative bg-gray-300 dark:bg-gray-800 md:rounded-lg">
-      {({ open }) => (
-        <>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex h-16 items-center justify-between">
-              <div className="flex items-center">
-                <div className="flex-shrink-0 cursor-pointer" onClick={() => navigate('/home')}>
-                  <img
-                    className="h-8 w-8"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
-                </div>
-                <div className="hidden min-[845px]:block">
-                  <div className="ml-10 flex items-baseline space-x-4">
-                    {navigation.map((item) => (
-                      <NavLink
-                        key={item.name}
-                        to={item.href}
-                        className={({ isActive }) =>
-                          classNames(
-                            isActive
-                              ? "bg-gray-400 dark:bg-gray-900 text-white"
-                              : "bg-gray-50 hover:bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 dark:hover:bg-gray-900 dark:hover:text-white",
-                            "rounded-md px-3 py-2 text-sm font-medium transition-all flex gap-2 items-center"
-                          )
-                        }
-                        aria-current={item.current ? "page" : undefined}
-                      >
-                        {homeMatch?.pathname === item.href ||
-                          logsMatch?.pathname === item.href ||
-                          stockMatch?.pathname === item.href
-                          ? item.activeIcon
-                          : item.icon}
-                        {item.name}
-                      </NavLink>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div>
-                <button
-                  className="disabled:cursor-not-allowed text-nowrap transition-all font-bold p-2 rounded-md dark:hover:border-indigo-700 focus:outline-none text-indigo-700 hover:text-zinc-200 dark:hover:text-zinc-200 dark:text-indigo-500 dark:focus:border-indigo-700  hover:bg-indigo-700 border-2 border-indigo-700 dark:border-indigo-500"
-                  disabled={isLoading || !isSuccess}
-                  onClick={() => navigate("/cash-register")}
-                >
-                  Abrir caixa
-                </button>
-              </div>
-              <div className="hidden min-[845px]:block">
-                <div className="ml-4 flex items-center gap-2 md:ml-6">
-                  <div>
-                    <>
-                      <button
-                        className="disabled:cursor-not-allowed min-w-28 sticky font-bold text-nowrap gap-2 overflow-hidden z-10 flex items-center justify-between p-2 rounded-md ring-2 w-full ring-indigo-500 focus:outline-none focus:ring-indigo-700"
-                        onKeyDown={(e) =>
-                          e.key === "Escape" && setIsModalOpen(false)
-                        }
-                        onClick={() => setIsModalOpen(!isModalOpen)}
-                        disabled={isLoading || !isSuccess}
-                        type="button"
-                      >
-                        <p>{isLoading ? "Carregando..." : isSuccess ? userData?.storeName : "Erro"}</p>
-                        <ChevronUpDownIcon className="w-4" />
-                      </button>
-                      <div
-                        className={`${isModalOpen ? "flex" : "hidden"
-                          } justify-center top-0 left-0`}
-                        id="modal"
-                        tabIndex={-1}
-                        role="dialog"
-                        aria-labelledby="modalTitle"
-                        aria-modal="true"
-                      >
-                        <div
-                          className="absolute top-0 right-0 h-screen w-screen"
-                          onClick={() => setIsModalOpen(false)}
-                        />
-                        <form
-                          className="absolute top-16 z-10 flex gap-2 items-center"
-                          onSubmit={handleSubmit(handleChangeStoreName)}
-                          onKeyDown={(e) =>
-                            e.key === "Escape" && setIsModalOpen(false)
-                          }
-                        >
-                          <input
-                            type="text"
-                            className="relative dark:bg-gray-700 ring-2 ring-indigo-500 focus:placeholder-shown:ring-red-500 placeholder-shown:ring-red-500 focus:ring-indigo-700 rounded-md p-2"
-                            value={storeName}
-                            autoComplete="off"
-                            spellCheck="false"
-                            {...register("storeName")}
-                            onClick={(e) => e.stopPropagation()}
-                            onChange={(e) => setStoreName(e.target.value)}
-                            placeholder="Digite o nome da loja"
-                          />
-                          <button
-                            className="absolute right-1 group dark:bg-gray-700 rounded-md"
-                            type="submit"
-                            disabled={!storeName}
-                            onClick={handleChangeStoreName}
-                          >
-                            <CheckIcon
-                              className={`group-hover:fill-indigo-400 font-bold ${storeName
-                                ? "dark:fill-zinc-200"
-                                : "fill-red-500 group-hover:fill-red-500"
-                                } w-6`}
-                            />
-                          </button>
-                        </form>
-                      </div>
-                    </>
-                  </div>
+    <div className="relative">
 
-                  <Profile logOut={logOut} />
+      <div className="w-16 h-full" />
 
-                </div>
-              </div>
-              <div className="-mr-2 flex min-[845px]:hidden">
-                <DisclosureButton className="relative inline-flex items-center justify-center rounded-md dark:bg-gray-800 p-2 text-black dark:text-gray-400 hover:bg-gray-400 dark:hover:bg-gray-700 dark:hover:text-white focus:outline-none focus:ring-2 dark:focus:ring-white focus:ring-offset-2 dark:focus:ring-offset-gray-800">
-                  <span className="absolute -inset-0.5" />
-                  <span className="sr-only">Open main menu</span>
-                  {open ? (
-                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                  ) : (
-                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                  )}
-                </DisclosureButton>
-              </div>
-            </div>
-          </div>
-          <MobileNav logOut={logOut} userData={userData!} />
-        </>
+      {openNavBar && (
+        <div
+          className="fixed inset-0 z-[11] bg-gray-500 dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 transition-opacity"
+          onClick={() => setOpenNavBar(false)}
+        />
       )}
-    </Disclosure>
-  );
-};
+
+      <div
+        className={classNames(
+          openNavBar ? "w-[80vw] sm:w-[50vw] lg:w-[30vw]" : "w-16 items-center",
+          "top-0 absolute z-20 gap-4 bg-gray-200 dark:bg-gray-800 flex flex-col p-2 h-full transition-all duration-300 ease-in-out overflow-hidden shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        )}
+        onClick={() => setOpenNavBar(true)}
+      >
+        <div className="py-2 flex-shrink-0 flex cursor-pointer items-center">
+          <img
+            className="h-12 w-12"
+            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+            alt="Your Company"
+            onClick={() => navigate('/home')}
+          />
+        </div>
+        <div className="flex flex-1 flex-col gap-2">
+          {navigation.map((item) => (
+            <NavLink
+              key={item.name}
+              to={item.href}
+              className={({ isActive }) =>
+                classNames(
+                  isActive
+                    ? "bg-gray-400 dark:bg-gray-900 text-white"
+                    : "bg-gray-50 hover:bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-300 dark:hover:bg-gray-900 dark:hover:text-white",
+                  "rounded-md px-3 py-2 text-sm font-medium transition-all flex gap-2 items-center"
+                )
+              }
+              aria-current={item.current ? "page" : undefined}
+            >
+              {isPathMatched(item.href)
+                ? item.activeIcon
+                : item.icon
+              }
+              <span
+                className={classNames(!openNavBar ? "sr-only opacity-0" : "opacity-100", "transition-all delay-100")}
+              >
+                {item.name}
+              </span>
+            </NavLink>
+          ))}
+        </div>
+        <Profile />
+      </div>
+    </div>
+  )
+}

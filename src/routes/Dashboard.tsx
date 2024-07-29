@@ -1,6 +1,5 @@
 import { ArrowTrendingDownIcon, ArrowTrendingUpIcon, ChartBarIcon, PercentBadgeIcon } from '@heroicons/react/16/solid';
 import { ValuesCard } from '../components/Dashboard/ValuesCard';
-import { Nav } from '../components/Nav/Nav';
 import { Settings } from '../components/Settings/Settings';
 import { Chart } from '../components/Dashboard/Chart';
 import { MonthResult } from '../components/Dashboard/MonthResult';
@@ -8,6 +7,8 @@ import { CubeIcon } from '@heroicons/react/24/outline';
 import { usePricesData } from '../hooks/usePricesData';
 import { ProductType } from '../interfaces/product-data';
 import { useProductsData } from '../hooks/useProductsData';
+import { Nav } from '../components/Nav/Nav';
+import { Header } from '../components/Header';
 
 const values = [
   {
@@ -78,11 +79,12 @@ export const Dashboard = () => {
   ];
 
   return (
-    <div className="flex flex-col overflow-auto  h-screen">
+    <div className="flex overflow-auto h-screen">
       <Nav />
       <Settings />
 
-      <main className="flex flex-1 flex-col md:justify-center items-center md:py-4w-full">
+      <main className="flex flex-1 flex-col items-center">
+        <Header />
         <div className="grid w-full h-fit gap-0 md:gap-[2vh] 2xl:gap-8 md:p-4 md:w-[90%] xl:w-[80%] grid-cols-3">
           {values.map(item => (
             <ValuesCard key={item.title} icon={item.icon} title={item.title} value={item.value} month={item.date} />

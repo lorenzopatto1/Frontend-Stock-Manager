@@ -67,7 +67,7 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
       ...prevState,
       totalValue,
       firstAmountPaid,  
-      change: changeCheck ? cashChange : 0,
+      change: changeCheck ? Number(cashChange.toFixed(2)) : 0,
       balanceToPay: secondOption !== "Escolha a forma de pagamento" && cashChange < 0 ? cashChange * -1 : 0,
       secondPayment: secondOption !== "Escolha a forma de pagamento" ? secondOption : null,
       secondAmountPaid: secondOption !== "Escolha a forma de pagamento" && cashChange < 0 ? secondAmountPaid : 0,
