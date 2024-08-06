@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Dialog,
   DialogPanel,
@@ -19,7 +21,7 @@ import Loading from "../Loading";
 import { ChangeEvent } from "react";
 import { useDecimalFormat } from "../../hooks/useDecimalFormat";
 import { ProductTypePopover } from "./ProductTypePopover";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "next/navigation";
 
 interface INewProductModal {
   open: boolean;
@@ -38,7 +40,7 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
   } = useForm({ resolver: yupResolver(productFormSchema) });
   const { data: categorys } = useCategorysData();
   const { formatter } = useDecimalFormat();
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
 
   const productType = Number(searchParams.get("productType"));
 
@@ -136,7 +138,7 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
                         className="space-y-2 w-full"
                         onSubmit={handleSubmit(handleCreateProduct)}
                       >
-                        <Input className="hidden" type="number" value={productType} error={errors.type} {...register("type")}/>
+                        <Input className="hidden" type="number" value={productType} error={errors.type} {...register("type")} />
                         {inputsProps.map((input, key) => (
                           <Input
                             key={key}

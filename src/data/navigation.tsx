@@ -1,22 +1,22 @@
 import {
   DocumentDuplicateIcon as DocumentDuplicateSolidIcon,
-  HomeIcon as HomeSolidIcon,
+  CurrencyDollarIcon as CurrencyDollarSolidIcon,
   CubeIcon as CubeSolidIcon,
   BuildingLibraryIcon as BuildingLibrarySolidIcon
 } from "@heroicons/react/16/solid";
 import {
   DocumentDuplicateIcon,
-  HomeIcon,
   CubeIcon,
-  BuildingLibraryIcon
+  BuildingLibraryIcon,
+  CurrencyDollarIcon
 } from "@heroicons/react/24/outline";
 
 export const navigation = [
   {
-    icon: <HomeIcon className="w-8" />,
-    activeIcon: <HomeSolidIcon className="w-8" />,
-    name: "Dashboard",
-    href: "/home",
+    icon: <CurrencyDollarIcon className="w-8" />,
+    activeIcon: <CurrencyDollarSolidIcon className="w-8" />,
+    name: "Painel financeiro",
+    href: "/dashboard",
     current: false,
   },
   {
@@ -29,13 +29,13 @@ export const navigation = [
   {
     icon: <DocumentDuplicateIcon className="w-8" />,
     activeIcon: <DocumentDuplicateSolidIcon className="w-8" />,
-    name: "Relatórios",
+    name: "Relatório",
     href: "/log",
     current: false,
   },
   {
     icon: <BuildingLibraryIcon className="w-8" />,
-    activeIcon: <BuildingLibrarySolidIcon  className="w-8" />,
+    activeIcon: <BuildingLibrarySolidIcon className="w-8" />,
     name: "Despesas",
     href: "/expenses",
     current: false,

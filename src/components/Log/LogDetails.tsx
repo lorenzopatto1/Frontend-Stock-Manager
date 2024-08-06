@@ -1,13 +1,17 @@
+"use client"
+
 import { LogCalendarFilter } from "./LogCalendarFilter";
 import { useShowPayments } from "../../hooks/useShowPayments";
 import { Table } from "./Table";
 import { Category } from "../Category";
 import { ChangeEvent } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 
 export const LogDetails = () => {
   const values = useShowPayments();
-  const [, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const cashFormat = (value: number) => {
     return value.toLocaleString("pt-br", {
@@ -17,18 +21,22 @@ export const LogDetails = () => {
   };
 
   const changeFilterName = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchParams(state => {
-      state.set("name", event.target.value)
-      if (event.target.value.length < 1) {
-        state.delete("name");
-      }
-      return state;
+    const path = router.pathname;
+    router.replace({
+      query: { ...router.query, name: event.target.value }
     })
+
+    if (event.target.value.length < 1) {
+      const nextSearchParams = new URLSearchParams(searchParams.toString());
+      nextSearchParams.delete("name");
+      router.push(`${path}?${nextSearchParams.toString()}`);
+    }
+
   }
 
   return (
     <div className="flex flex-col h-full gap-4 w-full">
-      <div className="flex">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-0">
         <input type="text" autoComplete="new-password" className="p-2 bg-transparent ring-1 hover:ring-2 focus:ring-2 ring-black hover:ring-indigo-700 focus:ring-indigo-700 dark:ring-zinc-500 hover:dark:ring-indigo-500 focus:dark:ring-indigo-500 rounded-md" onChange={changeFilterName} placeholder="Nome do produto" />
         <LogCalendarFilter />
         <Category />

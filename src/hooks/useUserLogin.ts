@@ -1,7 +1,7 @@
 import { api } from "../data/api";
 
 import Cookies from "js-cookie";
-import { SignInFormData } from "../routes/Login";
+import { SignInFormData } from "../pages/login";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -19,17 +19,16 @@ const PostLogin = async (userLogin: SignInFormData) => {
   } catch (_) {
     toast.error("Falha na autenticação");
   }
-}
+};
 
-export function useUserLogin ()
-{
-  const queryClient = useQueryClient(); 
+export function useUserLogin() {
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: PostLogin,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user-data'] })
-    }
+      queryClient.invalidateQueries({ queryKey: ["user-data"] });
+    },
   });
-  
+
   return mutation;
 }

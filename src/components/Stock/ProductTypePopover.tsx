@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useState } from "react";
 import { ProductType } from "../../interfaces/product-data";
 import {
@@ -5,24 +7,27 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../../@/components/ui/popover";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 
 interface IProductTypePopover {
   defaultValue?: ProductType;
 }
 
 export const ProductTypePopover = ({ defaultValue }: IProductTypePopover) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const [popoverOpen, setPopoverOpen] = useState(false);
 
   const type = searchParams.get("productType");
 
   const handleSelectProductType = (type: ProductType) => {
-    setSearchParams((state) => {
-      state.set("productType", type.toString());
-      setPopoverOpen(false);
-      return state;
-    });
+    router.replace({
+      query: { ...router.query, productType: type.toString() }
+    })
+    setPopoverOpen(false);
+
   };
 
   useEffect(() => {
@@ -31,7 +36,6 @@ export const ProductTypePopover = ({ defaultValue }: IProductTypePopover) => {
       : defaultValue === 2
         ? handleSelectProductType(ProductType.Mix)
         : handleSelectProductType(ProductType.Unity);
-    //eslint-disable-next-line
   }, []);
 
   useEffect(() => {

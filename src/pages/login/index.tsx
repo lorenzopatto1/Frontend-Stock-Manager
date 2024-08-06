@@ -1,16 +1,19 @@
+"use client"
+
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import Cookies from "js-cookie";
-import { Input } from "../components/Input";
+import { Input } from "../../components/Input";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button } from "../components/Button";
-import { useUserLogin } from "../hooks/useUserLogin";
-import Loading from "../components/Loading";
+import { Button } from "../../components/Button";
+import { useUserLogin } from "../../hooks/useUserLogin";
+import Loading from "../../components/Loading";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/router";
+import Head from "next/head";
 
 export interface SignInFormData {
   login: string;
@@ -25,11 +28,11 @@ const signInFormSchema = yup
   })
   .required();
 
-export const Login = () => {
+const Login = () => {
   const { mutate, isPending, isSuccess } = useUserLogin();
   const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigate();
+  const navigate = useRouter();
 
   const token = Cookies.get("token");
 
@@ -43,23 +46,24 @@ export const Login = () => {
   });
 
   useEffect(() => {
-    if (token !== undefined && isSuccess) {
-      navigate("/home");
+    if (token !== undefined) {
+      navigate.push("/dashboard");
     }
-    //eslint-disable-next-line
   }, [isSuccess]);
 
   const handleSignIn: SubmitHandler<SignInFormData> = (userLogin) => {
     mutate(userLogin);
-
   };
 
   return (
     <div className="flex min-h-full flex-1 flex-col items-center justify-center px-6 py-12 lg:px-8">
+      <Head>
+        <title>Login</title>
+      </Head>
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           className="mx-auto h-10 w-auto"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+          src="/icon.svg"
           alt="Your Company"
         />
         <h2 className="mt-10 text-center text-4xl font-bold leading-9 tracking-tight">
@@ -100,7 +104,7 @@ export const Login = () => {
               >
                 Senha
               </Input>
-                {showPassword ? (<EyeIcon className="cursor-pointer right-2 bottom-1.5 absolute w-6" onClick={() => setShowPassword(!showPassword)}/>) : (<EyeSlashIcon className="cursor-pointer right-2 bottom-1.5 absolute w-6" onClick={() => setShowPassword(!showPassword)}/>)}
+              {showPassword ? (<EyeIcon className="cursor-pointer right-2 bottom-1.5 absolute w-6" onClick={() => setShowPassword(!showPassword)} />) : (<EyeSlashIcon className="cursor-pointer right-2 bottom-1.5 absolute w-6" onClick={() => setShowPassword(!showPassword)} />)}
             </div>
           </div>
 
@@ -114,3 +118,5 @@ export const Login = () => {
     </div>
   );
 };
+
+export default Login

@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useState } from "react";
 import { useCartProducts } from "../../context/CartProductsContext";
 import { Input } from "../Input";
@@ -26,9 +28,9 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
   });
 
   const feeValues = {
-    debitFee: data?.data?.debitFee,
-    creditFee: data?.data?.creditFee,
-    pixFee: data?.data?.pixFee
+    debitFee: data?.data?.debitFee || 0,
+    creditFee: data?.data?.creditFee || 0,
+    pixFee: data?.data?.pixFee || 0
   }
 
   const cashChange = (total - Number(amountPayd.replace(",", "."))) * -1;
@@ -43,38 +45,35 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
 
   useEffect(() => {
     const feeAmountPaid = (type: string, amount: number) => {
-      if (feeValues.debitFee && feeValues.creditFee && feeValues.pixFee) {
-        switch (type) {
-          case paymentOptions[2]:
-            return Number((amount - (amount * (feeValues.debitFee / 100))).toFixed(2));
-          case paymentOptions[3]:
-            return Number((amount - (amount * (feeValues.creditFee / 100))).toFixed(2));
-          case paymentOptions[4]:
-            return Number((amount - (amount * (feeValues.pixFee / 100))).toFixed(2));
-          default:
-            return amount;
-          }
-        }
-        return amount;
+      switch (type) {
+        case paymentOptions[2]:
+          return Number((amount - (amount * (feeValues.debitFee / 100))).toFixed(2));
+        case paymentOptions[3]:
+          return Number((amount - (amount * (feeValues.creditFee / 100))).toFixed(2));
+        case paymentOptions[4]:
+          return Number((amount - (amount * (feeValues.pixFee / 100))).toFixed(2));
+        default:
+          return amount;
+      }
     }
-    const firstPayment = sale?.firstPayment || paymentOptions[0]
 
+    const firstPayment = sale?.firstPayment || paymentOptions[0]
     const firstAmountPaid = feeAmountPaid(firstPayment, Number(amountPayd))
     const secondAmountPaid = secondOption !== "Escolha a forma de pagamento" ? feeAmountPaid(secondOption, cashChange * -1) : 0
     const totalValue = changeCheck ? firstAmountPaid + secondAmountPaid - cashChange : firstAmountPaid + secondAmountPaid
 
-    setSale(prevState => ({ 
+    setSale(prevState => ({
       ...prevState,
       totalValue,
-      firstAmountPaid,  
+      firstAmountPaid,
       change: changeCheck ? Number(cashChange.toFixed(2)) : 0,
       balanceToPay: secondOption !== "Escolha a forma de pagamento" && cashChange < 0 ? cashChange * -1 : 0,
       secondPayment: secondOption !== "Escolha a forma de pagamento" ? secondOption : null,
       secondAmountPaid: secondOption !== "Escolha a forma de pagamento" && cashChange < 0 ? secondAmountPaid : 0,
     }))
-    //eslint-disable-next-line
+
   }, [sale?.firstPayment, amountPayd, cashChange, changeCheck, secondOption, setSale, total])
-  
+
   return (
     <>
       <Input
@@ -100,7 +99,7 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
               </p>
               <div>
                 <p>
-                   Será pago o restante ?
+                  Será pago o restante ?
                 </p>
                 <PaymentOptions
                   selected={secondOption}
@@ -112,7 +111,7 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
           ) : cashChange > 0 ? (
             <p className="text-lg flex-1 flex-col justify-center mt-16 flex gap-1 font-bold">
 
-                <span className="text-zinc-600 dark:text-zinc-400 text-center text-xs">*Deixe desmarcado caso fique como gorjeta*</span>
+              <span className="text-zinc-600 dark:text-zinc-400 text-center text-xs">*Deixe desmarcado caso fique como gorjeta*</span>
 
               <div className="flex justify-center items-center gap-2">
                 <span>Troco a ser devolvido:</span>

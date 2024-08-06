@@ -1,14 +1,19 @@
-import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
-import { SaleData } from "../components/CashRegister/SaleData";
-import { Table } from "../components/CashRegister/Table";
-import Payment from "../components/Payment/Payment";
-import { useCartProducts } from "../context/CartProductsContext";
-import { useProductsData } from "../hooks/useProductsData";
-import { ProductsSold } from "../interfaces/products-sold";
+"use client"
 
-export const CashRegister = () => {
-  const [searchParams] = useSearchParams();
+import { useEffect, useState } from "react";
+
+import { SaleData } from "../../components/CashRegister/SaleData";
+import { Table } from "../../components/CashRegister/Table";
+import Payment from "../../components/Payment/Payment";
+import { useCartProducts } from "../../context/CartProductsContext";
+import { useProductsData } from "../../hooks/useProductsData";
+import { ProductsSold } from "../../interfaces/products-sold";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import Head from "next/head";
+
+const CashRegister = () => {
+  const searchParams = useSearchParams();
   const [searchProductModal, setSearchProductModal] = useState(false);
   const { data } = useProductsData();
   const {
@@ -59,7 +64,7 @@ export const CashRegister = () => {
         )
       );
     }
-    //eslint-disable-next-line
+
   }, [searchParams]);
 
   const hasProduct = data?.find((product) =>
@@ -77,6 +82,9 @@ export const CashRegister = () => {
 
   return (
     <div className="flex flex-col h-full">
+      <Head>
+        <title>Caixa registradora</title>
+      </Head>
       <div
         className="relative flex py-12 px-[5%] md:px-[15%] h-full flex-col w-screen items-center"
         onClick={() => searchProductModal && setSearchProductModal(false)}
@@ -87,7 +95,7 @@ export const CashRegister = () => {
             setProductFocus(undefined);
             setProductsInCart([]);
           }}
-          to="/home"
+          href="/dashboard"
         >
           Fechar caixa
         </Link>
@@ -140,3 +148,5 @@ export const CashRegister = () => {
     </div>
   );
 };
+
+export default CashRegister;

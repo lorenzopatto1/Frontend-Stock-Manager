@@ -1,3 +1,5 @@
+"use client"
+
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 type Theme = "dark" | "light" | "system"
@@ -23,12 +25,13 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 export const ThemeProvider = ({
   children,
   defaultTheme = "system",
-  storageKey= "stock-manager-theme",
+  storageKey = "stock-manager-theme",
   ...props
-}: ThemeProviderProsps)  => {
-  const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem(storageKey) as Theme || defaultTheme));
-
+}: ThemeProviderProsps) => {
+  const [theme, setTheme] = useState<Theme>("light");
   useEffect(() => {
+    const storage = window.localStorage.getItem(storageKey) as Theme || defaultTheme
+    setTheme(storage);
     const root = window.document.documentElement
 
     root.classList.remove("light", "dark")
@@ -39,8 +42,8 @@ export const ThemeProvider = ({
         ? "dark"
         : "light"
 
-        root.classList.add(systemTheme)
-        return
+      root.classList.add(systemTheme)
+      return
     }
 
     root.classList.add(theme)

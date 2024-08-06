@@ -1,10 +1,10 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "next/navigation";
 import { useLogData } from "./useLogData";
 
 export const useFilteredLogs = () => {
   const { data: logs } = useLogData();
-  const [searchParams] = useSearchParams();
-
+  const searchParams = useSearchParams();
+  
   const date = searchParams.get("Data")?.replace(/-/g, "/");
   const minDate = searchParams.get("dataMinima")?.replace(/-/g, "/");
   const maxDate = searchParams.get("dataMaxima")?.replace(/-/g, "/");

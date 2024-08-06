@@ -1,3 +1,5 @@
+"use client"
+
 import { Pie, PieChart } from "recharts"
 
 import {
@@ -41,7 +43,7 @@ const chartConfig = {
 
 export const Chart = () => {
   const values = useShowPayments();
-  
+
   const chartData = [
     { payment: "credit", value: values[4][1], fill: chartConfig.credit.color },
     { payment: "debit", value: values[3][1], fill: chartConfig.debit.color },
@@ -51,42 +53,42 @@ export const Chart = () => {
 
   return (
     <Card className="border-gray-300 bg-gray-300 h-full dark:border-black dark:bg-black lg:my-1 2xl:my-0 flex flex-col">
-    <CardHeader className="items-center pb-0">
-      <CardTitle className="font-bold text-center text-sm md:text-lg 2xl:text-xl">
-        Formas de pagamento:
-      </CardTitle>
-    </CardHeader>
-    <CardContent className="flex-1 pb-0">
-      <ChartContainer
-        config={chartConfig}
-        className="mx-auto aspect-square max-h-[250px]"
-      >
-        <PieChart>
-          <ChartTooltip
-            cursor={false}
-            content={
-              <ChartTooltipContent
-                className="dark:bg-black"
-                hideLabel
-                nameKey="payment"
-              />
-            }
-          />
-          <Pie
-            data={chartData}
-            dataKey="value"
-            nameKey="payment"
-            innerRadius={40}
-            className="stroke-gray-300 focus:outline-none dark:stroke-black"
-          />
-          <ChartLegend
-            content={<ChartLegendContent nameKey="payment" />}
-            className="flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
-          />
-        </PieChart>
-      </ChartContainer>
-    </CardContent>
-  </Card>
+      <CardHeader className="items-center pb-0">
+        <CardTitle className="font-bold text-center text-sm md:text-lg 2xl:text-xl">
+          Formas de pagamento:
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="flex-1 pb-0">
+        <ChartContainer
+          config={chartConfig}
+          className="min-h-full mx-auto aspect-square max-h-[250px]"
+        >
+          <PieChart>
+            <ChartTooltip
+              cursor={false}
+              content={
+                <ChartTooltipContent
+                  className="dark:bg-black"
+                  hideLabel
+                  nameKey="payment"
+                />
+              }
+            />
+            <Pie
+              data={chartData}
+              dataKey="value"
+              nameKey="payment"
+              innerRadius={40}
+              className="stroke-gray-300 focus:outline-none dark:stroke-black"
+            />
+            <ChartLegend
+              content={<ChartLegendContent key="payment" nameKey="payment" />}
+              className="flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
+            />
+          </PieChart>
+        </ChartContainer>
+      </CardContent>
+    </Card>
   )
 }
 

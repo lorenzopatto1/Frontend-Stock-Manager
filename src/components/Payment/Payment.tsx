@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Dialog,
   DialogPanel,
@@ -6,13 +8,14 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
 import { useCartProducts } from "../../context/CartProductsContext";
 import { useRelatoryCreateMutate } from "../../hooks/useRelatoryCreateMutate";
 import { Button } from "../Button";
 import { PaymentData } from "./PaymentData";
 import PaymentOptions from "./PaymentOptions";
 import Loading from "../Loading";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 
 export const paymentOptions = [
   "Escolha a forma de pagamento",
@@ -25,7 +28,8 @@ export const paymentOptions = [
 const Payment = () => {
   const { mutate, isPending, isSuccess } = useRelatoryCreateMutate();
   const { sale, setSale, total, setProductsInCart } = useCartProducts();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [firstPaymentOption, setFirstPaymentOption] = useState(
     paymentOptions[0]
   );
@@ -36,32 +40,35 @@ const Payment = () => {
       firstPayment: firstPaymentOption,
     }));
 
-    return () => {
-    };
-    //eslint-disable-next-line
+    return () => { };
+
   }, [firstPaymentOption]);
 
   const finalize = searchParams.get("Finalize");
 
   const handleClose = () => {
-    setSearchParams((state) => {
-      state.delete("Finalize");
-      return state;
-    });
+    const path = router.pathname
+    router.replace(path);
   };
 
   useEffect(() => {
     total <= 0 && handleClose();
-  }, [])
+  }, [total])
+
+  useEffect(() => {
+    if (isSuccess) {
+      handleClose();
+      setProductsInCart([]);
+    }
+  }, [isSuccess]);
 
   const handleFinishSale = () => {
-    mutate(sale!);
+    if (sale) {
+      mutate(sale);
+    }
   };
 
-  if (isSuccess) {
-    handleClose();
-    setProductsInCart([]);
-  }
+
 
   return (
     <Transition show={!!finalize}>
@@ -132,7 +139,7 @@ const Payment = () => {
                   >
                     {isPending ? <Loading /> : 'Finalizar venda'}
                   </Button>
-                  <Link to="/cash-register">Voltar</Link>
+                  <button onClick={handleClose}>Voltar</button>
                 </div>
               </DialogPanel>
             </TransitionChild>

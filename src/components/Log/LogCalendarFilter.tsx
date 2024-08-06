@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Listbox,
   ListboxButton,
@@ -6,38 +8,53 @@ import {
 } from "@headlessui/react";
 import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 
 import Calendar from "react-calendar";
-import "./calendar.css";
+
+import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 
 type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export const LogCalendarFilter = () => {
-  const [, setSearchParams] = useSearchParams();
-  const [filterDate, setFilterDate] = useState<Value>([new Date(), new Date()]);
-  const setFilter = () => {
-    setSearchParams((state) => {
-      if (Array.isArray(filterDate) && filterDate[0] && filterDate[1] && filterDate[0].toLocaleDateString("pt-br") === filterDate[1].toLocaleDateString("pt-br")) {
-        state.set("Data", filterDate[0].toLocaleDateString("pt-br").replace(/\//g, "-"));
-        state.delete("dataMinima");
-        state.delete("dataMaxima");
-      }
-      if (Array.isArray(filterDate) && filterDate[0] && filterDate[1] && filterDate[0].toLocaleDateString("pt-br") !== filterDate[1].toLocaleDateString("pt-br")) {
-        state.delete("Data");
-        state.set("dataMinima", filterDate[0].toLocaleDateString("pt-br").replace(/\//g, "-"));
-        state.set("dataMaxima", filterDate[1].toLocaleDateString("pt-br").replace(/\//g, "-"));
-      }
 
-      return state;
-    });
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const [filterDate, setFilterDate] = useState<Value>([new Date(), new Date()]);
+
+  const dateToString = (date: Date) => {
+    return date.toLocaleDateString("pt-br")
+  }
+
+  const setFilter = () => {
+    const nextSearchParams = new URLSearchParams(searchParams.toString());
+    if (Array.isArray(filterDate) && filterDate[0] && filterDate[1] && dateToString(filterDate[0]) === dateToString(filterDate[1])) {
+      nextSearchParams.delete("dataMinima");
+      nextSearchParams.delete("dataMaxima");
+      router.replace(`${router.pathname}?${nextSearchParams.toString()}`, {
+        query: {
+          ...router.query,
+          Data: dateToString(filterDate[0]).replace(/\//g, "-")
+        }
+      })
+    }
+    if (Array.isArray(filterDate) && filterDate[0] && filterDate[1] && dateToString(filterDate[0]) !== dateToString(filterDate[1])) {
+      nextSearchParams.delete("Data");
+      router.replace(`${router.pathname}?${nextSearchParams.toString()}`, {
+        query: {
+          ...router.query,
+          dataMinima: dateToString(filterDate[0]).replace(/\//g, "-"),
+          dataMaxima: dateToString(filterDate[1]).replace(/\//g, "-")
+        }
+      })
+
+    }
   };
 
   useEffect(() => {
     setFilter();
-    //eslint-disable-next-line
   }, [filterDate]);
 
   return (
@@ -48,17 +65,15 @@ export const LogCalendarFilter = () => {
             <ListboxButton className="relative cursor-pointer rounded-md py-1.5 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
               <span className="flex items-center">
                 <span className="ml-3 block truncate font-bold text-xl">
-                  {!Array.isArray(filterDate) &&
-                    filterDate &&
-                    filterDate.toLocaleDateString("pt-br")}
-                  {Array.isArray(filterDate) &&
-                    filterDate[0]?.toLocaleDateString("pt-br") !==
-                    filterDate[1]?.toLocaleDateString("pt-br")
-                    ? `${filterDate[0]?.toLocaleDateString(
-                      "pt-br"
-                    )} - ${filterDate[1]?.toLocaleDateString("pt-br")}`
-                    : Array.isArray(filterDate) &&
-                    filterDate[0]?.toLocaleDateString("pt-br")}
+                  {
+                    Array.isArray(filterDate) && filterDate && filterDate[0] && filterDate[1]
+                      && filterDate[0].toLocaleDateString("pt-br")
+                      !== filterDate[1].toLocaleDateString("pt-br")
+                      ? `${filterDate[0].toLocaleDateString(
+                        "pt-br"
+                      )} - ${filterDate[1].toLocaleDateString("pt-br")}`
+                      : Array.isArray(filterDate) &&
+                      filterDate[0]?.toLocaleDateString("pt-br")}
                 </span>
               </span>
               <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">

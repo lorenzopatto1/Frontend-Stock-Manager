@@ -1,9 +1,12 @@
-import { NavLink, useMatch, useNavigate } from "react-router-dom";
+"use client"
+
+import { useRouter } from "next/router";
 
 import { navigation } from "../../data/navigation";
 
 import { Profile } from "./Profile";
 import { useState } from "react";
+import Link from "next/link";
 
 function classNames(
   ...classes: (string | undefined | null | boolean)[]
@@ -13,22 +16,18 @@ function classNames(
 
 export const Nav = () => {
   const [openNavBar, setOpenNavBar] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter();
 
-
-  const paths = [
-    useMatch("home"),
-    useMatch("stock"),
-    useMatch("log"),
-    useMatch("expenses")
-  ]
+  const navigate = (route: string) => {
+    router.push(route);
+  }
 
   const isPathMatched = (href: string) => {
-    return paths.some((path) => path?.pathname === href);
+    return router.pathname === href;
   };
 
   return (
-    <div className="relative">
+    <aside className="relative">
 
       <div className="w-16 h-full" />
 
@@ -49,19 +48,19 @@ export const Nav = () => {
         <div className="py-2 flex-shrink-0 flex cursor-pointer items-center">
           <img
             className="h-12 w-12"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+            src="/icon.svg"
             alt="Your Company"
-            onClick={() => navigate('/home')}
+            onClick={() => navigate('/dashboard')}
           />
         </div>
-        <div className="flex flex-1 flex-col gap-2">
+        <nav className="flex flex-1 flex-col gap-2">
           {navigation.map((item) => (
-            <NavLink
+            <Link
               key={item.name}
-              to={item.href}
-              className={({ isActive }) =>
+              href={item.href}
+              className={
                 classNames(
-                  isActive
+                  isPathMatched(item.href)
                     ? "bg-gray-400 dark:bg-gray-900 text-white"
                     : "bg-gray-50 hover:bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-300 dark:hover:bg-gray-900 dark:hover:text-white",
                   "rounded-md px-3 py-2 text-sm font-medium transition-all flex gap-2 items-center"
@@ -78,11 +77,11 @@ export const Nav = () => {
               >
                 {item.name}
               </span>
-            </NavLink>
+            </Link>
           ))}
-        </div>
+        </nav>
         <Profile />
       </div>
-    </div>
+    </aside>
   )
 }

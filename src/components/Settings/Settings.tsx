@@ -1,10 +1,12 @@
+"use client"
+
 import { Transition, TransitionChild } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useSearchParams } from "react-router-dom";
 import { ChangeUserDataForm } from "./Forms/ChangeUserDataForm";
 import { useState } from "react";
 import { cn } from "../../../@/lib/utils"
 import { ChangeFeeDataForm } from "./Forms/ChangeFeeForm";
+import { useRouter } from "next/router";
 
 type SectionProps = 'Dados do usuário' | 'Taxas da maquininha'
 
@@ -15,23 +17,21 @@ const sections: SectionProps[] = [
 
 
 export const Settings = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const [section, setSection] = useState<SectionProps>('Dados do usuário');
+  const router = useRouter();
+  const path = router.pathname;
 
-  const settings = searchParams.get("settings");
+  const settings = router.asPath.includes('?settings=open');
 
   const handleCloseSettings = () => {
-    setSearchParams((state) => {
-      state.delete("settings");
-      return state;
-    });
+    router.push(path)
   };
 
   return (
-    <Transition show={!!settings}>
+    <Transition show={settings}>
       <div
         className={` ${!settings && "hidden"
-          } absolute z-20 w-full h-full flex items-center justify-center`}
+          } absolute z-40 w-full h-full flex items-center justify-center`}
       >
         <TransitionChild
           enter="ease-in-out duration-500"
@@ -70,7 +70,7 @@ export const Settings = () => {
             <div className="flex h-full p-3">
               <div className="flex flex-col gap-2 text-nowrap pr-4 border-r-[1px] border-r-gray-400 dark:border-r-gray-600">
                 {sections.map(name => (
-                  <button className={cn("text-start p-2 bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 hover:dark:bg-gray-900 transition-all rounded-md font-bold", {
+                  <button key={name} className={cn("text-start p-2 bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 hover:dark:bg-gray-900 transition-all rounded-md font-bold", {
                     "bg-gray-400 dark:bg-gray-900": section === name
                   })} onClick={() => setSection(name)} type="button">{name}</button>
                 ))}

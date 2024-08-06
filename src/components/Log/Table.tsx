@@ -1,8 +1,8 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "next/navigation";
 import { useAggregateProducts } from "../../hooks/useAggregateProducts";
 
 export const Table = () => {
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const { aggregateProducts } = useAggregateProducts();
 
   const productName = searchParams.get("name")

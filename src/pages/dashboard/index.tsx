@@ -1,18 +1,17 @@
 import { ArrowTrendingDownIcon, ArrowTrendingUpIcon, ChartBarIcon } from '@heroicons/react/16/solid';
-import { ValuesCard } from '../components/Dashboard/ValuesCard';
-import { Settings } from '../components/Settings/Settings';
-import { Chart } from '../components/Dashboard/Chart';
-import { MonthResult } from '../components/Dashboard/MonthResult';
 import { CubeIcon } from '@heroicons/react/24/outline';
-import { usePricesData } from '../hooks/usePricesData';
-import { ProductType } from '../interfaces/product-data';
-import { useProductsData } from '../hooks/useProductsData';
-import { Nav } from '../components/Nav/Nav';
-import { Header } from '../components/Header';
-import { useShowPayments } from '../hooks/useShowPayments';
-import { Percentage } from '../components/Dashboard/Percentage';
-
-
+import Head from 'next/head';
+import { Chart } from '../../components/Dashboard/Chart';
+import { MonthResult } from '../../components/Dashboard/MonthResult';
+import { Percentage } from '../../components/Dashboard/Percentage';
+import { ValuesCard } from '../../components/Dashboard/ValuesCard';
+import { Header } from '../../components/Header';
+import { Nav } from '../../components/Nav/Nav';
+import { Settings } from '../../components/Settings/Settings';
+import { usePricesData } from '../../hooks/usePricesData';
+import { useProductsData } from '../../hooks/useProductsData';
+import { useShowPayments } from '../../hooks/useShowPayments';
+import { ProductType } from '../../interfaces/product-data';
 
 const stockValues = [
   {
@@ -35,9 +34,7 @@ const stockValues = [
   }
 ];
 
-
-
-export const Dashboard = () => {
+const Dashboard = () => {
   const { count = 0 } = useProductsData();
   const { data } = usePricesData();
   const billing = useShowPayments();
@@ -69,7 +66,7 @@ export const Dashboard = () => {
     {
       title: "Produtos:",
       icon: <CubeIcon className="w-6 stroke-gray-600 dark:stroke-white" />,
-      value: count.toString(),
+      value: count?.toString(),
     },
     {
       title: "Custo de compra:",
@@ -84,25 +81,29 @@ export const Dashboard = () => {
   ];
 
   return (
-    <div className="flex overflow-auto h-screen">
+    <div className="flex h-screen">
+      <Head>
+        <title>Controle mensal</title>
+      </Head>
       <Nav />
       <Settings />
 
-      <main className="flex flex-1 flex-col items-center">
+      <main className="overflow-auto md:overflow-hidden flex flex-1 flex-col items-center">
         <Header />
-        <div className="grid w-full h-fit gap-0 md:gap-[2vh] 2xl:gap-8 md:p-4 md:w-[90%] xl:w-[80%] grid-cols-3">
+        <div className="p-8 grid w-full h-fit gap-[2vh] 2xl:gap-8 md:p-4 md:w-[90%] xl:w-[80%] grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           {values.map(item => (
             <ValuesCard key={item.title} icon={item.icon} title={item.title} value={item.value} month={item.date} />
           ))}
 
-
-          <div className="flex items-center justify-center">
-            <Chart />
+          <div className="grid md:row-span-1 sm:row-span-3">
+            <div className="flex auto items-center justify-center">
+              <Chart />
+            </div>
           </div>
 
           <MonthResult />
 
-          <div className="grid  w-full gap-0 lg:gap-[1vh] 2xl:gap-4">
+          <div className="grid w-full gap-[2vh]">
             <Percentage />
           </div>
 
@@ -119,3 +120,5 @@ export const Dashboard = () => {
     </div>
   );
 };
+
+export default Dashboard;

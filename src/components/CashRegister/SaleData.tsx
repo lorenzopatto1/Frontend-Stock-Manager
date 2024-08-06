@@ -1,101 +1,75 @@
+"use client"
+
 import { useEffect, useState } from "react";
 import { Input } from "./Input";
-import { useSearchParams } from "react-router-dom";
 import { useCartProducts } from "../../context/CartProductsContext";
-
-interface ChangeProps {
-  input: string;
-  value?: string;
-}
+import { useRouter } from "next/router";
 
 export const SaleData = () => {
   const { setSale, productsInCart, setProductsInCart, productFocus, setProductFocus, total } =
     useCartProducts();
-  const [, setSearchParams] = useSearchParams();
+  const router = useRouter();
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
-
-  const totalItem = Number((Number(quantity) *  parseFloat(price.replace(",", "."))).toFixed(2));
+  const [totalItem, setTotalItem] = useState("");
 
   useEffect(() => {
-    setSearchParams((state) => {
-      if (productFocus) {
-        if (productFocus?.wholesaleMinimalQuantity && productFocus.wholesalePrice && Number(quantity) >= productFocus?.wholesaleMinimalQuantity) {
-          setPrice(productFocus.wholesalePrice.toString())
-          setProductsInCart(prevState => {
-            const updatedProducts = prevState.map(product => 
-              product.productId === productFocus?.productId 
-                ? { ...product, total: totalItem }
-                : product 
-            );
-            
-            return updatedProducts;
-          });
-        } else
-        setPrice(productFocus.price.toString());
+    if (productFocus) {
+      setQuantity(productFocus.quantity.toString());
+      if (productFocus.wholesaleMinimalQuantity && productFocus.wholesalePrice && Number(quantity) >= productFocus.wholesaleMinimalQuantity) {
+        setPrice(productFocus.wholesalePrice.toString())
+        setProductsInCart(prevState => {
+          const updatedProducts = prevState.map(product =>
+            product.productId === productFocus?.productId
+              ? { ...product, total: Number(totalItem) }
+              : product
+          );
 
-        setQuantity(productFocus.quantity.toString());
-
-
-        state.set("Quantity", productFocus.quantity.toString());
-        state.set("Price", productFocus.price.toString());
-        state.set("TotalItem", totalItem.toString());
-      } else {
-        setPrice("0");
-        setQuantity("0");
-
-        state.delete("Quantity");
-        state.delete("Price");
-        state.delete("TotalItem");
+          return updatedProducts;
+        });
       }
-      return state;
-    });
-    //eslint-disable-next-line
+      if (productFocus.wholesaleMinimalQuantity && productFocus.wholesaleMinimalQuantity >= Number(quantity)) {
+        setPrice(productFocus.price.toString());
+      }
+
+      if (!router.asPath.includes("Quantity")) {
+        router.replace({
+          query: {
+            Quantity: productFocus.quantity.toString(),
+            Price: productFocus.price.toString(),
+            TotalItem: totalItem
+          }
+        });
+      }
+    }
+
   }, [productFocus]);
 
-  const handleChangeParams = ({ input, value }: ChangeProps) => {
-    setSearchParams((state) => {
-      if (input === "quantity" && value && value.length >= 1) {
-        state.set("Quantity", value);
-        state.set("TotalItem", totalItem.toString());
-      } else if (value && value.length < 1 && !productFocus) {
-        state.delete("Quantity");
-        state.delete("TotalItem");
-      }
+  useEffect(() => {
+    setTotalItem((Number(quantity) * Number(price)).toFixed(2).replace(",", "."));
 
-      if (input === "price" && value && value.length >= 1) {
-        state.set("Price", value);
-        state.set("TotalItem", totalItem.toString());
-      } else if (value && value.length < 1 && !productFocus) {
-        state.delete("Price");
-        state.delete("TotalItem");
-      }
-      if (input === "end") {
-        state.set("Finalize", "true");
-      } else {
-        state.delete("Finalize");
-      }
-
-      return state;
-    });
-  };
+    if (price.length >= 1 && quantity.length >= 1 && totalItem.length >= 1) {
+      router.replace({
+        query: {
+          ...router.query,
+          Quantity: quantity,
+          Price: price,
+          TotalItem: totalItem.toString()
+        }
+      })
+    }
+  }, [price, quantity, totalItem])
 
   const handleFinishSale = () => {
     setProductFocus(undefined);
+    router.replace({
+      query: { Finalize: "true" }
+    });
 
     setSale((prevState) => ({
       ...prevState,
       products: productsInCart,
     }));
-
-    setSearchParams((state) => {
-      state.delete("Quantity");
-      state.delete("Price");
-      state.delete("TotalItem");
-      return state;
-    });
-
-    handleChangeParams({ input: "end" });
   };
 
   return (
@@ -105,7 +79,6 @@ export const SaleData = () => {
           value={quantity}
           onChange={(e) => {
             {
-              handleChangeParams({ input: "quantity", value: e.target.value});
               setQuantity(e.target.value);
             }
           }}
@@ -120,7 +93,6 @@ export const SaleData = () => {
           onChange={(e) => {
             {
               const value = e.target.value
-              handleChangeParams({ input: "price", value });
               setPrice(value);
             }
           }}
@@ -134,10 +106,10 @@ export const SaleData = () => {
           </div>
           <p className="text-ellipsis overflow-hidden font-bold ring-1 group-hover:text-indigo-500 group-hover:ring-indigo-500 ring-zinc-700 dark:ring-zinc-500 w-full text-center py-4 md:text-start md:p-4 rounded-md">
             {productFocus
-              ? totalItem.toLocaleString("pt-br", {
-                  style: "currency",
-                  currency: "BRL",
-                })
+              ? Number(totalItem).toLocaleString("pt-br", {
+                style: "currency",
+                currency: "BRL",
+              })
               : 0}
           </p>
         </div>
@@ -149,9 +121,9 @@ export const SaleData = () => {
           <p className="text-ellipsis overflow-hidden font-bold ring-1 group-hover:text-indigo-500 group-hover:ring-indigo-500 ring-zinc-500 w-full text-center py-4 md:text-start md:p-4 rounded-md">
             {productFocus
               ? total.toLocaleString("pt-br", {
-                  style: "currency",
-                  currency: "BRL",
-                })
+                style: "currency",
+                currency: "BRL",
+              })
               : 0}
           </p>
         </div>

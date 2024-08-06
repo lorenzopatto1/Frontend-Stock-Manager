@@ -1,13 +1,28 @@
+"use client"
+
+import { useEffect, useState } from "react";
+
 interface IValuesCard {
   title: string;
   icon: JSX.Element;
-  value: number | string;
+  value: number | string | undefined;
   date?: Date;
   month?: Date;
 }
 
 export const ValuesCard = ({ title, icon, value, date, month }: IValuesCard) => {
-  const monthName = month?.toLocaleString([], {month: 'long'});
+  const [cardDate, setCardDate] = useState<Date | null>(null);
+  const [monthName, setMonthName] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (date) {
+      setCardDate(date);
+    }
+    if (month) {
+      setMonthName(month.toLocaleString([], { month: 'long' }))
+    }
+  }, [])
+
   return (
     <div className="p-3 flex-1 max-w-full max-h-32 bg-gray-300 dark:bg-black flex flex-col 2xl:gap-1 rounded-md font-bold h-fit">
       <div className="flex justify-between">
@@ -15,12 +30,12 @@ export const ValuesCard = ({ title, icon, value, date, month }: IValuesCard) => 
         {icon}
       </div>
       <div className="p-1">
-      <p className="text-xs sm:text-md md:text-base 2xl:text-lg overflow-hidden text-nowrap text-ellipsis">{value.toLocaleString("pt-br", {
-        style: "currency",
-        currency: "BRL"
-      })}</p>
+        <p className="text-xs sm:text-md md:text-base 2xl:text-lg overflow-hidden text-nowrap text-ellipsis">{value?.toLocaleString("pt-br", {
+          style: "currency",
+          currency: "BRL"
+        })}</p>
 
-        <p className="text-xs font-normal text-gray-500 dark:text-gray-400 overflow-hidden text-nowrap text-ellipsis">{date ? date.toLocaleDateString("pt-br") : month ? `No mês de ${monthName}` : null}</p>
+        <p className="text-xs font-normal text-gray-500 dark:text-gray-400 overflow-hidden text-nowrap text-ellipsis">{cardDate ? cardDate.toLocaleDateString("pt-br") : month ? `No mês de ${monthName}` : null}</p>
 
       </div>
     </div>

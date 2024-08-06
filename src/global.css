@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#__next {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  @apply bg-white text-zinc-800 dark:bg-gray-900 dark:text-zinc-100 transition-all;
+  overflow: hidden;
+  @apply font-inter;
+  height: 100%;
+}
+
+input {
+  outline: none;
+}
+
+input[type="checkbox"] {
+  @apply flex items-center appearance-none justify-center;
+}
+
+input[type="checkbox"]:checked::before {
+  content: "✓";
+  @apply text-white dark:text-zinc-200 text-sm;
+}
+
+input[type="checkbox"]:checked {
+  @apply appearance-none ring-1;
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark input:-webkit-autofill:active {
+  border: 1px solid white;
+  -webkit-text-fill-color: rgb(244 244 245) !important;
+  -webkit-box-shadow: 0 0 0px 1000px #09090a inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+th {
+  @apply px-1 py-3 sm:px-6 text-left font-medium uppercase tracking-wider text-ellipsis overflow-hidden;
+}
+
+td {
+  @apply px-1 py-3 sm:px-6 text-ellipsis overflow-hidden;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  @apply bg-zinc-200 dark:bg-zinc-700;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.react-calendar {
+  @apply dark:bg-gray-800 dark:text-white rounded-lg shadow-md p-4;
+}
+
+.react-calendar__navigation {
+  @apply flex justify-between mb-2;
+}
+
+.react-calendar__navigation button {
+  @apply dark:bg-gray-700 dark:text-white p-1 rounded-md dark:hover:bg-gray-600;
+}
+
+.react-calendar__month-view__weekdays {
+  @apply dark:text-gray-400 font-bold;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  @apply text-red-500;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  @apply text-center;
+}
+
+.react-calendar__tile {
+  @apply bg-transparent dark:text-white p-2 rounded-md w-8 dark:hover:bg-gray-700;
+}
+
+.react-calendar__month-view__days__day {
+  @apply w-1;
+}
+
+abbr {
+  @apply decoration-transparent;
+}
+
+.react-calendar--selectRange .react-calendar__tile--hover {
+  @apply !bg-indigo-500;
+}
+
+.react-calendar__tile--now {
+  @apply bg-blue-400 dark:bg-blue-900 dark:text-white;
+}
+
+.react-calendar__tile--active {
+  @apply !bg-indigo-500 dark:text-white;
+}

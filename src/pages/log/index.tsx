@@ -1,11 +1,16 @@
-import { Header } from "../components/Header";
-import { LogDetails } from "../components/Log/LogDetails";
-import { Nav } from "../components/Nav/Nav";
-import { Settings } from "../components/Settings/Settings";
+import Head from "next/head";
+import { Header } from "../../components/Header";
+import { LogDetails } from "../../components/Log/LogDetails";
+import { Nav } from "../../components/Nav/Nav";
+import { Settings } from "../../components/Settings/Settings";
 
-export const Log = () => {
+const Log = () => {
   return (
     <div className="w-full h-screen flex relative">
+      <Head>
+        <title>Relatório</title>
+      </Head>
+
       <Settings />
       <Nav />
       <main className="flex flex-1 flex-col items-center justify-start gap-4 w-full">
@@ -17,3 +22,5 @@ export const Log = () => {
     </div>
   );
 };
+
+export default Log;

@@ -1,3 +1,5 @@
+"use client"
+
 import { useUserData } from "../../../hooks/useUserData";
 import { Input } from "../Input";
 import { Button } from "../../Button";

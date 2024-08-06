@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Dialog,
   DialogPanel,
@@ -20,7 +22,7 @@ import { Input } from "../Input";
 import Loading from "../Loading";
 import { useDecimalFormat } from "../../hooks/useDecimalFormat";
 import { ProductTypePopover } from "./ProductTypePopover";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "next/navigation";
 interface INewProductModal {
   open: boolean;
   handleClose: () => void;
@@ -32,14 +34,14 @@ export const EditProductModal = ({
   handleClose,
   id,
 }: INewProductModal) => {
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
 
   const { data, isSuccess: dataSuccess, refetch } = useProductsByIdData(id);
   const { data: categorys } = useCategorysData();
   const { mutate, isPending, isError: mutateError } = useProductEditMutate();
 
   const { formatter } = useDecimalFormat();
-  
+
   const {
     register,
     handleSubmit,
@@ -62,7 +64,7 @@ export const EditProductModal = ({
         await refetch();
         const calcPercentual =
           (Number(getValues().salePrice) / Number(getValues().purchasePrice)) *
-            100 -
+          100 -
           100;
 
         setValue("percentual", calcPercentual > 0 ? formatter(calcPercentual) : '');
@@ -71,7 +73,6 @@ export const EditProductModal = ({
         reset();
       }
     })();
-    //eslint-disable-next-line
   }, [open, data]);
 
   const handleEditProduct: SubmitHandler<CreateProductFormData> = async (product) => {

@@ -1,16 +1,20 @@
+"use client"
+
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { useProductsData } from "../../hooks/useProductsData";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { EditProductModal } from "./EditProductModal";
 import { ProductCardSkeleton } from "./ProductCardSkeleton";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 
 export const ProductCard = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const { data: productData, isLoading, isSuccess } = useProductsData();
   const [openEditProductModal, setOpenEditProductModal] = useState(false);
   const [openRemoveProductModal, setOpenRemoveProductModal] = useState(false);
   const [productKey, setProductKey] = useState<number>();
+  const router = useRouter();
 
   const productName = searchParams.get("productName");
   const productCategory = searchParams.get("category");
@@ -21,11 +25,10 @@ export const ProductCard = () => {
   };
 
   const handleCloseEditModal = () => {
+    const path = router.pathname
     setOpenEditProductModal(false);
-    setSearchParams(state => {
-      state.delete("productType")
-      return state
-    })
+
+    router.push(path)
   };
 
   const handleOpenRemoveModal = (id: number) => {
@@ -54,83 +57,83 @@ export const ProductCard = () => {
   if (!isSuccess && !productData) {
     return (<p>Houve um erro ao carregar suas informações.</p>)
   }
-    return (
-      <>
-        {productData
-          ?.filter((product) =>
-            productName !== null
-              ? product.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().startsWith(productName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase())
-              : product.name
-          )
-          .filter((product) =>
-            productCategory !== null
-              ? productCategory === product.group
-              : product.group
-          )
-          .map((product) => (
-            <tr className="w-full text-xs sm:text-sm lg:text-base" key={product.id}>
-              <td>
-                <abbr title={product.group}>{product.group}</abbr>
-              </td>
-              <td>
-                <abbr title={product.name}>{product.name}</abbr>
-              </td>
-              <td>
-                <abbr title={product.quantity.toString()}>
-                  {product.quantity}
-                </abbr>
-              </td>
-              <td className="hidden min-[530px]:table-cell">
-                <abbr
-                  title={product.purchasePrice.toLocaleString("pt-br", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
-                >
-                  {product.purchasePrice.toLocaleString("pt-br", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
-                </abbr>
-              </td>
-              <td className="hidden min-[392px]:table-cell">
-                <abbr
-                  title={product.salePrice.toLocaleString("pt-br", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
-                >
-                  {" "}
-                  {product.salePrice.toLocaleString("pt-br", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
-                </abbr>
-              </td>
-              <td className="hidden md:table-cell">
-                <abbr
-                  title={
-                    product.validationDate
-                      ? new Date(product.validationDate).toLocaleDateString(
-                          "pt-BR"
-                        )
-                      : "--/--/----"
-                  }
-                >
-                  {product.validationDate
+  return (
+    <>
+      {productData
+        ?.filter((product) =>
+          productName !== null
+            ? product.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().startsWith(productName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase())
+            : product.name
+        )
+        .filter((product) =>
+          productCategory !== null
+            ? productCategory === product.group
+            : product.group
+        )
+        .map((product) => (
+          <tr className="w-full text-xs sm:text-sm lg:text-base" key={product.id}>
+            <td>
+              <abbr title={product.group}>{product.group}</abbr>
+            </td>
+            <td>
+              <abbr title={product.name}>{product.name}</abbr>
+            </td>
+            <td>
+              <abbr title={product.quantity.toString()}>
+                {product.quantity}
+              </abbr>
+            </td>
+            <td className="hidden min-[530px]:table-cell">
+              <abbr
+                title={product.purchasePrice.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
+              >
+                {product.purchasePrice.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
+              </abbr>
+            </td>
+            <td className="hidden min-[392px]:table-cell">
+              <abbr
+                title={product.salePrice.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
+              >
+                {" "}
+                {product.salePrice.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
+              </abbr>
+            </td>
+            <td className="hidden md:table-cell">
+              <abbr
+                title={
+                  product.validationDate
                     ? new Date(product.validationDate).toLocaleDateString(
-                        "pt-BR"
-                      )
-                    : "--/--/----"}
-                </abbr>
-              </td>
-              <div className="hidden xl:flex justify-between py-3 pr-6 ">
-                <button
-                  className="text-indigo-500 font-bold hover:text-opacity-80"
-                  onClick={() => handleOpenEditModal(product.id!)}
-                >
-                  Editar
-                </button>
+                      "pt-BR"
+                    )
+                    : "--/--/----"
+                }
+              >
+                {product.validationDate
+                  ? new Date(product.validationDate).toLocaleDateString(
+                    "pt-BR"
+                  )
+                  : "--/--/----"}
+              </abbr>
+            </td>
+            <div className="hidden xl:flex justify-between py-3 pr-6 ">
+              <button
+                className="text-indigo-500 font-bold hover:text-opacity-80"
+                onClick={() => handleOpenEditModal(product.id!)}
+              >
+                Editar
+              </button>
 
               {product.id && product.id === productKey ? (
                 <EditProductModal
@@ -140,24 +143,24 @@ export const ProductCard = () => {
                 />
               ) : null}
 
-                <button
-                  className="text-red-500 hover:text-red-600 dark:text-red-500 font-bold dark:hover:text-opacity-80"
-                  onClick={() => handleOpenRemoveModal(product.id!)}
-                >
-                  Remover
-                </button>
-              </div>
-              {product.id === productKey && (
-                <ConfirmDeleteModal
-                  id={productKey}
-                  productName={product.name}
-                  open={openRemoveProductModal}
-                  handleClose={handleCloseRemoveModal}
-                />
-              )}
-            </tr>
-          ))}
-      </>
-    );
-  
+              <button
+                className="text-red-500 hover:text-red-600 dark:text-red-500 font-bold dark:hover:text-opacity-80"
+                onClick={() => handleOpenRemoveModal(product.id!)}
+              >
+                Remover
+              </button>
+            </div>
+            {product.id === productKey && (
+              <ConfirmDeleteModal
+                id={productKey}
+                productName={product.name}
+                open={openRemoveProductModal}
+                handleClose={handleCloseRemoveModal}
+              />
+            )}
+          </tr>
+        ))}
+    </>
+  );
+
 };

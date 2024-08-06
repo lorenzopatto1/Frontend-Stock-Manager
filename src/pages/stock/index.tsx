@@ -1,38 +1,44 @@
+"use client"
+
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { NewProductModal } from "../components/Stock/NewProductModal.tsx";
-import { Table } from "../components/Stock/Table.tsx";
-import { useProductsData } from "../hooks/useProductsData.ts";
+import { NewProductModal } from "../../components/Stock/NewProductModal.tsx";
+import { Table } from "../../components/Stock/Table.tsx";
+import { useProductsData } from "../../hooks/useProductsData.ts";
 
-import { Settings } from "../components/Settings/Settings.tsx";
-import { Nav } from "../components/Nav/Nav.tsx";
-import { Header } from "../components/Header.tsx";
+import { Settings } from "../../components/Settings/Settings.tsx";
+import { Nav } from "../../components/Nav/Nav.tsx";
+import { Header } from "../../components/Header.tsx";
+import { useRouter } from "next/router";
+import Head from "next/head";
 
-export const Stock = () => {
-  const [, setSearchParams] = useSearchParams();
+const Stock = () => {
   const { isLoading, isError } = useProductsData();
   const [openNewProductModal, setOpenNewProductModal] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleClose = () => {
+    const path = router.pathname
+
     setOpenNewProductModal(false);
-    setSearchParams(state => {
-      state.delete("productType")
-      return state
-    })
+
+    router.push(path)
+
   };
+
   useEffect(() => {
     const token = Cookies.get("token");
     if (token === undefined) {
-      navigate("/");
+      router.push("/");
     }
-    //eslint-disable-next-line
   }, []);
 
   return (
     <div className="flex h-full">
+      <Head>
+        <title>Estoque</title>
+      </Head>
       <Settings />
       <Nav />
       <div className="flex flex-col">
@@ -67,3 +73,5 @@ export const Stock = () => {
     </div>
   );
 };
+
+export default Stock;

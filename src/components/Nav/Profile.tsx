@@ -10,29 +10,27 @@ import {
 } from "@headlessui/react";
 import { MoonIcon, SunIcon } from "@heroicons/react/20/solid";
 import { useTheme } from "../../context/ThemeContext";
-import { useNavigate, useSearchParams } from "react-router-dom";
 
 import Cookies from "js-cookie";
 import { useUserLogout } from "../../hooks/useUserLogout";
+import { useRouter } from "next/router";
 
 export const Profile = () => {
   const { theme, setTheme } = useTheme();
-  const [, setSearchParams] = useSearchParams();
+
   const { mutate: logOut, isError } = useUserLogout();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleOpenSettings = () => {
-    setSearchParams(state => {
-      state.set("settings", "open")
-      return state
-    })
+    const path = router.pathname
+    router.push(`${path}/?settings=open`)
   }
 
   const logoutMutate = () => {
     logOut();
     if (!isError) {
       Cookies.remove("token");
-      navigate('/');
+      router.push('/');
     }
   };
 

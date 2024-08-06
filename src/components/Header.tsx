@@ -1,12 +1,14 @@
+"use client"
+
 import { CheckIcon } from "@heroicons/react/20/solid";
 import {
   ChevronUpDownIcon
 } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { useStoreNameEditMutate } from "../hooks/useStoreNameEditMutate";
 import { useUserData } from "../hooks/useUserData";
+import { useRouter } from "next/router";
 
 
 export const Header = () => {
@@ -15,7 +17,8 @@ export const Header = () => {
   const { mutate } = useStoreNameEditMutate();
   const [storeName, setStoreName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter();
+
 
   useEffect(() => {
     if (isSuccess && userData && storeName === "")
@@ -31,17 +34,17 @@ export const Header = () => {
 
   return (
     <div className="flex w-full justify-around p-4 border-b-[1px] border-gray-300 dark:border-gray-700">
-      <div />
+      <div className="hidden min-[845px]:block" />
       <div>
         <button
           className="disabled:cursor-not-allowed text-nowrap transition-all font-bold p-2 rounded-md dark:hover:border-indigo-700 focus:outline-none text-indigo-700 hover:text-zinc-200 dark:hover:text-zinc-200 dark:text-indigo-500 dark:focus:border-indigo-700  hover:bg-indigo-700 border-2 border-indigo-700 dark:border-indigo-500"
           disabled={isLoading || !isSuccess}
-          onClick={() => navigate("/cash-register")}
+          onClick={() => router.push("/cash-register")}
         >
           Abrir caixa
         </button>
       </div>
-      <div className="hidden min-[845px]:block">
+      <div >
         <div className="flex items-center gap-2">
           <div>
             <>
