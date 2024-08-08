@@ -38,7 +38,7 @@ export function CartProductsProvider({ children }: CartProductsProviderProps) {
 
   const handleSelectProduct = (productData: ProductData) => {
     const quantity = 1;
-    const productAlreadyInCart = productsInCart && productsInCart.find(product => product.productId === productData.id)
+    const productAlreadyInCart = productsInCart.find(product => product.productId === productData.id)
 
     const data: ProductsSold = {
       ...productAlreadyInCart,
@@ -54,14 +54,15 @@ export function CartProductsProvider({ children }: CartProductsProviderProps) {
       total: productData.wholesaleMinimalQuantity && quantity >= productData.wholesaleMinimalQuantity ? productData.wholesaleUnityPrice! * quantity : productData.salePrice * quantity
     }
 
+    console.log(productData)
+    console.log(data)
+
     if (productAlreadyInCart) {
       productAlreadyInCart.quantity += 1;
-      productAlreadyInCart.total = productData.wholesaleMinimalQuantity && productData.wholesaleUnityPrice && productAlreadyInCart.quantity >= productData.wholesaleMinimalQuantity ? productData.wholesaleUnityPrice * productAlreadyInCart.quantity : productData.salePrice * productAlreadyInCart.quantity
     }
-    else
+    else {
       setProductsInCart(prevState => [...prevState, data]);
-
-
+    }
     setProductSearch('');
     setProductFocus(data);
   }

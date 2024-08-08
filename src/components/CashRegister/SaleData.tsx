@@ -29,11 +29,11 @@ export const SaleData = () => {
             ? { ...product, total: Number(Number(totalItem).toFixed(2)) }
             : product
         );
-
         return updatedProducts;
       });
 
       if (!router.asPath.includes("Quantity")) {
+        console.log(productFocus.price)
         router.replace({
           query: {
             Quantity: productFocus.quantity.toString(),
@@ -42,11 +42,7 @@ export const SaleData = () => {
           }
         });
       }
-    } else {
-      setQuantity("0");
-      setPrice("0");
     }
-
   }, [productFocus]);
 
   useEffect(() => {

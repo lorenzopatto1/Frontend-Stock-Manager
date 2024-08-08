@@ -54,7 +54,7 @@ const CashRegister = () => {
         quantity,
         total: Number((quantity * price).toFixed(2)),
       }));
-
+      console.log("rodei")
       setProductsInCart((prevProducts) =>
         prevProducts.map((product) =>
           product.productId === editedProduct.productId
@@ -128,7 +128,7 @@ const CashRegister = () => {
                   <div
                     className="p-2 w-full rounded-md hover:bg-gray-400 cursor-pointer dark:hover:bg-gray-800"
                     key={product.id}
-                    onClick={() => handleSelectProduct(product)}
+                    onClick={() => { handleSelectProduct(product) }}
                   >
                     {product.name}
                   </div>

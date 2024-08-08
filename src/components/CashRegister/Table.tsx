@@ -59,7 +59,7 @@ export const Table = () => {
                       style: "currency",
                       currency: "BRL",
                     })
-                    : product.wholesaleMinimalQuantity && product.quantity < product.wholesaleMinimalQuantity && product.price.toLocaleString("pt-br", {
+                    : product.price.toLocaleString("pt-br", {
                       style: "currency",
                       currency: "BRL",
                     })}
