@@ -52,8 +52,7 @@ const CashRegister = () => {
       setProductFocus((prevState) => ({
         ...prevState!,
         quantity,
-        price,
-        total: quantity * price,
+        total: Number((quantity * price).toFixed(2)),
       }));
 
       setProductsInCart((prevProducts) =>

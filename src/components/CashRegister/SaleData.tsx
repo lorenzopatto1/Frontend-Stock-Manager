@@ -18,19 +18,20 @@ export const SaleData = () => {
       setQuantity(productFocus.quantity.toString());
       if (productFocus.wholesaleMinimalQuantity && productFocus.wholesalePrice && Number(quantity) >= productFocus.wholesaleMinimalQuantity) {
         setPrice(productFocus.wholesalePrice.toString())
-        setProductsInCart(prevState => {
-          const updatedProducts = prevState.map(product =>
-            product.productId === productFocus?.productId
-              ? { ...product, total: Number(totalItem) }
-              : product
-          );
-
-          return updatedProducts;
-        });
       }
-      if (productFocus.wholesaleMinimalQuantity && productFocus.wholesaleMinimalQuantity >= Number(quantity)) {
+      if (productFocus.wholesaleMinimalQuantity && Number(quantity) < productFocus.wholesaleMinimalQuantity) {
         setPrice(productFocus.price.toString());
       }
+
+      setProductsInCart(prevState => {
+        const updatedProducts = prevState.map(product =>
+          product.productId === productFocus?.productId
+            ? { ...product, total: Number(Number(totalItem).toFixed(2)) }
+            : product
+        );
+
+        return updatedProducts;
+      });
 
       if (!router.asPath.includes("Quantity")) {
         router.replace({
@@ -41,22 +42,26 @@ export const SaleData = () => {
           }
         });
       }
+    } else {
+      setQuantity("0");
+      setPrice("0");
     }
 
   }, [productFocus]);
 
   useEffect(() => {
     setTotalItem((Number(quantity) * Number(price)).toFixed(2).replace(",", "."));
-
-    if (price.length >= 1 && quantity.length >= 1 && totalItem.length >= 1) {
-      router.replace({
-        query: {
-          ...router.query,
-          Quantity: quantity,
-          Price: price,
-          TotalItem: totalItem.toString()
-        }
-      })
+    if (productFocus) {
+      if (price.length >= 1 && quantity.length >= 1 && totalItem.length >= 1) {
+        router.replace({
+          query: {
+            ...router.query,
+            Quantity: quantity,
+            Price: price,
+            TotalItem: totalItem.toString()
+          }
+        })
+      }
     }
   }, [price, quantity, totalItem])
 

@@ -61,7 +61,7 @@ export const Chart = () => {
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="min-h-full mx-auto aspect-square max-h-[250px]"
+          className="min-h-full w-full mx-auto aspect-square max-h-[250px]"
         >
           <PieChart>
             <ChartTooltip

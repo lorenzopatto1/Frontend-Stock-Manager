@@ -83,7 +83,7 @@ const Dashboard = () => {
   return (
     <div className="flex h-screen">
       <Head>
-        <title>Controle mensal</title>
+        <title>Controle financeiro</title>
       </Head>
       <Nav />
       <Settings />

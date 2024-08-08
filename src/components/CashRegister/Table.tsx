@@ -12,6 +12,7 @@ export const Table = () => {
   } = useCartProducts();
 
   const handleSelect = (product: ProductsSold) => {
+
     if (product.productId !== productFocus?.productId) {
       setProductFocus(product);
     } else {
@@ -58,7 +59,7 @@ export const Table = () => {
                       style: "currency",
                       currency: "BRL",
                     })
-                    : product.price.toLocaleString("pt-br", {
+                    : product.wholesaleMinimalQuantity && product.quantity < product.wholesaleMinimalQuantity && product.price.toLocaleString("pt-br", {
                       style: "currency",
                       currency: "BRL",
                     })}
