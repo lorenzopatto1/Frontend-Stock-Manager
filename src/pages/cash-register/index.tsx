@@ -54,7 +54,7 @@ const CashRegister = () => {
         quantity,
         total: Number((quantity * price).toFixed(2)),
       }));
-      console.log("rodei")
+
       setProductsInCart((prevProducts) =>
         prevProducts.map((product) =>
           product.productId === editedProduct.productId

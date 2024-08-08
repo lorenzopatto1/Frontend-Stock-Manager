@@ -18,9 +18,11 @@ export const SaleData = () => {
       setQuantity(productFocus.quantity.toString());
       if (productFocus.wholesaleMinimalQuantity && productFocus.wholesalePrice && Number(quantity) >= productFocus.wholesaleMinimalQuantity) {
         setPrice(productFocus.wholesalePrice.toString())
+
       }
-      if (productFocus.wholesaleMinimalQuantity && Number(quantity) < productFocus.wholesaleMinimalQuantity) {
+      if (productFocus.wholesaleMinimalQuantity && Number(quantity) < productFocus.wholesaleMinimalQuantity || !productFocus.wholesaleMinimalQuantity) {
         setPrice(productFocus.price.toString());
+
       }
 
       setProductsInCart(prevState => {
@@ -42,13 +44,17 @@ export const SaleData = () => {
           }
         });
       }
+    } else {
+      setPrice("0");
+      setQuantity("0");
     }
+
   }, [productFocus]);
 
   useEffect(() => {
     setTotalItem((Number(quantity) * Number(price)).toFixed(2).replace(",", "."));
     if (productFocus) {
-      if (price.length >= 1 && quantity.length >= 1 && totalItem.length >= 1) {
+      if (Number(price) >= 1 && Number(quantity) >= 1 && Number(totalItem) >= 1) {
         router.replace({
           query: {
             ...router.query,
