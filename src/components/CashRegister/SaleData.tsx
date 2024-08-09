@@ -52,10 +52,8 @@ export const SaleData = () => {
 
   useEffect(() => {
     if (productFocus) {
-
+      setTotalItem((Number(quantity) * parseFloat(price)).toFixed(2).replace(",", "."));
       if (parseFloat(price) > 0 && Number(quantity) > 0 && parseFloat(totalItem) > 0) {
-        setTotalItem((Number(quantity) * Number(price)).toFixed(2).replace(",", "."));
-
         router.replace({
           query: {
             ...router.query,
