@@ -9,62 +9,85 @@ export const SaleData = () => {
   const { setSale, productsInCart, setProductsInCart, productFocus, setProductFocus, total } =
     useCartProducts();
   const router = useRouter();
-  const [quantity, setQuantity] = useState("");
-  const [price, setPrice] = useState("");
-  const [totalItem, setTotalItem] = useState("");
-
+  const [quantity, setQuantity] = useState(0);
+  const [price, setPrice] = useState(0);
+  const [totalItem, setTotalItem] = useState(0);
   useEffect(() => {
     if (productFocus) {
-      setQuantity(productFocus.quantity.toString());
-      if (productFocus.wholesaleMinimalQuantity && productFocus.wholesalePrice && Number(quantity) >= productFocus.wholesaleMinimalQuantity) {
-        setPrice(productFocus.wholesalePrice.toString())
-
-      }
-      if (productFocus.wholesaleMinimalQuantity && Number(quantity) < productFocus.wholesaleMinimalQuantity || !productFocus.wholesaleMinimalQuantity) {
-        setPrice(productFocus.price.toString());
-
-      }
-
-      setProductsInCart(prevState => {
-        const updatedProducts = prevState.map(product =>
-          product.productId === productFocus?.productId
-            ? { ...product, total: Number(Number(totalItem).toFixed(2)) }
-            : product
-        );
-        return updatedProducts;
-      });
-
+      setQuantity(productFocus.quantity);
+      setTotalItem(productFocus.total);
       if (!router.asPath.includes("Quantity")) {
-        router.replace({
-          query: {
-            Quantity: productFocus.quantity.toString(),
-            Price: parseFloat(productFocus.price.toString()),
-            TotalItem: totalItem
-          }
-        });
-      }
-    } else {
-      setPrice("0");
-      setQuantity("0");
-    }
-
-  }, [productFocus]);
-
-  useEffect(() => {
-    if (productFocus) {
-      setTotalItem((Number(quantity) * parseFloat(price)).toFixed(2).replace(",", "."));
-      if (parseFloat(price) > 0 && Number(quantity) > 0 && parseFloat(totalItem) > 0) {
         router.replace({
           query: {
             ...router.query,
             Quantity: quantity,
-            Price: parseFloat(price).toString(),
-            TotalItem: totalItem.toString()
+            Price: parseFloat(price.toString()),
+            TotalItem: quantity * parseFloat(price.toString())
           }
         })
       }
+    } else {
+      setQuantity(0);
+      setPrice(0)
     }
-  }, [price, quantity, totalItem])
+  }, [productFocus?.productId])
+
+  useEffect(() => {
+    if (productFocus) {
+      if (productFocus.wholesaleMinimalQuantity && productFocus.wholesalePrice && quantity >= productFocus.wholesaleMinimalQuantity) {
+        setPrice(productFocus.wholesalePrice)
+      } else {
+        setPrice(productFocus.price)
+      }
+    }
+  }, [quantity])
+
+  useEffect(() => {
+    if (productFocus) {
+      if (productFocus.wholesaleMinimalQuantity && productFocus.wholesalePrice && quantity >= productFocus.wholesaleMinimalQuantity) {
+        setProductsInCart(prevState => {
+          const updatedProducts = prevState.map(product =>
+            product.productId === productFocus?.productId
+              ? { ...product, wholesalePrice: price }
+              : product
+          );
+          return updatedProducts;
+        });
+      } else {
+        setProductsInCart(prevState => {
+          const updatedProducts = prevState.map(product =>
+            product.productId === productFocus?.productId
+              ? { ...product, price }
+              : product
+          );
+          return updatedProducts;
+        });
+      }
+      const calcTotalItem = Number((quantity * parseFloat(price.toString())).toFixed(2))
+      router.replace({
+        query: {
+          ...router.query,
+          Quantity: quantity,
+          Price: parseFloat(price.toString()),
+          TotalItem: calcTotalItem
+        }
+      })
+
+      if (quantity > 0 && parseFloat(price.toString()) > 0 && parseFloat(totalItem.toString()) > 0) {
+        setTotalItem(calcTotalItem);
+
+        setProductsInCart(prevState => {
+          const updatedProducts = prevState.map(product =>
+            product.productId === productFocus?.productId
+              ? { ...product, quantity, total: calcTotalItem }
+              : product
+          );
+          return updatedProducts;
+        });
+      }
+
+    }
+  }, [quantity, price])
 
   const handleFinishSale = () => {
     setProductFocus(undefined);
@@ -82,10 +105,10 @@ export const SaleData = () => {
     <form className="pt-10 w-full flex flex-col min-[870px]:flex-row items-center gap-4">
       <div className="flex gap-4 w-full items-center">
         <Input
-          value={quantity}
+          value={quantity.toString()}
           onChange={(e) => {
             {
-              setQuantity(e.target.value);
+              setQuantity(Number(e.target.value));
             }
           }}
           type="number"
@@ -95,10 +118,10 @@ export const SaleData = () => {
 
         <Input
           type="number"
-          value={price}
+          value={price.toString()}
           onChange={(e) => {
             {
-              const value = e.target.value
+              const value = Number(e.target.value)
               setPrice(value);
             }
           }}

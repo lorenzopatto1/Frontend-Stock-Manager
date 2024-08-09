@@ -7,7 +7,6 @@ import { Table } from "../../components/CashRegister/Table";
 import Payment from "../../components/Payment/Payment";
 import { useCartProducts } from "../../context/CartProductsContext";
 import { useProductsData } from "../../hooks/useProductsData";
-import { ProductsSold } from "../../interfaces/products-sold";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Head from "next/head";
@@ -17,9 +16,7 @@ const CashRegister = () => {
   const [searchProductModal, setSearchProductModal] = useState(false);
   const { data } = useProductsData();
   const {
-    productsInCart,
     setProductsInCart,
-    productFocus,
     setProductFocus,
     productSearch,
     setProductSearch,
@@ -32,39 +29,6 @@ const CashRegister = () => {
     if (productSearch.length >= 1) setSearchProductModal(true);
     else setSearchProductModal(false);
   }, [productSearch]);
-
-  useEffect(() => {
-    const editedProduct =
-      productsInCart &&
-      productsInCart.find(
-        (product) => product.productId === productFocus?.productId
-      );
-    const quantity = Number(searchParams.get("Quantity"));
-    const price = Number(searchParams.get("Price"));
-
-    if (editedProduct) {
-      const edit: ProductsSold = {
-        ...editedProduct,
-        quantity,
-        price,
-        total: quantity * price,
-      };
-      setProductFocus((prevState) => ({
-        ...prevState!,
-        quantity,
-        total: Number((quantity * price).toFixed(2)),
-      }));
-
-      setProductsInCart((prevProducts) =>
-        prevProducts.map((product) =>
-          product.productId === editedProduct.productId
-            ? { ...product, ...edit }
-            : product
-        )
-      );
-    }
-
-  }, [searchParams]);
 
   const hasProduct = data?.find((product) =>
     product.name
