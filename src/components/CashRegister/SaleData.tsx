@@ -35,11 +35,10 @@ export const SaleData = () => {
       });
 
       if (!router.asPath.includes("Quantity")) {
-        console.log(productFocus.price)
         router.replace({
           query: {
             Quantity: productFocus.quantity.toString(),
-            Price: productFocus.price.toString(),
+            Price: parseFloat(productFocus.price.toString()),
             TotalItem: totalItem
           }
         });
@@ -52,14 +51,16 @@ export const SaleData = () => {
   }, [productFocus]);
 
   useEffect(() => {
-    setTotalItem((Number(quantity) * Number(price)).toFixed(2).replace(",", "."));
     if (productFocus) {
-      if (Number(price) >= 1 && Number(quantity) >= 1 && Number(totalItem) >= 1) {
+
+      if (parseFloat(price) > 0 && Number(quantity) > 0 && parseFloat(totalItem) > 0) {
+        setTotalItem((Number(quantity) * Number(price)).toFixed(2).replace(",", "."));
+
         router.replace({
           query: {
             ...router.query,
             Quantity: quantity,
-            Price: price,
+            Price: parseFloat(price).toString(),
             TotalItem: totalItem.toString()
           }
         })

@@ -54,9 +54,6 @@ export function CartProductsProvider({ children }: CartProductsProviderProps) {
       total: productData.wholesaleMinimalQuantity && quantity >= productData.wholesaleMinimalQuantity ? productData.wholesaleUnityPrice! * quantity : productData.salePrice * quantity
     }
 
-    console.log(productData)
-    console.log(data)
-
     if (productAlreadyInCart) {
       productAlreadyInCart.quantity += 1;
     }
