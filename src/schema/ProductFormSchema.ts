@@ -1,4 +1,4 @@
-import * as yup from 'yup';
+import * as yup from "yup";
 
 const isPositiveMonetaryValue = () => {
   return yup
@@ -18,7 +18,6 @@ export const productFormSchema = yup.object().shape({
     .typeError("Por favor, insira a quantidade do produto")
     .positive("A quantidade deve ser maior que 0")
     .integer("O numero deve ser inteiro")
-    .min(0, "Número deve ser maior que 0")
     .required("Por favor, insira a quantidade do produto"),
   purchasePrice: isPositiveMonetaryValue().required(
     "Por favor, informe o valor de compra"
