@@ -6,7 +6,7 @@ const isPositiveMonetaryValue = () => {
     .test("is-valid-amount", "O valor deve ser maior que 0", (value) => {
       if (!value) return true;
       const parsed = parseFloat(value.replace(/[^\d.-]/g, ""));
-      return !isNaN(parsed) && parsed > 0;
+      return !isNaN(parsed) && parsed >= 0;
     });
 };
 
@@ -18,6 +18,7 @@ export const productFormSchema = yup.object().shape({
     .typeError("Por favor, insira a quantidade do produto")
     .positive("A quantidade deve ser maior que 0")
     .integer("O numero deve ser inteiro")
+    .min(0, "Número deve ser maior que 0")
     .required("Por favor, insira a quantidade do produto"),
   purchasePrice: isPositiveMonetaryValue().required(
     "Por favor, informe o valor de compra"
