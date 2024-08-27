@@ -8,9 +8,11 @@ import { UserData } from "../interfaces/user-data";
 const getUser = async (): AxiosPromise<UserData> => {
   const response = await api.get<UserData>("/matrixes");
 
-  const establishment_Id = await response.data.establishments[0].id;
+  const establishment_Id = response.data.establishments[0].id;
 
-  Cookies.set("establishment_Id", establishment_Id);
+  if(establishment_Id) {
+    Cookies.set("establishment_Id", establishment_Id);
+  }
 
   return response;
 };
