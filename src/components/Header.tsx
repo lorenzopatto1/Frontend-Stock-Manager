@@ -6,15 +6,16 @@ import {
 } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useStoreNameEditMutate } from "../hooks/useStoreNameEditMutate";
 import { useUserData } from "../hooks/useUserData";
 import { useRouter } from "next/router";
+import { useUserEditMutate } from "../hooks/useUserEditMutate";
+import { UserData } from "../interfaces/user-data";
 
 
 export const Header = () => {
   const { register, handleSubmit } = useForm();
   const { data: userData, isLoading, isSuccess } = useUserData();
-  const { mutate } = useStoreNameEditMutate();
+  const { mutate } = useUserEditMutate();
   const [storeName, setStoreName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
@@ -22,12 +23,13 @@ export const Header = () => {
 
   useEffect(() => {
     if (isSuccess && userData && storeName === "")
-      setStoreName(userData.storeName);
-    //eslint-disable-next-line
+      setStoreName(userData.name);
   }, [isSuccess]);
 
   const handleChangeStoreName = () => {
-    mutate(storeName);
+    mutate({
+      name: storeName
+    } as UserData);
 
     if (isSuccess) setIsModalOpen(false);
   };
@@ -57,7 +59,7 @@ export const Header = () => {
                 disabled={isLoading || !isSuccess}
                 type="button"
               >
-                <p>{isLoading ? "Carregando..." : isSuccess ? userData?.storeName : "Erro"}</p>
+                <p>{isLoading ? "Carregando..." : isSuccess ? userData?.name : "Erro"}</p>
                 <ChevronUpDownIcon className="w-4" />
               </button>
               <div

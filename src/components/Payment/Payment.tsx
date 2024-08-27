@@ -9,13 +9,14 @@ import {
 } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { useCartProducts } from "../../context/CartProductsContext";
-import { useRelatoryCreateMutate } from "../../hooks/useRelatoryCreateMutate";
+import { useSaleRegisterMutate } from "../../hooks/useSaleRegisterMutate";
 import { Button } from "../Button";
 import { PaymentData } from "./PaymentData";
 import PaymentOptions from "./PaymentOptions";
 import Loading from "../Loading";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
+import { SaleRelatory } from "../../interfaces/products-sold";
 
 export const paymentOptions = [
   "Escolha a forma de pagamento",
@@ -26,8 +27,8 @@ export const paymentOptions = [
 ];
 
 const Payment = () => {
-  const { mutate, isPending, isSuccess } = useRelatoryCreateMutate();
-  const { sale, setSale, total, setProductsInCart } = useCartProducts();
+  const { mutate, isPending, isSuccess } = useSaleRegisterMutate();
+  const { sale, setSale, total, setProductsInCart, setProductFocus } = useCartProducts();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [firstPaymentOption, setFirstPaymentOption] = useState(
@@ -38,7 +39,7 @@ const Payment = () => {
     setSale((prevState) => ({
       ...prevState,
       firstPayment: firstPaymentOption,
-    }));
+    } as SaleRelatory));
 
     return () => { };
 
@@ -58,6 +59,7 @@ const Payment = () => {
   useEffect(() => {
     if (isSuccess) {
       handleClose();
+      setProductFocus(undefined);
       setProductsInCart([]);
     }
   }, [isSuccess]);

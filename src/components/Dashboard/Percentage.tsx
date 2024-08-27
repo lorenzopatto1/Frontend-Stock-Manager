@@ -6,11 +6,11 @@ export const Percentage = () => {
   const percentageData = [
     {
       title: 'Porcentagem Líquida:',
-      value: Number(((values[0][1] / values[1][1]) * 100 - 100).toFixed(2)) || '---'
+      value: Number(((values[0][1] / values[1][1]) * 100 - 100).toFixed(2)) || 0
     },
     {
       title: 'Porcentagem Bruta:',
-      value: '---'
+      value: 0
     }
   ]
 

@@ -1,12 +1,12 @@
 "use client"
 
-import { useUserData } from "../../../hooks/useUserData";
+import { useMachineFeesData } from "../../../hooks/useMachineFeesData";
 import { Input } from "../Input";
 import { Button } from "../../Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useUserEditMutate } from "../../../hooks/useUserEditMutate";
+import { useMachineFeesUpdateMutate } from "../../../hooks/useMachineFeesUpdateMutate";
 import Loading from "../../Loading";
 
 const editFeeFormSchema = yup.object({
@@ -22,8 +22,8 @@ type EditFeeFormSchema = {
 };
 
 export const ChangeFeeDataForm = () => {
-  const { data: userData } = useUserData();
-  const { mutate, isPending } = useUserEditMutate();
+  const { data: machineFees } = useMachineFeesData();
+  const { mutate, isPending } = useMachineFeesUpdateMutate();
   const {
     register,
     formState: { errors },
@@ -38,9 +38,9 @@ export const ChangeFeeDataForm = () => {
       debitFee: Number(fee.debitFee.replace(",", ".")),
       pixFee: Number(fee.pixFee.replace(",", "."))
     }
-    userData
+    machineFees
       && mutate({
-        ...userData,
+        ...machineFees,
         ...data
       })
   };
@@ -53,7 +53,7 @@ export const ChangeFeeDataForm = () => {
       <div className="flex flex-col gap-2">
         <Input
           placeholder="Deixe o valor padrão como 0"
-          defaultValue={userData?.creditFee}
+          defaultValue={machineFees?.creditFee}
           {...register("creditFee")}
           error={errors.creditFee}
         >
@@ -61,7 +61,7 @@ export const ChangeFeeDataForm = () => {
         </Input>
         <Input
           placeholder="Deixe o valor padrão como 0"
-          defaultValue={userData?.debitFee}
+          defaultValue={machineFees?.debitFee}
           {...register("debitFee")}
           error={errors.debitFee}
         >
@@ -69,7 +69,7 @@ export const ChangeFeeDataForm = () => {
         </Input>
         <Input
           placeholder="Deixe o valor padrão como 0"
-          defaultValue={userData?.pixFee}
+          defaultValue={machineFees?.pixFee}
           {...register("pixFee")}
           error={errors.pixFee}
         >

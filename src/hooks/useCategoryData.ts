@@ -6,11 +6,11 @@ import { toast } from "sonner";
 
 const getCategorys = async () => {
   try {
-    const token = Cookies.get("token");
-    const response = await api.get<string[]>(`/Products/Categorys?token=${token}`);
+    const establishment_Id = Cookies.get("establishment_Id");
+    const response = await api.get<string[]>(`/categorys/${establishment_Id}`);
     return response;
   } catch (_) {
-    toast.error("Não foi possível encontrar as categorias")
+    toast.error("Não foi possível encontrar as categorias");
   }
 };
 

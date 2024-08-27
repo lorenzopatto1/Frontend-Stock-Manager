@@ -11,7 +11,6 @@ const isPositiveMonetaryValue = () => {
 };
 
 export const productFormSchema = yup.object().shape({
-  type: yup.number().required("Por favor, insira o nome do produto"),
   name: yup.string().required("Por favor, insira o nome do produto"),
   quantity: yup
     .number()
@@ -38,7 +37,7 @@ export const productFormSchema = yup.object().shape({
     .nullable()
     .transform((value, originalValue) => (originalValue === "" ? null : value))
     .default(null),
-  group: yup.string().required("Por favor, informe a categoria do produto"),
+  category: yup.string().required("Por favor, informe a categoria do produto"),
   validationDate: yup
     .date()
     .typeError("O valor deve ser uma data")

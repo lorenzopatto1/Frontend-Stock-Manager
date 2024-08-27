@@ -1,20 +1,26 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../data/api";
+import Cookies from "js-cookie";
+import { SaleRelatory } from "../interfaces/products-sold";
 import { toast } from "sonner";
 
-const deleteProduct = async (id: string) => {
+const postSale = async (data: SaleRelatory) => {
   try {
-    await api.delete(`/products/delete/${id}`);
-    toast.success("Produto removido!");
+    const establishment_Id = Cookies.get("establishment_Id");
+    await api.post(`/sales/create`, {
+      establishment_Id,
+      ...data,
+    });
+    toast.success("Venda concluida");
   } catch (_) {
-    toast.error("Falha ao remover produto");
+    toast.error("Erro na venda");
   }
 };
 
-export const useProductDeleteMutate = () => {
+export const useSaleRegisterMutate = () => {
   const queryClient = useQueryClient();
   const mutate = useMutation({
-    mutationFn: deleteProduct,
+    mutationFn: postSale,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products-data"] });
       queryClient.invalidateQueries({ queryKey: ["products-prices-data"] });

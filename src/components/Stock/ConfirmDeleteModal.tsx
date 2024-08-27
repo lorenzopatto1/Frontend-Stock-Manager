@@ -7,18 +7,18 @@ interface ConfirmDeleteModalProps {
   open: boolean;
   handleClose: () => void;
   productName: string;
-  id?: number;
+  id?: string;
 }
 
-const ConfirmDeleteModal = ({open, handleClose, productName, id}: ConfirmDeleteModalProps) => {
+export const ConfirmDeleteModal = ({ open, handleClose, productName, id }: ConfirmDeleteModalProps) => {
   const { mutate, isPending, isSuccess } = useProductDeleteMutate();
 
   const handleRemove = () => {
-    mutate(id!);
+    if (id) mutate(id);
 
-   if (isSuccess) {
-    handleClose();
-   }
+    if (isSuccess) {
+      handleClose();
+    }
   }
   return (
     <Transition show={open}>
@@ -88,5 +88,3 @@ const ConfirmDeleteModal = ({open, handleClose, productName, id}: ConfirmDeleteM
     </Transition>
   )
 }
-
-export default ConfirmDeleteModal

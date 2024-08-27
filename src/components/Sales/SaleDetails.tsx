@@ -1,6 +1,6 @@
 "use client"
 
-import { LogCalendarFilter } from "./LogCalendarFilter";
+import { SaleCalendarFilter } from "./SaleCalendarFilter";
 import { useShowPayments } from "../../hooks/useShowPayments";
 import { Table } from "./Table";
 import { Category } from "../Category";
@@ -8,7 +8,7 @@ import { ChangeEvent } from "react";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
 
-export const LogDetails = () => {
+export const SaleDetails = () => {
   const values = useShowPayments();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -36,9 +36,9 @@ export const LogDetails = () => {
 
   return (
     <div className="flex flex-col h-full gap-4 w-full">
-      <div className="flex flex-col md:flex-row gap-4 md:gap-0">
+      <div className="flex flex-col justify-center md:flex-row gap-4 md:gap-0">
         <input type="text" autoComplete="new-password" className="p-2 bg-transparent ring-1 hover:ring-2 focus:ring-2 ring-black hover:ring-indigo-700 focus:ring-indigo-700 dark:ring-zinc-500 hover:dark:ring-indigo-500 focus:dark:ring-indigo-500 rounded-md" onChange={changeFilterName} placeholder="Nome do produto" />
-        <LogCalendarFilter />
+        <SaleCalendarFilter />
         <Category />
       </div>
       <div className="flex w-full gap-2 sm:justify-center sm:text-sm md:text-base lg:text-2xl font-bold text-green-700 dark:text-green-400 flex-wrap md:flex-row text-nowrap md:justify-between mt-4">

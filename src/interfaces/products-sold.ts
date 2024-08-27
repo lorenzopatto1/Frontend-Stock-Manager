@@ -1,31 +1,26 @@
-import { ProductType } from "./product-data";
-
 export interface ProductsSold {
-  id?: number,
-  productId?: number;
-  type: ProductType;
+  id?: string;
+  product_Id?: string;
+  type: string;
   name: string;
-  group: string
+  category: string;
   quantity: number;
   purchasePrice: number;
-  price: number;
-  wholesalePrice?: number | null;
-  wholesaleMinimalQuantity?: number | null;
+  salePrice: number;
   total: number;
 }
 
 export interface SaleRelatory {
-  id?: number;
-  totalCost?: number;
-  totalValue?: number;
-  firstPayment?: string;
-  firstAmountPaid?: number;
-  change?: number | null;
+  id?: string;
+  establishment_Id?: number;
+  totalPurchaseValue: number | null;
+  totalSaleValue: number;
+  firstPayment: string | null;
+  firstAmountPaid: number | null;
+  change?: number;
   balanceToPay?: number | null;
-  secondPayment?: string | null;
-  secondAmountPaid?: number | null;
-  seller?: string;
+  secondPayment?: string;
+  secondAmountPaid?: number;
   saleDate?: Date | null;
-  userId?: number;
-  products?: ProductsSold[]
+  products: ProductsSold[];
 }

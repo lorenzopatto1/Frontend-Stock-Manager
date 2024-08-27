@@ -35,13 +35,13 @@ const Stock = () => {
   }, []);
 
   return (
-    <div className="flex h-full">
+    <div className="flex w-full h-full">
       <Head>
         <title>Estoque</title>
       </Head>
       <Settings />
       <Nav />
-      <div className="flex flex-col">
+      <div className="flex flex-col w-full">
         <Header />
         <header className="mt-2 bg-gray-300 dark:bg-gray-800 shadow flex items-center max-h-12 py-1 justify-between">
           <div className="mx-auto max-w-7xl flex px-4 py-6 sm:px-6 lg:px-8">
@@ -60,7 +60,7 @@ const Stock = () => {
             </h1>
           </button>
         </header>
-        <main className="flex  justify-center flex-1">
+        <main className="flex justify-center flex-1">
           <div className="w-full md:w-[90%] min-[900px]:w-[80%] my-6 p-4 flex flex-col gap-6 bg-gray-300 dark:bg-[#00081d] rounded-[2rem] sm:px-6 lg:px-8">
             <Table />
             <NewProductModal

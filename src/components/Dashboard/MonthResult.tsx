@@ -16,7 +16,7 @@ export const MonthResult = () => {
     },
     {
       title: "Resultado mensal + diferença no estoque:",
-      value: '----'
+      value: 0
     },
   ]
 

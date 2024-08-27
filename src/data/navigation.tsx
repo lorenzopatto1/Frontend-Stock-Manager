@@ -2,12 +2,12 @@ import {
   DocumentDuplicateIcon as DocumentDuplicateSolidIcon,
   CurrencyDollarIcon as CurrencyDollarSolidIcon,
   CubeIcon as CubeSolidIcon,
-  BuildingLibraryIcon as BuildingLibrarySolidIcon
+  ArrowPathIcon as ArrowSolidPathIcon
 } from "@heroicons/react/16/solid";
 import {
   DocumentDuplicateIcon,
   CubeIcon,
-  BuildingLibraryIcon,
+  ArrowPathIcon,
   CurrencyDollarIcon
 } from "@heroicons/react/24/outline";
 
@@ -34,10 +34,10 @@ export const navigation = [
     current: false,
   },
   {
-    icon: <BuildingLibraryIcon className="w-8" />,
-    activeIcon: <BuildingLibrarySolidIcon className="w-8" />,
-    name: "Despesas",
-    href: "/expenses",
+    icon: <ArrowPathIcon className="w-8" />,
+    activeIcon: <ArrowSolidPathIcon className="w-8" />,
+    name: "Entradas/Saidas",
+    href: "/in-outs",
     current: false,
   }
 ];

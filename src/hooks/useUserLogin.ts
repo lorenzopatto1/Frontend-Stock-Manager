@@ -12,7 +12,10 @@ interface LoginResponse {
 
 const PostLogin = async (userLogin: SignInFormData) => {
   try {
-    const response = await api.post<LoginResponse>("/Signin", userLogin);
+    const response = await api.post<LoginResponse>(
+      "/matrixes/sessions/login",
+      userLogin
+    );
     const { token } = response.data;
     toast.success("Usuário logado!");
     Cookies.set("token", token, { expires: 7, path: "/" });

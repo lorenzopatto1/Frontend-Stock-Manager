@@ -1,17 +1,17 @@
 import { useSearchParams } from "next/navigation";
-import { useLogData } from "./useLogData";
+import { useSalesData } from "./useSalesData";
 
 export const useFilteredLogs = () => {
-  const { data: logs } = useLogData();
+  const { data: sales } = useSalesData();
   const searchParams = useSearchParams();
-  
+
   const date = searchParams.get("Data")?.replace(/-/g, "/");
   const minDate = searchParams.get("dataMinima")?.replace(/-/g, "/");
   const maxDate = searchParams.get("dataMaxima")?.replace(/-/g, "/");
 
   const parseDate = (dateString: string | null) => {
     if (!dateString) return null;
-    const [day, month, year] = dateString.split('/');
+    const [day, month, year] = dateString.split("/");
     return new Date(Number(year), Number(month) - 1, Number(day));
   };
 
@@ -30,22 +30,23 @@ export const useFilteredLogs = () => {
   const parsedMaxDate = maxDate ? setEndOfNextDay(parseDate(maxDate)!) : null;
   const parsedDate = date ? setStartOfDay(parseDate(date)!) : null;
 
-  const filteredLogs = logs?.filter((log) => {
-    const logDate = new Date(log.saleDate || '');
+  const filteredLogs =
+    sales?.filter((log) => {
+      const logDate = new Date(log.saleDate || "");
 
-    if (parsedMinDate && parsedMaxDate) {
-      return logDate >= parsedMinDate && logDate < parsedMaxDate;
-    }
+      if (parsedMinDate && parsedMaxDate) {
+        return logDate >= parsedMinDate && logDate < parsedMaxDate;
+      }
 
-    if (parsedDate) {
-      const startDay = setStartOfDay(parsedDate, 4)
-      const endOfNextDay = setEndOfNextDay(parsedDate);
-      return logDate >= startDay && logDate < endOfNextDay;
-    }
-    const today = setStartOfDay(new Date(), 4); // Start today at 4:00 AM
-    const endOfToday = setEndOfNextDay(today);
-    return logDate >= today && logDate < endOfToday;
-  }) || [];
+      if (parsedDate) {
+        const startDay = setStartOfDay(parsedDate, 4);
+        const endOfNextDay = setEndOfNextDay(parsedDate);
+        return logDate >= startDay && logDate < endOfNextDay;
+      }
+      const today = setStartOfDay(new Date(), 4); // Start today at 4:00 AM
+      const endOfToday = setEndOfNextDay(today);
+      return logDate >= today && logDate < endOfToday;
+    }) || [];
 
   return { filteredLogs };
 };

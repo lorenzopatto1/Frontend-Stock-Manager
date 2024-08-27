@@ -1,6 +1,6 @@
 "use client"
 
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useCallback, useContext, useState } from "react";
 import { ProductsSold, SaleRelatory } from "../interfaces/products-sold";
 import { ProductData } from "../interfaces/product-data";
 
@@ -13,8 +13,8 @@ type CartProductsContextProps = {
   setSale: React.Dispatch<React.SetStateAction<SaleRelatory | undefined>>
   productsInCart: ProductsSold[]
   setProductsInCart: React.Dispatch<React.SetStateAction<ProductsSold[]>>
-  productFocus: ProductsSold | undefined
-  setProductFocus: React.Dispatch<React.SetStateAction<ProductsSold | undefined>>
+  productFocus: ProductData | undefined
+  setProductFocus: React.Dispatch<React.SetStateAction<ProductData | undefined>>
   productSearch: string;
   setProductSearch: React.Dispatch<React.SetStateAction<string>>
   handleSelectProduct: (productData: ProductData) => void
@@ -26,58 +26,85 @@ const CartProductsContext = createContext({} as CartProductsContextProps);
 
 export function CartProductsProvider({ children }: CartProductsProviderProps) {
   const [productsInCart, setProductsInCart] = useState<ProductsSold[]>([]);
-  const [productFocus, setProductFocus] = useState<ProductsSold>();
+  const [productFocus, setProductFocus] = useState<ProductData>();
   const [productSearch, setProductSearch] = useState('');
   const [sale, setSale] = useState<SaleRelatory>();
 
   const total = Number(productsInCart.reduce((acc, product) => (
-    product.wholesaleMinimalQuantity && product.quantity >= product.wholesaleMinimalQuantity
-      ? acc += product.wholesalePrice! * product.quantity
-      : acc += product.total
+    acc += product.salePrice * product.quantity
   ), 0).toFixed(2));
+
+  const totalIfWholesale = useCallback((
+    quantity: number,
+    salePrice: number,
+    wholesaleMinimalQuantity: number | null,
+    wholesaleUnityPrice: number | null
+  ) => {
+    if (wholesaleMinimalQuantity && wholesaleUnityPrice)
+      if (quantity >= wholesaleMinimalQuantity) {
+        return Number((wholesaleUnityPrice * quantity).toFixed(2))
+      }
+
+    return Number((salePrice * quantity).toFixed(2))
+
+  }, [])
 
   const handleSelectProduct = (productData: ProductData) => {
     const quantity = 1;
-    const productAlreadyInCart = productsInCart.find(product => product.productId === productData.id)
+    const productAlreadyInCart = productsInCart.find(product => product.product_Id === productData.id)
 
     const data: ProductsSold = {
       ...productAlreadyInCart,
-      productId: productData.id,
+      product_Id: productData.id,
       type: productData.type,
-      group: productData.group,
+      category: productData.category,
       name: productData.name,
       purchasePrice: productData.purchasePrice,
-      price: productData.salePrice,
-      wholesalePrice: productData.wholesaleUnityPrice ?? null,
-      wholesaleMinimalQuantity: productData.wholesaleMinimalQuantity ?? null,
+      salePrice: productData.salePrice,
       quantity: productAlreadyInCart?.quantity || quantity,
-      total: productData.wholesaleMinimalQuantity && quantity >= productData.wholesaleMinimalQuantity ? productData.wholesaleUnityPrice! * quantity : productData.salePrice * quantity
+      total: totalIfWholesale(quantity, productData.salePrice, productData.wholesaleMinimalQuantity, productData.wholesaleUnityPrice)
     }
-
     if (productAlreadyInCart) {
       productAlreadyInCart.quantity += 1;
+      productAlreadyInCart.total = totalIfWholesale(productAlreadyInCart.quantity, productData.salePrice, productData.wholesaleMinimalQuantity, productData.wholesaleUnityPrice)
     }
     else {
       setProductsInCart(prevState => [...prevState, data]);
     }
     setProductSearch('');
-    setProductFocus(data);
+    setProductFocus(productData)
   }
+
   const handleRemoveProductAtCart = () => {
     if (productFocus) {
       setProductsInCart(prevState => [
-        ...prevState.filter(product => product.productId !== productFocus.productId)
+        ...prevState.filter(product => product.product_Id !== productFocus.id)
       ])
       setProductFocus(undefined);
     }
   }
 
   return (
-    <CartProductsContext.Provider value={{ sale, setSale, productsInCart, setProductsInCart, productFocus, setProductFocus, total, handleRemoveProductAtCart, productSearch, setProductSearch, handleSelectProduct }}>
+    <CartProductsContext.Provider
+      value={
+        {
+          sale,
+          setSale,
+          productsInCart,
+          setProductsInCart,
+          productFocus,
+          setProductFocus,
+          total,
+          handleRemoveProductAtCart,
+          productSearch,
+          setProductSearch,
+          handleSelectProduct
+        }
+      }>
       {children}
     </CartProductsContext.Provider>
   )
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
+
 export const useCartProducts = () => useContext(CartProductsContext);

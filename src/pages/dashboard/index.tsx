@@ -11,25 +11,27 @@ import { Settings } from '../../components/Settings/Settings';
 import { usePricesData } from '../../hooks/usePricesData';
 import { useProductsData } from '../../hooks/useProductsData';
 import { useShowPayments } from '../../hooks/useShowPayments';
-import { ProductType } from '../../interfaces/product-data';
+import { useInOutsData } from '../../hooks/useInOutsData';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const stockValues = [
   {
     title: "Valor do estoque inicial",
     icon: <CubeIcon className="w-6 stroke-gray-600 dark:stroke-white" />,
-    value: '----',
+    value: 0,
     date: new Date(2024, 6, 1)
   },
   {
     title: "Valor do estoque final",
     icon: <CubeIcon className="w-6 stroke-gray-600 dark:stroke-white" />,
-    value: '----',
+    value: 0,
     date: new Date(2024, 6, 31)
   },
   {
     title: "Diferença do estoque",
     icon: <CubeIcon className="w-6 stroke-gray-600 dark:stroke-white" />,
-    value: '----',
+    value: 0,
     month: new Date()
   }
 ];
@@ -37,9 +39,22 @@ const stockValues = [
 const Dashboard = () => {
   const { count = 0 } = useProductsData();
   const { data } = usePricesData();
+  const { data: inOuts } = useInOutsData();
+  const router = useRouter();
   const billing = useShowPayments();
-  const purchaseCost = data?.data.filter(product => product.type !== ProductType.Mix).reduce((num, prices) => num + prices.purchasePrice * prices.quantity, 0) || 0
-  const saleCost = data?.data.filter(product => product.type !== ProductType.Mix).reduce((num, prices) => num + prices.salePrice * prices.quantity, 0) || 0
+  const totalIn = inOuts?.filter(d => d.type !== "Out").reduce((acc, d) => acc += d.value, 0)
+  const totalOut = inOuts?.filter(d => d.type !== "In").reduce((acc, d) => acc += d.value, 0)
+
+  useEffect(() => {
+    router.replace({
+      query: {
+        ...router.query,
+        dataMinima: "01-08-2024",
+        dataMaxima: "31-08-2024",
+      }
+    })
+  }, [])
+
 
   const values = [
     {
@@ -51,13 +66,13 @@ const Dashboard = () => {
     {
       title: "Minhas despesas",
       icon: <ArrowTrendingDownIcon className="w-6 fill-red-500" />,
-      value: '----',
+      value: totalOut || 0,
       date: new Date()
     },
     {
       title: "Meus investimentos",
       icon: <ArrowTrendingUpIcon className="w-6 fill-green-700 dark:fill-green-500" />,
-      value: '----',
+      value: totalIn || 0,
       date: new Date()
     }
   ];
@@ -71,12 +86,12 @@ const Dashboard = () => {
     {
       title: "Custo de compra:",
       icon: <CubeIcon className="w-6 stroke-gray-600 dark:stroke-white" />,
-      value: purchaseCost,
+      value: data?.data.totalCost || 0,
     },
     {
       title: "Valor total de venda:",
       icon: <CubeIcon className="w-6 stroke-gray-600 dark:stroke-white" />,
-      value: saleCost,
+      value: data?.data.totalSale || 0,
     }
   ];
 

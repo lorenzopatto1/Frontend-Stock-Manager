@@ -13,7 +13,7 @@ import { ChangeEvent, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { inputsProps } from "../../data/productFormProps";
 import { useCategorysData } from "../../hooks/useCategoryData";
-import { useProductsByIdData } from "../../hooks/useProductByIdData";
+import { useProductByIdData } from "../../hooks/useProductByIdData";
 import { useProductEditMutate } from "../../hooks/useProductEditMutate";
 import { CreateProductFormData, ProductData } from "../../interfaces/product-data";
 import { productFormSchema } from "../../schema/ProductFormSchema";
@@ -26,7 +26,7 @@ import { useSearchParams } from "next/navigation";
 interface INewProductModal {
   open: boolean;
   handleClose: () => void;
-  id: number;
+  id?: string;
 }
 
 export const EditProductModal = ({
@@ -36,7 +36,7 @@ export const EditProductModal = ({
 }: INewProductModal) => {
   const searchParams = useSearchParams();
 
-  const { data, isSuccess: dataSuccess, refetch } = useProductsByIdData(id);
+  const { data, isSuccess: dataSuccess, refetch } = useProductByIdData(id as string);
   const { data: categorys } = useCategorysData();
   const { mutate, isPending, isError: mutateError } = useProductEditMutate();
 
@@ -56,7 +56,7 @@ export const EditProductModal = ({
     },
   });
 
-  const productType = searchParams.get("productType");
+  const productType = searchParams.get("productType") as string;
 
   useEffect(() => {
     (async () => {
@@ -77,13 +77,16 @@ export const EditProductModal = ({
 
   const handleEditProduct: SubmitHandler<CreateProductFormData> = async (product) => {
     const dataMutate: ProductData = {
-      ...product,
       id,
-      type: Number(productType!),
+      name: product.name,
+      category: product.category,
+      quantity: product.quantity,
+      type: productType,
       purchasePrice: Number(product.purchasePrice.toString().replace(",", ".")),
       salePrice: Number(product.salePrice.toString().replace(",", ".")),
+      wholesaleMinimalQuantity: product.wholesaleMinimalQuantity || null,
       wholesaleUnityPrice: Number(
-        product.wholesaleUnityPrice?.toString().replace(",", ".")
+        product.wholesaleUnityPrice?.toString().replace(",", ".") || null
       ),
       validationDate:
         product.validationDate && new Date(product.validationDate),
@@ -177,13 +180,6 @@ export const EditProductModal = ({
                           className="space-y-2 w-full"
                           onSubmit={handleSubmit(handleEditProduct)}
                         >
-                          <Input
-                            type="text"
-                            className="hidden"
-                            value={Number(productType!)}
-                            {...register("type")}
-                            error={errors.type}
-                          />
                           {inputsProps.map((input, key) => (
                             <Input
                               key={key}
@@ -210,10 +206,10 @@ export const EditProductModal = ({
                           ))}
                           <Input
                             type="text"
-                            error={errors.group}
-                            {...register("group")}
+                            error={errors.category}
+                            {...register("category")}
                             list="categorys"
-                            defaultValue={data?.group}
+                            defaultValue={data?.category}
                           >
                             Categoria:
                           </Input>

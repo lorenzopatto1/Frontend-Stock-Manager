@@ -1,104 +1,100 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Input } from "./Input";
 import { useCartProducts } from "../../context/CartProductsContext";
 import { useRouter } from "next/router";
+import { SaleRelatory } from "../../interfaces/products-sold";
 
 export const SaleData = () => {
-  const { setSale, productsInCart, setProductsInCart, productFocus, setProductFocus, total } =
-    useCartProducts();
+  const { setSale, productsInCart, setProductsInCart, productFocus, total } = useCartProducts();
   const router = useRouter();
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
   const [totalItem, setTotalItem] = useState(0);
+
   useEffect(() => {
     if (productFocus) {
-      setQuantity(productFocus.quantity);
-      setTotalItem(productFocus.total);
-      if (!router.asPath.includes("Quantity")) {
-        router.replace({
-          query: {
-            ...router.query,
-            Quantity: quantity,
-            Price: parseFloat(price.toString()),
-            TotalItem: quantity * parseFloat(price.toString())
-          }
-        })
+      const product = productsInCart.find(product => product.product_Id === productFocus.id)
+      if (product) {
+        setQuantity(product.quantity);
+        setTotalItem(product.total);
       }
+
     } else {
-      setQuantity(0);
-      setPrice(0)
+      resetFields();
     }
-  }, [productFocus?.productId])
+  }, [productFocus?.id]);
 
   useEffect(() => {
     if (productFocus) {
-      if (productFocus.wholesaleMinimalQuantity && productFocus.wholesalePrice && quantity >= productFocus.wholesaleMinimalQuantity) {
-        setPrice(productFocus.wholesalePrice)
-      } else {
-        setPrice(productFocus.price)
-      }
+      const { wholesaleMinimalQuantity, wholesaleUnityPrice, salePrice } = productFocus;
+      setPrice(priceIfWholesale(quantity, salePrice, wholesaleMinimalQuantity, wholesaleUnityPrice));
     }
-  }, [quantity])
+  }, [quantity]);
 
   useEffect(() => {
     if (productFocus) {
-      if (productFocus.wholesaleMinimalQuantity && productFocus.wholesalePrice && quantity >= productFocus.wholesaleMinimalQuantity) {
-        setProductsInCart(prevState => {
-          const updatedProducts = prevState.map(product =>
-            product.productId === productFocus?.productId
-              ? { ...product, wholesalePrice: price }
-              : product
-          );
-          return updatedProducts;
-        });
-      } else {
-        setProductsInCart(prevState => {
-          const updatedProducts = prevState.map(product =>
-            product.productId === productFocus?.productId
-              ? { ...product, price }
-              : product
-          );
-          return updatedProducts;
-        });
-      }
-      const calcTotalItem = Number((quantity * parseFloat(price.toString())).toFixed(2))
-      router.replace({
-        query: {
-          ...router.query,
-          Quantity: quantity,
-          Price: parseFloat(price.toString()),
-          TotalItem: calcTotalItem
-        }
-      })
+      const calcTotalItem = calculateTotalItem(quantity, price);
+      updateCartProductPrice(price);
 
-      if (quantity > 0 && parseFloat(price.toString()) > 0 && parseFloat(totalItem.toString()) > 0) {
+      if (quantity > 0 && price > 0 && calcTotalItem > 0) {
         setTotalItem(calcTotalItem);
-
-        setProductsInCart(prevState => {
-          const updatedProducts = prevState.map(product =>
-            product.productId === productFocus?.productId
-              ? { ...product, quantity, total: calcTotalItem }
-              : product
-          );
-          return updatedProducts;
-        });
+        updateCartProduct(quantity, calcTotalItem);
       }
-
     }
-  }, [quantity, price])
+  }, [quantity, price]);
+
+  const calculateTotalItem = (quantity: number, price: number) => Number((quantity * price).toFixed(2));
+
+  const priceIfWholesale = useCallback((
+    quantity: number,
+    price: number,
+    wholesaleMinimalQuantity: number | null,
+    wholesalePrice: number | null
+  ) => {
+    if (wholesaleMinimalQuantity && wholesalePrice) {
+      if (quantity >= wholesaleMinimalQuantity) {
+        return wholesalePrice
+      }
+    }
+
+    return price
+  }, [])
+
+  const resetFields = () => {
+    setQuantity(0);
+    setPrice(0);
+    setTotalItem(0);
+  };
+
+  const updateCartProductPrice = (salePrice: number) => {
+    setProductsInCart((prevState) =>
+      prevState.map((product) =>
+        product.product_Id === productFocus?.id
+          ? { ...product, salePrice }
+          : product
+      )
+    );
+  };
+
+  const updateCartProduct = (quantity: number, totalItem: number) => {
+    setProductsInCart((prevState) =>
+      prevState.map((product) =>
+        product.product_Id === productFocus?.id
+          ? { ...product, quantity, total: totalItem }
+          : product
+      )
+    );
+  };
 
   const handleFinishSale = () => {
-    setProductFocus(undefined);
-    router.replace({
-      query: { Finalize: "true" }
-    });
+    router.replace({ query: { Finalize: "true" } });
 
     setSale((prevState) => ({
       ...prevState,
       products: productsInCart,
-    }));
+    } as SaleRelatory));
   };
 
   return (
@@ -106,11 +102,7 @@ export const SaleData = () => {
       <div className="flex gap-4 w-full items-center">
         <Input
           value={quantity.toString()}
-          onChange={(e) => {
-            {
-              setQuantity(Number(e.target.value));
-            }
-          }}
+          onChange={(e) => setQuantity(Number(e.target.value))}
           type="number"
         >
           Quantidade
@@ -119,12 +111,7 @@ export const SaleData = () => {
         <Input
           type="number"
           value={price.toString()}
-          onChange={(e) => {
-            {
-              const value = Number(e.target.value)
-              setPrice(value);
-            }
-          }}
+          onChange={(e) => setPrice(Number(e.target.value))}
         >
           Preço
         </Input>
@@ -135,7 +122,7 @@ export const SaleData = () => {
           </div>
           <p className="text-ellipsis overflow-hidden font-bold ring-1 group-hover:text-indigo-500 group-hover:ring-indigo-500 ring-zinc-700 dark:ring-zinc-500 w-full text-center py-4 md:text-start md:p-4 rounded-md">
             {productFocus
-              ? Number(totalItem).toLocaleString("pt-br", {
+              ? totalItem.toLocaleString("pt-br", {
                 style: "currency",
                 currency: "BRL",
               })

@@ -1,7 +1,10 @@
 "use client"
 
+import { TrashIcon } from "lucide-react";
 import { useCartProducts } from "../../context/CartProductsContext";
-import { ProductsSold } from "../../interfaces/products-sold";
+import { useQuery } from "@tanstack/react-query";
+import { useProductsData } from "../../hooks/useProductsData";
+import { useEffect, useState } from "react";
 
 export const Table = () => {
   const {
@@ -10,27 +13,33 @@ export const Table = () => {
     setProductFocus,
     handleRemoveProductAtCart,
   } = useCartProducts();
+  const [productFocusId, setProductFocusId] = useState(productFocus?.id);
 
-  const handleSelect = (product: ProductsSold) => {
+  const { data } = useQuery({
+    queryKey: ['products-data'],
+    queryFn: useProductsData,
+    staleTime: 0,
+    refetchOnWindowFocus: false,
+  });
 
-    if (product.productId !== productFocus?.productId) {
-      setProductFocus(product);
+  useEffect(() => {
+    if (data && productFocusId) {
+      const productEquals = data.data?.find(product => product.id === productFocusId)
+      setProductFocus(productEquals);
     } else {
       setProductFocus(undefined);
     }
+
+  }, [productFocusId])
+
+  const handleSelectProduct = (id?: string) => {
+    if (id && id !== productFocusId) setProductFocusId(id);
+    else setProductFocusId(undefined)
   };
 
   return (
     <div className="relative flex flex-1 basis-0 overflow-y-auto w-full h-full overflow-x-hidden items-start justify-center">
-      {productFocus && (
-        <button
-          onClick={handleRemoveProductAtCart}
-          className="absolute top-1 right-1 z-50 font-bold bg-white hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-950 p-2 rounded-md text-red-500 hover:text-red-700 dark:hover:text-red-400"
-        >
-          Remover
-        </button>
-      )}
-      <table className=" table-fixed text-xs md:text-sm lg:text-base text-nowrap divide-ydivide-gray-700 w-full">
+      <table className=" table-fixed text-xs md:text-sm lg:text-base text-nowrap w-full">
         <thead className="sticky top-0 z-40 bg-gray-400 text-white dark:bg-gray-800">
           <tr>
             <th>Nome</th>
@@ -44,31 +53,35 @@ export const Table = () => {
           {productsInCart ? (
             productsInCart.map((product) => (
               <tr
-                key={product.productId}
-                className={`${productFocus?.productId === product.productId &&
+                key={product.product_Id}
+                className={`${productFocus?.id === product.product_Id &&
                   "!bg-indigo-400 dark:!bg-indigo-600 "
                   } hover:bg-indigo-300 dark:hover:bg-indigo-900 relative transition-all cursor-pointer`}
-                onClick={() => handleSelect(product)}
+                onClick={() => handleSelectProduct(product.product_Id)}
               >
                 <td>{product.name}</td>
                 <td>{product.quantity}</td>
                 <td>
-                  {product.wholesaleMinimalQuantity &&
-                    product.quantity >= product.wholesaleMinimalQuantity
-                    ? product.wholesalePrice?.toLocaleString("pt-br", {
-                      style: "currency",
-                      currency: "BRL",
-                    })
-                    : product.price.toLocaleString("pt-br", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
+                  {product.salePrice.toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
                 </td>
-                <td>
+                <td className="flex items-center justify-between">
                   {product.total.toLocaleString("pt-br", {
                     style: "currency",
                     currency: "BRL",
                   })}
+                  {productFocus
+                    && productFocus?.id === product.product_Id
+                    && (
+                      <button
+                        onClick={handleRemoveProductAtCart}
+                        className="absolute right-2 font-bold bg-transparent rounded-md text-red-500 hover:text-red-700 dark:hover:text-red-400"
+                      >
+                        <TrashIcon className="w-full" />
+                      </button>
+                    )}
                 </td>
               </tr>
             ))

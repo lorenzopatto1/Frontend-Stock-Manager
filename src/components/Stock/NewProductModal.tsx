@@ -42,18 +42,21 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
   const { formatter } = useDecimalFormat();
   const searchParams = useSearchParams();
 
-  const productType = Number(searchParams.get("productType"));
+  const productType = searchParams.get("productType") as string;
 
   const handleCreateProduct: SubmitHandler<CreateProductFormData> = (
     product
   ) => {
     const data: ProductData = {
-      ...product,
+      name: product.name,
+      category: product.category,
+      quantity: product.quantity,
       type: productType,
       purchasePrice: Number(product.purchasePrice.toString().replace(",", ".")),
       salePrice: Number(product.salePrice.toString().replace(",", ".")),
+      wholesaleMinimalQuantity: product.wholesaleMinimalQuantity || null,
       wholesaleUnityPrice: Number(
-        product.wholesaleUnityPrice?.toString().replace(",", ".")
+        product.wholesaleUnityPrice?.toString().replace(",", ".") || null
       ),
       validationDate:
         product.validationDate && new Date(product.validationDate),
@@ -138,7 +141,6 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
                         className="space-y-2 w-full"
                         onSubmit={handleSubmit(handleCreateProduct)}
                       >
-                        <Input className="hidden" type="number" value={productType} error={errors.type} {...register("type")} />
                         {inputsProps.map((input, key) => (
                           <Input
                             key={key}
@@ -159,8 +161,8 @@ export const NewProductModal = ({ open, handleClose }: INewProductModal) => {
                         ))}
                         <Input
                           type="text"
-                          error={errors.group}
-                          {...register("group")}
+                          error={errors.category}
+                          {...register("category")}
                           list="categorys"
                         >
                           Categoria:

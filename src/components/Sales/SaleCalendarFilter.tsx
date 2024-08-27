@@ -18,7 +18,7 @@ type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-export const LogCalendarFilter = () => {
+export const SaleCalendarFilter = () => {
 
   const searchParams = useSearchParams();
   const router = useRouter();

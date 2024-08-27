@@ -1,23 +1,23 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../data/api";
-import { UserData } from "../interfaces/user-data";
 import { toast } from "sonner";
+import { IMachineFees } from "../interfaces/machine-fees";
 
-const editUser = async (user: UserData) => {
+const editFee = async (fees: IMachineFees) => {
   try {
-    await api.put(`/matrixes/edit`, user);
+    await api.put(`/machine-fees/update`, fees);
     toast.success("Alterações concluidas!");
   } catch (_) {
     toast.error("Erro nas alterações");
   }
 };
 
-export const useUserEditMutate = () => {
+export const useMachineFeesUpdateMutate = () => {
   const queryClient = useQueryClient();
   const mutate = useMutation({
-    mutationFn: editUser,
+    mutationFn: editFee,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user-data"] });
+      queryClient.invalidateQueries({ queryKey: ["machineFees-data"] });
     },
   });
 

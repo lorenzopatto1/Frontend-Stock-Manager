@@ -2,32 +2,30 @@ import { Maybe } from "yup";
 
 export enum ProductType {
   Unity = 1,
-  Mix
+  Mix,
 }
 
 export interface ProductData {
-  id?: number;
-  type: ProductType;
+  id?: string;
+  establishment_Id?: string | null;
+  type: string;
   name: string;
   quantity: number;
   purchasePrice: number;
   salePrice: number;
-  wholesaleMinimalQuantity?: number | null;
-  wholesaleUnityPrice?: number | null;
+  wholesaleMinimalQuantity: number | null;
+  wholesaleUnityPrice: number | null;
   validationDate?: Date | null;
-  group: string;
-  userId?: number | null;
+  category: string;
 }
 
 export interface PricesResponse {
-    type: ProductType;
-    quantity: number;
-    purchasePrice: number;
-    salePrice: number;
+  totalCost: number;
+  totalSale: number;
 }
 
 export interface CreateProductFormData {
-  type: ProductType;
+  type?: string;
   name: string;
   quantity: number;
   purchasePrice: string | number;
@@ -36,5 +34,5 @@ export interface CreateProductFormData {
   wholesaleMinimalQuantity?: Maybe<number | undefined>;
   wholesaleUnityPrice?: Maybe<string | number | undefined>;
   validationDate?: Maybe<Date | undefined>;
-  group: string;
+  category: string;
 }

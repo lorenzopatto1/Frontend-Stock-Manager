@@ -30,7 +30,7 @@ const CashRegister = () => {
     else setSearchProductModal(false);
   }, [productSearch]);
 
-  const hasProduct = data?.find((product) =>
+  const hasProduct = data?.filter((product) =>
     product.name
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
@@ -74,29 +74,16 @@ const CashRegister = () => {
         />
         {searchProductModal && productSearch && (
           <div className="fixed rounded-md flex-col top-24 z-50 w-[81%] md:w-[35%] flex justify-center bg-gray-300 dark:bg-gray-700 p-2">
-            {hasProduct ? (
-              data
-                ?.filter((product) =>
-                  product.name
-                    .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "")
-                    .toLocaleLowerCase()
-                    .startsWith(
-                      productSearch
-                        .normalize("NFD")
-                        .replace(/[\u0300-\u036f]/g, "")
-                        .toLowerCase()
-                    )
-                )
-                .map((product) => (
-                  <div
-                    className="p-2 w-full rounded-md hover:bg-gray-400 cursor-pointer dark:hover:bg-gray-800"
-                    key={product.id}
-                    onClick={() => { handleSelectProduct(product) }}
-                  >
-                    {product.name}
-                  </div>
-                ))
+            {hasProduct?.length ? (
+              hasProduct.map((product) => (
+                <div
+                  className="p-2 w-full rounded-md hover:bg-gray-400 cursor-pointer dark:hover:bg-gray-800"
+                  key={product.id}
+                  onClick={() => { handleSelectProduct(product) }}
+                >
+                  {product.name}
+                </div>
+              ))
             ) : (
               <div>Nenhum produto com esse nome...</div>
             )}

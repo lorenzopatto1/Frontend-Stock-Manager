@@ -6,7 +6,7 @@ export const Table = () => {
     <>
       <Filters />
       <div className="flex flex-1 basis-0 overflow-y-auto w-full h-full overflow-x-hidden items-start justify-center">
-        <table className="table-fixed text-nowrap divide-y divide-gray-700 w-full">
+        <table className="table-fixed xl:table-auto text-nowrap divide-y divide-gray-700 w-full">
           <thead className="w-full sticky top-0 z-[9] text-xs lg:text-sm  bg-gray-400 dark:bg-gray-900">
             <tr>
               <th>

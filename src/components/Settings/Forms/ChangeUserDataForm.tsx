@@ -9,7 +9,7 @@ import * as yup from "yup";
 
 const editUserFormSchema = yup.object({
   firstName: yup.string().required("Primeiro nome é necessário"),
-  lastName: yup.string().required("Ultimo nome é necessário"),
+  emailAddress: yup.string().required("Email é necessário"),
   phoneNumber: yup.string().required("Telefone é necessário"),
   storeName: yup.string().required("Nome da loja é necessário"),
   beforePass: yup.string(),
@@ -18,7 +18,7 @@ const editUserFormSchema = yup.object({
 
 type EditUserFormSchema = {
   firstName: string;
-  lastName: string;
+  emailAddress: string;
   phoneNumber: string;
   storeName: string;
   beforePass?: string;
@@ -47,16 +47,16 @@ export const ChangeUserDataForm = () => {
     >
       <div className="flex flex-col gap-2">
         <Input
-          defaultValue={data?.firstName}
+          defaultValue={data?.name}
           {...register("firstName")}
           error={errors.firstName}
         >
           Primeiro nome:
         </Input>
         <Input
-          defaultValue={data?.lastName}
-          {...register("lastName")}
-          error={errors.lastName}
+          defaultValue={data?.emailAddress}
+          {...register("emailAddress")}
+          error={errors.emailAddress}
         >
           Ultimo nome:
         </Input>

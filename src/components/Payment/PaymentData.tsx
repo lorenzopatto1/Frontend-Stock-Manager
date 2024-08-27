@@ -4,33 +4,28 @@ import { useEffect, useState } from "react";
 import { useCartProducts } from "../../context/CartProductsContext";
 import { Input } from "../Input";
 import PaymentOptions from "./PaymentOptions";
-import { useUserData } from "../../hooks/useUserData";
-import { useQuery } from "@tanstack/react-query";
+import { useMachineFeesData } from "../../hooks/useMachineFeesData";
 import { paymentOptions } from "./Payment";
+import { SaleRelatory } from "../../interfaces/products-sold";
 
 interface PaymentDataProps {
   secondPayment: string[];
 }
 
 export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
-  const { sale, setSale, total } = useCartProducts();
+  const { sale, setSale, productsInCart, total } = useCartProducts();
   const [amountPayd, setAmountPayd] = useState(total.toString());
   const [secondOption, setSecondOption] = useState(
     "Escolha a forma de pagamento"
   );
   const [changeCheck, setChangeCheck] = useState(true);
 
-  const { data } = useQuery({
-    queryKey: ['user-data'],
-    queryFn: useUserData,
-    staleTime: 0,
-    refetchOnWindowFocus: false,
-  });
+  const { data } = useMachineFeesData();
 
   const feeValues = {
-    debitFee: data?.data?.debitFee || 0,
-    creditFee: data?.data?.creditFee || 0,
-    pixFee: data?.data?.pixFee || 0
+    debitFee: data?.debitFee || 0,
+    creditFee: data?.creditFee || 0,
+    pixFee: data?.pixFee || 0
   }
 
   const cashChange = (total - Number(amountPayd.replace(",", "."))) * -1;
@@ -60,17 +55,19 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
     const firstPayment = sale?.firstPayment || paymentOptions[0]
     const firstAmountPaid = feeAmountPaid(firstPayment, Number(amountPayd))
     const secondAmountPaid = secondOption !== "Escolha a forma de pagamento" ? feeAmountPaid(secondOption, cashChange * -1) : 0
-    const totalValue = changeCheck ? firstAmountPaid + secondAmountPaid - cashChange : firstAmountPaid + secondAmountPaid
+    const totalPurchaseValue = productsInCart.reduce((acc, product) => acc += product.purchasePrice * product.quantity, 0)
+    const totalSaleValue = changeCheck ? firstAmountPaid + secondAmountPaid - cashChange : firstAmountPaid + secondAmountPaid
 
     setSale(prevState => ({
       ...prevState,
-      totalValue,
+      totalPurchaseValue,
+      totalSaleValue,
       firstAmountPaid,
-      change: changeCheck ? Number(cashChange.toFixed(2)) : 0,
-      balanceToPay: secondOption !== "Escolha a forma de pagamento" && cashChange < 0 ? cashChange * -1 : 0,
+      change: changeCheck ? Number(cashChange.toFixed(2)) : null,
+      balanceToPay: secondOption !== "Escolha a forma de pagamento" && cashChange < 0 ? cashChange * -1 : null,
       secondPayment: secondOption !== "Escolha a forma de pagamento" ? secondOption : null,
-      secondAmountPaid: secondOption !== "Escolha a forma de pagamento" && cashChange < 0 ? secondAmountPaid : 0,
-    }))
+      secondAmountPaid: secondOption !== "Escolha a forma de pagamento" && cashChange < 0 ? secondAmountPaid : null,
+    } as SaleRelatory))
 
   }, [sale?.firstPayment, amountPayd, cashChange, changeCheck, secondOption, setSale, total])
 

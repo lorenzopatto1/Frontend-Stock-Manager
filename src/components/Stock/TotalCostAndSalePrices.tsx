@@ -3,13 +3,10 @@
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { usePricesData } from "../../hooks/usePricesData";
-import { ProductType } from "../../interfaces/product-data";
 
 const TotalCostAndSalePrices = () => {
   const [showValues, setShowValues] = useState(true);
   const { data, isLoading } = usePricesData();
-  const purchaseCost = data?.data.filter(product => product.type !== ProductType.Mix).reduce((num, prices) => num + prices.purchasePrice * prices.quantity, 0) || 0
-  const saleCost = data?.data.filter(product => product.type !== ProductType.Mix).reduce((num, prices) => num + prices.salePrice * prices.quantity, 0) || 0
 
   const handleToggleShowValues = () => {
     setShowValues(!showValues);
@@ -21,7 +18,7 @@ const TotalCostAndSalePrices = () => {
         Custo compra:{" "}
         {isLoading && showValues && <div className="w-32 animate-pulse h-2 bg-gray-500 text-gray-500"></div>}
         {!isLoading && showValues
-          ? purchaseCost?.toLocaleString("pt-br", {
+          ? data?.data.totalCost.toLocaleString("pt-br", {
             style: "currency",
             currency: "BRL",
           })
@@ -31,7 +28,7 @@ const TotalCostAndSalePrices = () => {
         Valor total:{" "}
         {isLoading && showValues && <div className="w-32 animate-pulse h-2 bg-gray-500 text-gray-500"></div>}
         {!isLoading && showValues
-          ? saleCost?.toLocaleString("pt-br", {
+          ? data?.data.totalSale.toLocaleString("pt-br", {
             style: "currency",
             currency: "BRL",
           })

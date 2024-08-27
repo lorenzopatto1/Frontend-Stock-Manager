@@ -16,14 +16,14 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 
 export interface SignInFormData {
-  login: string;
+  email: string;
   password: string;
 }
 
 const signInFormSchema = yup
   .object()
   .shape({
-    login: yup.string().required("Por favor, insira seu e-mail ou telefone"),
+    email: yup.string().required("Por favor, insira seu e-mail ou telefone"),
     password: yup.string().required("Por favor, insira sua senha"),
   })
   .required();
@@ -76,12 +76,12 @@ const Login = () => {
           <div>
             <div className="mt-2">
               <Input
-                type="text"
-                error={errors.login}
-                placeholder="Insira seu e-mail ou Numero de telefone"
-                {...register("login")}
+                type="email"
+                error={errors.email}
+                placeholder="Insira seu e-mail"
+                {...register("email")}
               >
-                E-mail ou Telefone
+                E-mail
               </Input>
             </div>
           </div>
@@ -109,7 +109,7 @@ const Login = () => {
           </div>
 
           <div>
-            <Button disabled={watch().login === "" || watch().password === ""}>
+            <Button disabled={watch().email === "" || watch().password === ""}>
               {isPending ? <Loading /> : "Fazer login"}
             </Button>
           </div>

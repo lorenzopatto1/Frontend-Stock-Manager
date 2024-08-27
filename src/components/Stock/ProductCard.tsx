@@ -2,28 +2,28 @@
 
 import { useState } from "react";
 import { useProductsData } from "../../hooks/useProductsData";
-import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { ConfirmDeleteModal } from "./ConfirmDeleteModal";
 import { EditProductModal } from "./EditProductModal";
 import { ProductCardSkeleton } from "./ProductCardSkeleton";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 
 export const ProductCard = () => {
   const searchParams = useSearchParams();
   const { data: productData, isLoading, isSuccess } = useProductsData();
   const [openEditProductModal, setOpenEditProductModal] = useState(false);
   const [openRemoveProductModal, setOpenRemoveProductModal] = useState(false);
-  const [productKey, setProductKey] = useState<number>();
+  const [productKey, setProductKey] = useState<string>();
   const router = useRouter();
 
   const productName = searchParams.get("productName");
   const productCategory = searchParams.get("category");
 
-  const handleOpenEditModal = (id: number) => {
+  const handleOpenEditModal = (id?: string) => {
     setOpenEditProductModal(true);
-    setProductKey(id);
+    if (id) setProductKey(id);
   };
-
   const handleCloseEditModal = () => {
     const path = router.pathname
     setOpenEditProductModal(false);
@@ -31,9 +31,9 @@ export const ProductCard = () => {
     router.push(path)
   };
 
-  const handleOpenRemoveModal = (id: number) => {
+  const handleOpenRemoveModal = (id?: string) => {
     setOpenRemoveProductModal(true);
-    setProductKey(id);
+    if (id) setProductKey(id);
   };
 
   const handleCloseRemoveModal = () => {
@@ -67,13 +67,13 @@ export const ProductCard = () => {
         )
         .filter((product) =>
           productCategory !== null
-            ? productCategory === product.group
-            : product.group
+            ? productCategory === product.category
+            : product.category
         )
         .map((product) => (
           <tr className="w-full text-xs sm:text-sm lg:text-base" key={product.id}>
             <td>
-              <abbr title={product.group}>{product.group}</abbr>
+              <abbr title={product.category}>{product.category}</abbr>
             </td>
             <td>
               <abbr title={product.name}>{product.name}</abbr>
@@ -127,17 +127,17 @@ export const ProductCard = () => {
                   : "--/--/----"}
               </abbr>
             </td>
-            <div className="hidden xl:flex justify-between py-3 pr-6 ">
+            <div className="hidden xl:flex justify-center gap-4 py-3 pr-6 ">
               <button
                 className="text-indigo-500 font-bold hover:text-opacity-80"
-                onClick={() => handleOpenEditModal(product.id!)}
+                onClick={() => handleOpenEditModal(product.id)}
               >
-                Editar
+                <PencilSquareIcon className="w-6" />
               </button>
 
-              {product.id && product.id === productKey ? (
+              {product.id === productKey ? (
                 <EditProductModal
-                  id={product.id}
+                  id={productKey}
                   open={openEditProductModal}
                   handleClose={handleCloseEditModal}
                 />
@@ -145,19 +145,19 @@ export const ProductCard = () => {
 
               <button
                 className="text-red-500 hover:text-red-600 dark:text-red-500 font-bold dark:hover:text-opacity-80"
-                onClick={() => handleOpenRemoveModal(product.id!)}
+                onClick={() => handleOpenRemoveModal(product.id)}
               >
-                Remover
+                <TrashIcon className="w-6" />
               </button>
+              {product.id === productKey && (
+                <ConfirmDeleteModal
+                  id={productKey}
+                  productName={product.name}
+                  open={openRemoveProductModal}
+                  handleClose={handleCloseRemoveModal}
+                />
+              )}
             </div>
-            {product.id === productKey && (
-              <ConfirmDeleteModal
-                id={productKey}
-                productName={product.name}
-                open={openRemoveProductModal}
-                handleClose={handleCloseRemoveModal}
-              />
-            )}
           </tr>
         ))}
     </>

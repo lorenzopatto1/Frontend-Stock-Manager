@@ -48,6 +48,22 @@ input[type="number"] {
   appearance: textfield;
 }
 
+input[type="radio"]::after {
+  content: "";
+  display: block;
+  width: 50%;
+  height: 50%;
+  @apply bg-black dark:bg-gray-400 hover:bg-indigo-500 dark:hover:bg-indigo-500;
+  position: absolute;
+  border-radius: 100%;
+  top: 25%;
+  left: 25%;
+}
+
+input[type="radio"]:checked::after {
+  @apply bg-indigo-500;
+}
+
 .dark input:-webkit-autofill,
 .dark input:-webkit-autofill:hover,
 .dark input:-webkit-autofill:focus,

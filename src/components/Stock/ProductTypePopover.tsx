@@ -11,7 +11,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 
 interface IProductTypePopover {
-  defaultValue?: ProductType;
+  defaultValue?: string;
 }
 
 export const ProductTypePopover = ({ defaultValue }: IProductTypePopover) => {
@@ -22,20 +22,20 @@ export const ProductTypePopover = ({ defaultValue }: IProductTypePopover) => {
 
   const type = searchParams.get("productType");
 
-  const handleSelectProductType = (type: ProductType) => {
+  const handleSelectProductType = (type: string) => {
     router.replace({
-      query: { ...router.query, productType: type.toString() }
+      query: { ...router.query, productType: type }
     })
     setPopoverOpen(false);
 
   };
 
   useEffect(() => {
-    defaultValue && defaultValue === 1
-      ? handleSelectProductType(ProductType.Unity)
-      : defaultValue === 2
-        ? handleSelectProductType(ProductType.Mix)
-        : handleSelectProductType(ProductType.Unity);
+    defaultValue && defaultValue === ProductType[1]
+      ? handleSelectProductType(ProductType[1])
+      : defaultValue === ProductType[2]
+        ? handleSelectProductType(ProductType[2])
+        : handleSelectProductType(ProductType[1]);
   }, []);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export const ProductTypePopover = ({ defaultValue }: IProductTypePopover) => {
           className="w-32 ring-2 py-1 rounded-md ring-black hover:ring-indigo-500 dark:ring-gray-600 dark:hover:ring-indigo-700"
           onClick={() => setPopoverOpen(!popoverOpen)}
         >
-          {type && type === "1" ? "Unidade" : ProductType[2]}
+          {type && type === ProductType[1] ? "Unidade" : ProductType[2]}
         </button>
       </PopoverTrigger>
       <PopoverContent className="p-1 w-32 dark:bg-gray-700">
@@ -59,14 +59,14 @@ export const ProductTypePopover = ({ defaultValue }: IProductTypePopover) => {
           <button
             className={`${type === "1" ? "!bg-gray-900 ring-black dark:ring-indigo-500 !text-white" : "dark:bg-gray-800 ring-gray-600"
               } p-1 ring-1  hover:ring-indigo-500 hover:bg-indigo-400 hover:text-black dark:hover:text-white  dark:hover:bg-indigo-800 rounded-md`}
-            onClick={() => handleSelectProductType(ProductType.Unity)}
+            onClick={() => handleSelectProductType(ProductType[1])}
           >
             Unidade
           </button>
           <button
             className={`${type === "2" ? "!bg-gray-900 ring-black dark:ring-indigo-500 !text-white" : "dark:bg-gray-800 ring-gray-600"
               } p-1 ring-1  hover:ring-indigo-500 hover:bg-indigo-400 hover:text-black dark:hover:text-white  dark:hover:bg-indigo-800 rounded-md`}
-            onClick={() => handleSelectProductType(ProductType.Mix)}
+            onClick={() => handleSelectProductType(ProductType[2])}
           >
             Mix
           </button>
