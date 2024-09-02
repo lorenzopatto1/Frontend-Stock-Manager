@@ -15,7 +15,7 @@ import { UserData } from "../interfaces/user-data";
 export const Header = () => {
   const { register, handleSubmit } = useForm();
   const { data: userData, isLoading, isSuccess } = useUserData();
-  const { mutate } = useUserEditMutate();
+  const { mutate, isPending } = useUserEditMutate();
   const [storeName, setStoreName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
@@ -96,7 +96,7 @@ export const Header = () => {
                   <button
                     className="absolute right-1 group dark:bg-gray-700 rounded-md"
                     type="submit"
-                    disabled={!storeName}
+                    disabled={!storeName || isPending || isLoading}
                     onClick={handleChangeStoreName}
                   >
                     <CheckIcon

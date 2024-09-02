@@ -14,7 +14,7 @@ export const useShowPayments = () => {
       return acc;
     }, 0);
   };
-
+  
   const cashTotal = sumPayments("Dinheiro");
   const debitTotal = sumPayments("Débito");
   const creditTotal = sumPayments("Crédito");

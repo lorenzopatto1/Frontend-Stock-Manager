@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { IInOutFormData } from "../components/InOuts/Form";
 
-interface IInOutsResponse extends IInOutFormData {
+export interface IInOutsResponse extends IInOutFormData {
   id: string;
   establishment_Id: string;
 }

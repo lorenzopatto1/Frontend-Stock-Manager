@@ -8,6 +8,7 @@ const TotalCostAndSalePrices = () => {
   const [showValues, setShowValues] = useState(true);
   const { data, isLoading } = usePricesData();
 
+
   const handleToggleShowValues = () => {
     setShowValues(!showValues);
   };

@@ -116,7 +116,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <MonthResult />
+          <MonthResult totalOut={totalOut} />
 
           <div className="grid w-full gap-[2vh]">
             <Percentage />

@@ -7,12 +7,17 @@ interface IData {
 }
 
 
-export const MonthResult = () => {
+interface IMonthResult {
+  totalOut: number | undefined
+}
+
+
+export const MonthResult = ({ totalOut = 0 }: IMonthResult) => {
   const values = useShowPayments();
   const data: IData[] = [
     {
       title: "Resultado mensal:",
-      value: values[1][1]
+      value: values[1][1] - totalOut 
     },
     {
       title: "Resultado mensal + diferença no estoque:",
@@ -28,7 +33,7 @@ export const MonthResult = () => {
             {result.title}
             <BanknotesIcon className="fill-green-700 dark:fill-green-500" width={32} />
           </h3>
-          <p className="flex flex-1 items-center justify-center ml-1 2xl:p-3 text-xl 2xl:text-3xl text-green-700 dark:text-green-500">
+          <p className={`${Number(result.value) > 0 ? 'text-green-700 dark:text-green-500': 'text-red-700 dark:text-red-500'}, flex flex-1 items-center justify-center ml-1 2xl:p-3 text-xl 2xl:text-3xl`}>
             {result.value.toLocaleString("pt-br", {
               style: "currency",
               currency: "BRL"
