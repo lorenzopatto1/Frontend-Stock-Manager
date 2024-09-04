@@ -11,7 +11,7 @@ export const inputsProps: InputProps[] = [
     label: 'Nome do produto:'
   },
   {
-    type: 'number',
+    type: 'text',
     name: 'quantity',
     label: 'Quantidade:'
   },
@@ -31,7 +31,7 @@ export const inputsProps: InputProps[] = [
     label: 'Preço unitário de venda:'
   },
   {
-    type: 'number',
+    type: 'text',
     name: 'wholesaleMinimalQuantity',
     label: 'Quantidade minima para preço de atacado:'
   },
