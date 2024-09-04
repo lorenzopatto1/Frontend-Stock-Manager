@@ -26,7 +26,7 @@ export function useProductsData() {
   return {
     ...query,
     data: query.data?.data,
-    count: query.data?.data.reduce(
+    count: query.data?.data.filter(product => product.quantity >= 0).reduce(
       (acc, product) => (acc += product.quantity),
       0
     ),
