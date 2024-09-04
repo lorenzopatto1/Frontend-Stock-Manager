@@ -44,13 +44,13 @@ const Dashboard = () => {
   const billing = useShowPayments();
   const totalIn = inOuts?.filter(d => d.type !== "Out").reduce((acc, d) => acc += d.value, 0)
   const totalOut = inOuts?.filter(d => d.type !== "In").reduce((acc, d) => acc += d.value, 0)
-
+  const currentMonth = new Date().getMonth();   
   useEffect(() => {
     router.replace({
       query: {
         ...router.query,
-        dataMinima: "01-08-2024",
-        dataMaxima: "31-08-2024",
+        dataMinima: `01-0${currentMonth + 1}-2024`,
+        dataMaxima: `31-0${currentMonth + 1}-2024`,
       }
     })
   }, [])
