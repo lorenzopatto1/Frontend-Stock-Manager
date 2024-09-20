@@ -36,7 +36,7 @@ const PaymentOptions = ({ selected, setSelected, paymentOptions }: PaymentOption
                     key={key}
                     className={({ selected, focus }) =>
                       classNames(
-                        selected ? '!bg-indigo-400 dark:bg-indigo-600 dark:text-white' : 'text-gray-900', focus ? 'hover:bg-indigo-300' : '',
+                        selected ? '!bg-indigo-400 dark:bg-indigo-600 dark:text-white' : 'text-gray-900', focus ? 'bg-indigo-800 hover:bg-indigo-300' : '',
                         'relative cursor-default select-none py-2 pl-3 pr-9 transition-all',
                       )
                     }
@@ -49,7 +49,7 @@ const PaymentOptions = ({ selected, setSelected, paymentOptions }: PaymentOption
                             <span
                               className={classNames(
                                 selected ? 'text-white' : 'text-indigo-500',
-                                'absolute inset-y-0 left-1 flex items-center pr-4',
+                                'absolute inset-y-0 left-1 flex items-center pr-4 ',
                               )}
                             >
                               <CheckIcon className="h-5 w-5" aria-hidden="true" />

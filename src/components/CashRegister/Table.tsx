@@ -4,7 +4,7 @@ import { TrashIcon } from "lucide-react";
 import { useCartProducts } from "../../context/CartProductsContext";
 import { useQuery } from "@tanstack/react-query";
 import { useProductsData } from "../../hooks/useProductsData";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type KeyboardEvent } from "react";
 
 export const Table = () => {
   const {
@@ -37,6 +37,13 @@ export const Table = () => {
     else setProductFocusId(undefined)
   };
 
+  const handleProductKeyDown = (event: KeyboardEvent, id?: string) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleSelectProduct(id);
+    }
+  }
+
   return (
     <div className="relative flex flex-1 basis-0 overflow-y-auto w-full h-full overflow-x-hidden items-start justify-center">
       <table className=" table-fixed text-xs md:text-sm lg:text-base text-nowrap w-full">
@@ -53,11 +60,13 @@ export const Table = () => {
           {productsInCart ? (
             productsInCart.map((product) => (
               <tr
+                tabIndex={0}
                 key={product.product_Id}
                 className={`${productFocus?.id === product.product_Id &&
                   "!bg-indigo-400 dark:!bg-indigo-600 "
-                  } hover:bg-indigo-300 dark:hover:bg-indigo-900 relative transition-all cursor-pointer`}
+                  } hover:bg-indigo-300 dark:hover:bg-indigo-900 relative transition-all focus:outline-none focus:!bg-indigo-300 dark:!focus:bg-indigo-900 cursor-pointer`}
                 onClick={() => handleSelectProduct(product.product_Id)}
+                onKeyDown={(e) => handleProductKeyDown(e, product.product_Id)}
               >
                 <td>{product.name}</td>
                 <td>{product.quantity}</td>
@@ -77,7 +86,7 @@ export const Table = () => {
                     && (
                       <button
                         onClick={handleRemoveProductAtCart}
-                        className="absolute right-2 font-bold bg-transparent rounded-md text-red-500 hover:text-red-700 dark:hover:text-red-400"
+                        className="absolute focus:outline-none focus:text-red-700 right-2 font-bold bg-transparent rounded-md text-red-500 hover:text-red-700 dark:hover:text-red-400"
                       >
                         <TrashIcon className="w-full" />
                       </button>

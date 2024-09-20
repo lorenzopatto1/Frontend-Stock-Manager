@@ -76,13 +76,13 @@ const CashRegister = () => {
           <div className="fixed rounded-md flex-col top-24 z-50 w-[81%] md:w-[35%] flex justify-center bg-gray-300 dark:bg-gray-700 p-2">
             {hasProduct?.length ? (
               hasProduct.map((product) => (
-                <div
-                  className="p-2 w-full rounded-md hover:bg-gray-400 cursor-pointer dark:hover:bg-gray-800"
+                <button
+                  className="p-2 w-full text-start focus:outline-none focus:bg-indigo-400 rounded-md hover:bg-gray-400 cursor-pointer dark:hover:bg-gray-800"
                   key={product.id}
                   onClick={() => { handleSelectProduct(product) }}
                 >
                   {product.name}
-                </div>
+                </button>
               ))
             ) : (
               <div>Nenhum produto com esse nome...</div>
