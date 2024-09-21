@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Input } from "./Input";
 import { useCartProducts } from "../../context/CartProductsContext";
 import { useRouter } from "next/router";
@@ -12,6 +12,7 @@ export const SaleData = () => {
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
   const [totalItem, setTotalItem] = useState(0);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (productFocus) {
@@ -20,7 +21,7 @@ export const SaleData = () => {
         setQuantity(product.quantity);
         setTotalItem(product.total);
       }
-
+      inputRef.current?.focus()
     } else {
       resetFields();
     }
@@ -104,6 +105,7 @@ export const SaleData = () => {
           value={quantity.toString()}
           onChange={(e) => setQuantity(Number(e.target.value))}
           type="number"
+          ref={inputRef}
         >
           Quantidade
         </Input>

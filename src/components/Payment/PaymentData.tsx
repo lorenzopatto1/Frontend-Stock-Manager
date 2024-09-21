@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCartProducts } from "../../context/CartProductsContext";
 import { Input } from "../Input";
 import PaymentOptions from "./PaymentOptions";
@@ -19,6 +19,8 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
     "Escolha a forma de pagamento"
   );
   const [changeCheck, setChangeCheck] = useState(true);
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const { data } = useMachineFeesData();
 
@@ -57,7 +59,7 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
     const secondAmountPaid = secondOption !== "Escolha a forma de pagamento" ? feeAmountPaid(secondOption, cashChange * -1) : 0
     const totalPurchaseValue = productsInCart.reduce((acc, product) => acc += product.purchasePrice * product.quantity, 0)
     const totalSaleValue = changeCheck ? firstAmountPaid + secondAmountPaid - cashChange : firstAmountPaid + secondAmountPaid
-
+    inputRef.current?.focus()
     setSale(prevState => ({
       ...prevState,
       totalPurchaseValue,
@@ -78,6 +80,7 @@ export const PaymentData = ({ secondPayment }: PaymentDataProps) => {
         value={amountPayd}
         onChange={(e) => setAmountPayd(e.target.value)}
         type="text"
+        ref={inputRef}
       >
         Valor pago pelo cliente:
       </Input>
