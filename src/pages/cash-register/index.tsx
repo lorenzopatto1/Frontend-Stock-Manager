@@ -73,7 +73,7 @@ const CashRegister = () => {
           onChange={(e) => setProductSearch(e.target.value)}
         />
         {searchProductModal && productSearch && (
-          <div className="fixed rounded-md flex-col top-24 z-50 w-[81%] md:w-[35%] flex justify-center bg-gray-300 dark:bg-gray-700 p-2">
+          <div className="absolute max-h-[60%] overflow-auto rounded-md flex-col top-24 z-50 w-[81%] md:w-[35%] bg-gray-300 dark:bg-gray-700 p-2">
             {hasProduct?.length ? (
               hasProduct.map((product) => (
                 <button
