@@ -26,10 +26,11 @@ export const useFilteredLogs = () => {
     return nextDay;
   };
 
-  const parsedMinDate = minDate ? setStartOfDay(parseDate(minDate)!) : null;
+  const parsedMinDate = minDate ? setStartOfDay(parseDate(minDate)!, 4) : null;
   const parsedMaxDate = maxDate ? setEndOfNextDay(parseDate(maxDate)!) : null;
   const parsedDate = date ? setStartOfDay(parseDate(date)!) : null;
-
+  console.log(parsedMinDate)
+  console.log(parsedMaxDate)
   const filteredLogs =
     sales?.filter((log) => {
       const logDate = new Date(log.saleDate || "");
@@ -43,7 +44,7 @@ export const useFilteredLogs = () => {
         const endOfNextDay = setEndOfNextDay(parsedDate);
         return logDate >= startDay && logDate < endOfNextDay;
       }
-      const today = setStartOfDay(new Date(), 4); // Start today at 4:00 AM
+      const today = setStartOfDay(new Date(), 4);
       const endOfToday = setEndOfNextDay(today);
       return logDate >= today && logDate < endOfToday;
     }) || [];
